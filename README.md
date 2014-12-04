@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 prexey
 ======
 
@@ -11,3 +12,9 @@ Instalar
 5 - php composer.phar install ( instalar los vendors )
 
 
+=======
+prexey2
+=======
+
+nueva version 
+>>>>>>> e13e8618f391397d90e6d89fe02faafae022a2dc
