@@ -72,13 +72,21 @@ class OrdenIngreso
     private $observaciones;
     
     /**
+     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="orden_ingreso")
+     */
+
+    protected $ingresos; 
+    
+        
+    /**
      * Constructor
      */
      
     public function __construct()
     {
          $this->isDelete=false;
-         $this->createdAt = new \DateTime('now');   
+         $this->createdAt = new \DateTime('now');
+         $this->ingresos =  new ArrayCollection();   
     }
      
 
@@ -297,5 +305,38 @@ class OrdenIngreso
     public function getProductos()
     {
         return $this->productos;
+    }
+
+    /**
+     * Add ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\Ingreso $ingresos
+     * @return OrdenIngreso
+     */
+    public function addIngreso(\Backend\AdminBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos[] = $ingresos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\Ingreso $ingresos
+     */
+    public function removeIngreso(\Backend\AdminBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos->removeElement($ingresos);
+    }
+
+    /**
+     * Get ingresos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIngresos()
+    {
+        return $this->ingresos;
     }
 }
