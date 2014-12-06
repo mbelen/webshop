@@ -30,6 +30,11 @@ class Ingreso
      */
     private $isDelete;
     
+     /**
+     * @ORM\Column(name="cantidad", type="integer" )
+     */    
+    
+    private $cantidad;
     
    /**
      * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="articulos")
@@ -37,17 +42,6 @@ class Ingreso
      */
 
     protected $tipo;    
-
-     /**
-     * @ORM\Column(name="imei", type="string", length=15, nullable=true)
-     */
-        
-    /**
-     * @ORM\ManyToOne(targetEntity="Estado", inversedBy="articulos")
-     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
-     */    
-    
-    public $estado;
             
     /**
      * @ORM\ManyToOne(targetEntity="Marca", inversedBy="articulos")
@@ -252,5 +246,28 @@ class Ingreso
     public function getOrden()
     {
         return $this->orden;
+    }
+
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     * @return Ingreso
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+    
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer 
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
     }
 }
