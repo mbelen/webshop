@@ -33,6 +33,7 @@ class Estado
     /**
      * @ORM\OneToMany(targetEntity="Articulo", mappedBy="estado")
      */
+    
     public $articulos;
 
     /**
@@ -42,7 +43,7 @@ class Estado
     {
         $this->isDelete=false;
         $this->createdAt = new \DateTime('now');
-        $this->articulos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->articulos = new ArrayCollection();
     }
     
     public function __toString()

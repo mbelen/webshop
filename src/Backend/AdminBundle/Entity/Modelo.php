@@ -19,31 +19,39 @@ class Modelo
     /**
      * @ORM\Column(name="name", type="string", length=100)
      */
+    
     public $name;
+    
     /**
      * @ORM\Column(name="nameManufacture", type="string", length=100)
      */
+    
     public $nameManufacture;
+    
     /**
      * @ORM\Column(name="variante", type="string", length=100, nullable=true)
      */
+    
     public $variante;
     
-        /**
+    /**
      * @ORM\Column(name="is_delete", type="boolean" )
      */
+    
     private $isDelete;
 
     /**
      * @ORM\ManyToOne(targetEntity="Marca", inversedBy="modelos")
      * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
      */    
+    
     public $marca;
 
 	/**
      * @ORM\ManyToOne(targetEntity="Articulo", inversedBy="modelo")
      * 
      **/     
+    
     private $articulos;
 
 	    

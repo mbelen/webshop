@@ -34,6 +34,7 @@ class Articulo
      * @ORM\Column(name="is_disponible", type="boolean" )
      */
     private $isDisponible;
+    
    /**
      * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="articulos")
      * @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
@@ -56,8 +57,7 @@ class Articulo
     /**
      * @ORM\Column(name="is_gtia", type="boolean" )
      */ 
-    
-         
+            
     private $garantia;
     
     /**
@@ -83,6 +83,7 @@ class Articulo
      * @ORM\ManyToOne(targetEntity="Marca", inversedBy="articulos")
      * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
      */    
+    
     public $marca;
            
     /**
@@ -93,29 +94,23 @@ class Articulo
     public $modelo;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="Modelo", inversedBy="compatibilidades")
-     * @ORM\JoinTable(name="modelo_compatibilidad")
-	 */	
-	
-	public $movimientos;
-	
-	 /**
 	 * @ORM\ManyToMany(targetEntity="Movimiento", inversedBy="movimientos")
      * @ORM\JoinTable(name="articulo_movimiento")
 	 */	
+		
+	public $movimientos;
 
-	
-	
 		         
     /**
      * Constructor
      */
+
     public function __construct()
     {
          $this->isDelete=false;
          $this->isValido=true;
          $this->createdAt = new \DateTime('now');
-         //$this->modelos = new ArrayCollection();   
+         $this->movimientos = new ArrayCollection();   
     }
     
   

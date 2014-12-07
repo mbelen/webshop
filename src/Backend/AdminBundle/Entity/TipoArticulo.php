@@ -23,31 +23,36 @@ class TipoArticulo
     /**
      * @ORM\Column(name="name", type="string", length=100)
      */
+     
     private $name;
            
      /**
      * @ORM\Column(name="is_delete", type="boolean" )
      */
+     
     private $isDelete;
+    
     /**
      * @ORM\OneToMany(targetEntity="Articulo", mappedBy="tipo")
      */
      
+     protected $articulos;
+     
     /**
      * @ORM\OneToMany(targetEntity="TipoArticulo", mappedBy="parent")
      **/
+
     private $children;
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      **/
+
     private $parent; 
+        
 
-    protected $articulos;    
-
-     /**
-    
+   
     /**
      * Constructor
      */

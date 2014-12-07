@@ -37,20 +37,20 @@ class Ingreso
     private $cantidad;
     
    /**
-     * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="articulos")
+     * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="ingresos")
      * @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
      */
 
     protected $tipo;    
             
     /**
-     * @ORM\ManyToOne(targetEntity="Marca", inversedBy="articulos")
+     * @ORM\ManyToOne(targetEntity="Marca", inversedBy="ingresos")
      * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
      */    
     public $marca;
            
     /**
-     * @ORM\ManyToOne(targetEntity="Modelo", inversedBy="articulos")
+     * @ORM\ManyToOne(targetEntity="Modelo", inversedBy="ingresos")
      * @ORM\JoinColumn(name="modelo_id", referencedColumnName="id")
      */ 
       
@@ -62,8 +62,7 @@ class Ingreso
      */
         
     public $orden;
-	
-		
+			
 		         
     /**
      * Constructor
@@ -73,7 +72,7 @@ class Ingreso
          $this->isDelete=false;
          $this->isValido=true;
          $this->createdAt = new \DateTime('now');
-         //$this->modelos = new ArrayCollection();   
+   
     }
 
 

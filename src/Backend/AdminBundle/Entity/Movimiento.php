@@ -52,15 +52,16 @@ class Movimiento
 
     protected $depositoOrigen;        
     
-	/**
-     * @ORM\Column(name="observaciones", type="text", nullable=true)
-     */
-    
-    public $articulos;
-    
     /**
      * @ORM\ManyToMany(targetEntity="Movimiento", mappedBy="articulos")
+     */    
+	
+    public $articulos;
+            
+    /**
+     * @ORM\Column(name="observaciones", type="text", nullable=true)
      */
+        
     private $observaciones;
     
     /**
@@ -70,7 +71,8 @@ class Movimiento
     public function __construct()
     {
          $this->isDelete=false;
-         $this->createdAt = new \DateTime('now');   
+         $this->createdAt = new \DateTime('now');
+         $this->articulos = new ArrayCollection();            
     }
      
 
@@ -381,5 +383,28 @@ class Movimiento
     public function removeObservacione(\Backend\AdminBundle\Entity\Movimiento $observaciones)
     {
         $this->observaciones->removeElement($observaciones);
+    }
+
+    /**
+     * Add articulos
+     *
+     * @param \Backend\AdminBundle\Entity\Movimiento $articulos
+     * @return Movimiento
+     */
+    public function addArticulo(\Backend\AdminBundle\Entity\Movimiento $articulos)
+    {
+        $this->articulos[] = $articulos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove articulos
+     *
+     * @param \Backend\AdminBundle\Entity\Movimiento $articulos
+     */
+    public function removeArticulo(\Backend\AdminBundle\Entity\Movimiento $articulos)
+    {
+        $this->articulos->removeElement($articulos);
     }
 }
