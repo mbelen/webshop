@@ -24,7 +24,7 @@ class OrdenIngreso
      * @ORM\Column(name="documento", type="string", length=100)
      */
      
-    public $documento; 
+    private $documento; 
     
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -39,7 +39,7 @@ class OrdenIngreso
     private $isDelete;
    
    /**
-     * @ORM\ManyToOne(targetEntity="TipoOrdenIngreso", inversedBy="ordenesingreso")
+     * @ORM\ManyToOne(targetEntity="TipoOrdenIngreso", inversedBy="ordenesIngreso")
      * @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
     */
 
@@ -64,9 +64,9 @@ class OrdenIngreso
      */
     
     private $observaciones;
-    
+          
     /**
-     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="orden_ingreso")
+     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="orden")
      */
 
     protected $ingresos; 
