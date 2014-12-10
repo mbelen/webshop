@@ -23,7 +23,7 @@ class Estado
     /**
      * @ORM\Column(name="name", type="string", length=100)
      */
-    public $name;    
+    private $name;    
          
      /**
      * @ORM\Column(name="is_delete", type="boolean" )
@@ -34,7 +34,7 @@ class Estado
      * @ORM\OneToMany(targetEntity="Articulo", mappedBy="estado")
      */
     
-    public $articulos;
+    protected $articulos;
 
     /**
      * Constructor

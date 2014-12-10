@@ -14,25 +14,25 @@ class Modelo
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public $id;
+    private $id;
 
     /**
      * @ORM\Column(name="name", type="string", length=100)
      */
     
-    public $name;
+    private $name;
     
     /**
      * @ORM\Column(name="nameManufacture", type="string", length=100)
      */
     
-    public $nameManufacture;
+    private $nameManufacture;
     
     /**
      * @ORM\Column(name="variante", type="string", length=100, nullable=true)
      */
     
-    public $variante;
+    private $variante;
     
     /**
      * @ORM\Column(name="is_delete", type="boolean" )
@@ -45,10 +45,10 @@ class Modelo
      * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
      */    
     
-    public $marca;
+    protected $marca;
 
 	/**
-     * @ORM\ManyToOne(targetEntity="Articulo", inversedBy="modelo")
+     * @ORM\OneToMany(targetEntity="Articulo", mappedBy="modelo")
      * 
      **/     
     

@@ -71,7 +71,7 @@ class Articulo
      * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
      */    
     
-    public $estado;
+    protected $estado;
        
      /**
      * @ORM\Column(name="observacion", type="text", nullable=true)
@@ -84,7 +84,7 @@ class Articulo
      * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
      */    
     
-    public $marca;
+    protected $marca;
            
     /**
      * @ORM\ManyToOne(targetEntity="Modelo", inversedBy="articulos")
@@ -94,11 +94,11 @@ class Articulo
     public $modelo;
 	
 	/**
-	 * @ORM\ManyToMany(targetEntity="Movimiento", inversedBy="movimientos")
+	 * @ORM\ManyToMany(targetEntity="Movimiento", inversedBy="articulos")
      * @ORM\JoinTable(name="articulo_movimiento")
 	 */	
 		
-	public $movimientos;
+	protected $movimientos;
 
 		         
     /**
