@@ -38,6 +38,13 @@ class TipoArticulo
      
      protected $articulos;
      
+     /**
+     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="tipo")
+     */
+     
+     protected $ingresos;
+     
+     
     /**
      * @ORM\OneToMany(targetEntity="TipoArticulo", mappedBy="parent")
      **/
@@ -239,4 +246,37 @@ class TipoArticulo
 	{
 		return $this->name;
 	}
+
+    /**
+     * Add ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\Ingreso $ingresos
+     * @return TipoArticulo
+     */
+    public function addIngreso(\Backend\AdminBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos[] = $ingresos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\Ingreso $ingresos
+     */
+    public function removeIngreso(\Backend\AdminBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos->removeElement($ingresos);
+    }
+
+    /**
+     * Get ingresos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIngresos()
+    {
+        return $this->ingresos;
+    }
 }

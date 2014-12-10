@@ -35,6 +35,11 @@ class Marca
      * @ORM\OneToMany(targetEntity="Articulo", mappedBy="marca")
      */
     protected $articulos;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="marca")
+     */
+    protected $ingresos;
       
     
     
@@ -169,5 +174,38 @@ class Marca
     public function getArticulos()
     {
         return $this->articulos;
+    }
+
+    /**
+     * Add ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\Ingreso $ingresos
+     * @return Marca
+     */
+    public function addIngreso(\Backend\AdminBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos[] = $ingresos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\Ingreso $ingresos
+     */
+    public function removeIngreso(\Backend\AdminBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos->removeElement($ingresos);
+    }
+
+    /**
+     * Get ingresos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIngresos()
+    {
+        return $this->ingresos;
     }
 }

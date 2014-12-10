@@ -47,7 +47,8 @@ class Ingreso
      * @ORM\ManyToOne(targetEntity="Marca", inversedBy="ingresos")
      * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
      */    
-    public $marca;
+    
+    protected $marca;
            
     /**
      * @ORM\ManyToOne(targetEntity="Modelo", inversedBy="ingresos")
@@ -61,7 +62,7 @@ class Ingreso
      * @ORM\JoinColumn(name="orden_id", referencedColumnName="id")
      */
         
-    public $orden;
+    protected $orden;
 			
 		         
     /**

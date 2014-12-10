@@ -53,6 +53,13 @@ class Modelo
      **/     
     
     private $articulos;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="modelo")
+     * 
+     **/     
+    
+    private $ingresos;
 
 	    
    public function __construct()
@@ -236,5 +243,38 @@ class Modelo
         $this->articulos = $articulos;
     
         return $this;
+    }
+
+    /**
+     * Add ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\Ingreso $ingresos
+     * @return Modelo
+     */
+    public function addIngreso(\Backend\AdminBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos[] = $ingresos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\Ingreso $ingresos
+     */
+    public function removeIngreso(\Backend\AdminBundle\Entity\Ingreso $ingresos)
+    {
+        $this->ingresos->removeElement($ingresos);
+    }
+
+    /**
+     * Get ingresos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIngresos()
+    {
+        return $this->ingresos;
     }
 }

@@ -43,8 +43,8 @@ class OrdenIngresoType extends AbstractType
             },
                 'property'=>'name',
                 'multiple'=>false //un solo deposito por operario
-            ));                        
-            
+            ))                        
+            ->add('ingreso',new IngresoType());
        }
     
     /**
