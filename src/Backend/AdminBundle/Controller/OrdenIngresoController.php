@@ -75,6 +75,34 @@ class OrdenIngresoController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
+            //$em->flush();
+            $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado una nueva orden.');
+            return $this->redirect($this->generateUrl('ordenIngreso_edit', array('id' => $entity->getId())));
+        }
+        
+        
+
+        return $this->render('BackendAdminBundle:OrdenIngreso:new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView()
+           
+        ));
+      }
+      else
+       throw new AccessDeniedException();
+    }
+    
+    /*
+     * public function createAction(Request $request)
+    {
+        if ( $this->get('security.context')->isGranted('ROLE_ADDARTICULO')) {
+        $entity  = new OrdenIngreso();
+        $form = $this->createForm(new OrdenIngresoType(), $entity);
+        $form->bind($request);
+         
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
             $em->flush();
             $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado una nueva orden.');
             return $this->redirect($this->generateUrl('ordenIngreso_edit', array('id' => $entity->getId())));
@@ -91,9 +119,11 @@ class OrdenIngresoController extends Controller
       else
        throw new AccessDeniedException();
     }
+     * 
+     */ 
 
     /**
-    * Creates a form to create a Cliente entity.
+    * Creates a form to create a OrdenIngreso entity.
     *
     * @param Articulo $entity The entity
     *
@@ -107,6 +137,7 @@ class OrdenIngresoController extends Controller
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('saveAndNew', 'submit', array('label' => 'saveAndNew', 'attr'=> array('id'=>'new', 'class'=>'btn-primary')));
 
         return $form;
     }
@@ -115,20 +146,15 @@ class OrdenIngresoController extends Controller
      * Displays a form to create a new Articulo entity.
      *
      */
+     
     public function newAction()
     {
        if ( $this->get('security.context')->isGranted('ROLE_ADDARTICULO')) {
 		   
         $entity = new OrdenIngreso();
-        
-        $ingreso1 = new Ingreso();
-        $ingreso1->setCantidad(5);
-        $entity->getIngresos()->add($ingreso1);      
-        
-        
         $form   = $this->createForm(new OrdenIngresoType(), $entity);
 
-        return $this->render('BackendAdminBundle:OrdenIngreso:new.html.twig', array(
+		return $this->render('BackendAdminBundle:OrdenIngreso:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView()
             
@@ -137,8 +163,8 @@ class OrdenIngresoController extends Controller
        else
           throw new AccessDeniedException();
     }
-
-  
+    
+ 
     /**
      * Displays a form to edit an existing Articulo entity.
      *
@@ -274,6 +300,67 @@ class OrdenIngresoController extends Controller
             ->getForm()
         ;
     }
+    
+    /* Ajax */
+    
+    /*
+    
+    public function toProcesadoOrdenAction(Request $request){
+			
+			$data = explode(",",$request->query->get("imeiNuevo"));
+			$em = $this->getDoctrine()->getManager();
+			$producto = $em->getRepository('BackendAdminBundle:Producto')->findOneByImei($imeiNuevo);
+			if(!$producto){
+				$data["modelo"]= false;
+			}else{
+				if($producto->getisAvailable() == true){
+					$modelo = $producto->getModelo()->getName();
+					$data["modelo"]= $modelo;
+					$id = $producto->getId();
+					$data["id"]=$id;
+				}else{
+				 
+				  $data["disponible"] = false;				
+				}	
+			}
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+	}
+    
+    */
+    
+
+    
+    public function toProcesadoIngresosAction(Request $request){
+			
+			//$orden = explode(",",$request->query->get("datos"));
+			$orden = json_decode($this->getRequest()->getContent(), true);
+			
+			$em = $this->getDoctrine()->getManager();
+			$ordenIngreso = $em->getRepository('BackendAdminBundle:OrdenIngreso')->findOneBy(
+						array('documento' => $orden['documento'],
+							  'cliente'	  => $orden['cliente'])						
+						);
+						
+			$idOrden = $ordenIngreso->getId();		
+			
+			$data["resultado"] = $idOrden;
+						
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+	}
+    
+    
+    
+        
+    
+    /* Generar reportes de Ingresos */
+    
+    
     
      public function exportarAction(Request $request)
     {

@@ -24,6 +24,16 @@ ordenIngreso_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BackendAdminBundle:OrdenIngreso:delete" }
     requirements: { _method: post|delete }
+    
+ordenIngreso_toprocesadoorden:
+    pattern:  /toprocesado
+    defaults: { _controller: "BackendAdminBundle:OrdenIngreso:toProcesadoOrden" }    
+
+ordenIngreso_toprocesadoingresos:
+    pattern:  /toprocesado
+    defaults: { _controller: "BackendAdminBundle:OrdenIngreso:toProcesadoIngresos" }    
+
+
 
 ordenIngreso:
     pattern:  /{search}

@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use Backend\AdminBundle\Entity\Ingreso;
 
 class OrdenIngresoType extends AbstractType
 {
@@ -44,11 +45,59 @@ class OrdenIngresoType extends AbstractType
                 'property'=>'name',
                 'multiple'=>false //un solo deposito por operario
             ))                        
+			/*
+			->add('ingresos', 'collection', array(
+				  'type' 			=> new IngresoType(),
+				  'label'			=> 'Ingresos',
+				  'by_reference' 	=> false,
+				  'prototype' 	=> new Ingreso(),
+				  'allow_delete'	=> true,
+				  'allow_add'   	=> true,
+				  'attr'			=> array(
+						'class'		=> 'row ingresos'
+				  )
+				   
+			));  */
+			->add('cantidad', 'text',
+				  array('mapped'=>false)
+			)		
+			->add('marca','entity',array(
+                'class'=>'BackendAdminBundle:Marca',
+                'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('u')
+                        ->where('u.isDelete = :delete')                        
+                        ->setParameter('delete',false)
+                        ->orderBy('u.name', 'ASC');                         
+            },
+                'property'=>'name',
+                'multiple'=>false, //un solo deposito por operario
+                'mapped' => false
+            ))
+            ->add('modelo','entity',array(
+                'class'=>'BackendAdminBundle:Modelo',
+                'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('u')
+                        ->where('u.isDelete = :delete')                        
+                        ->setParameter('delete',false)
+                        ->orderBy('u.name', 'ASC');                         
+            },
+                'property'=>'name',
+                'multiple'=>false, //un solo deposito por operario
+                'mapped' => false
+            ));  			
+			/*
+			->add('ingresos','entity',array(
+                'class'=>'BackendAdminBundle:Ingreso',
+                'property'=>'name',
+                'multiple'=>true,
+                'expanded'=>true,
+                'attr'   =>  array(
+                             'class'   => 'c4'),
+            ));
+            */
 			
-			->add('ingresos', 'collection', array('type' => new IngresoType(),
-				  'allow_add'    => true,
-				  'by_reference' => false,
-			));
+			
+			
        }
     
     /**
