@@ -32,11 +32,7 @@ class TipoArticulo
      
     private $isDelete;
     
-    /**
-     * @ORM\OneToMany(targetEntity="Articulo", mappedBy="tipo")
-     */
-     
-     protected $articulos;
+    
      
      /**
      * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="tipo")
@@ -56,8 +52,16 @@ class TipoArticulo
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      **/
 
+
     private $parent; 
         
+
+    /**
+     * @ORM\OneToMany(targetEntity="Articulo", mappedBy="tipo")
+     **/
+
+    protected $articulos;    
+
 
    
     /**

@@ -14,25 +14,24 @@ class Modelo
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+
+    protected $id;
+
 
     /**
      * @ORM\Column(name="name", type="string", length=100)
      */
-    
-    private $name;
-    
+   
+    protected $name;
     /**
      * @ORM\Column(name="nameManufacture", type="string", length=100)
      */
-    
-    private $nameManufacture;
-    
+    protected $nameManufacture;
     /**
      * @ORM\Column(name="variante", type="string", length=100, nullable=true)
      */
-    
-    private $variante;
+    protected $variante;
+
     
     /**
      * @ORM\Column(name="is_delete", type="boolean" )
@@ -44,6 +43,7 @@ class Modelo
      * @ORM\ManyToOne(targetEntity="Marca", inversedBy="modelos")
      * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
      */    
+
     
     protected $marca;
 
@@ -52,7 +52,7 @@ class Modelo
      * 
      **/     
     
-    private $articulos;
+    protected $articulos;
     
     /**
      * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="modelo")
@@ -61,11 +61,13 @@ class Modelo
     
     private $ingresos;
 
-	    
+   
+	 
    public function __construct()
     {
         $this->isDelete=false;
-		$this->articulos = new ArrayCollection();
+	     	$this->articulos = new ArrayCollection();
+        $this->ingresos = new ArrayCollection();
     }
     
       public function __toString()
@@ -244,6 +246,8 @@ class Modelo
     
         return $this;
     }
+
+    
 
     /**
      * Add ingresos

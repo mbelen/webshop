@@ -268,38 +268,7 @@ class OrdenIngreso
         return $this->documento;
     }
 
-    /**
-     * Add productos
-     *
-     * @param \Backend\AdminBundle\Entity\Producto $productos
-     * @return OrdenIngreso
-     */
-    public function addProducto(\Backend\AdminBundle\Entity\Producto $productos)
-    {
-        $this->productos[] = $productos;
-    
-        return $this;
-    }
 
-    /**
-     * Remove productos
-     *
-     * @param \Backend\AdminBundle\Entity\Producto $productos
-     */
-    public function removeProducto(\Backend\AdminBundle\Entity\Producto $productos)
-    {
-        $this->productos->removeElement($productos);
-    }
-
-    /**
-     * Get productos
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getProductos()
-    {
-        return $this->productos;
-    }
 
     /**
      * Add ingresos
