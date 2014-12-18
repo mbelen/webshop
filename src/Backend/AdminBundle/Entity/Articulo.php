@@ -83,7 +83,7 @@ class Articulo
      * @ORM\ManyToOne(targetEntity="Marca", inversedBy="articulos")
      * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
      */    
-    
+
     protected $marca;
            
     /**
@@ -91,14 +91,16 @@ class Articulo
      * @ORM\JoinColumn(name="modelo_id", referencedColumnName="id")
      */ 
       
-    public $modelo;
+    protected $modelo;
 	
+
 	/**
 	 * @ORM\ManyToMany(targetEntity="Movimiento", inversedBy="articulos")
      * @ORM\JoinTable(name="articulo_movimiento")
 	 */	
 		
 	protected $movimientos;
+
 
 		         
     /**
@@ -435,13 +437,15 @@ class Articulo
         return $this->estado;
     }
 
+   
+
     /**
      * Add movimientos
      *
-     * @param \Backend\AdminBundle\Entity\Modelo $movimientos
+     * @param \Backend\AdminBundle\Entity\Movimiento $movimientos
      * @return Articulo
      */
-    public function addMovimiento(\Backend\AdminBundle\Entity\Modelo $movimientos)
+    public function addMovimiento(\Backend\AdminBundle\Entity\Movimiento $movimientos)
     {
         $this->movimientos[] = $movimientos;
     
@@ -451,9 +455,9 @@ class Articulo
     /**
      * Remove movimientos
      *
-     * @param \Backend\AdminBundle\Entity\Modelo $movimientos
+     * @param \Backend\AdminBundle\Entity\Movimiento $movimientos
      */
-    public function removeMovimiento(\Backend\AdminBundle\Entity\Modelo $movimientos)
+    public function removeMovimiento(\Backend\AdminBundle\Entity\Movimiento $movimientos)
     {
         $this->movimientos->removeElement($movimientos);
     }

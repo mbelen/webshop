@@ -14,12 +14,16 @@ class Marca
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+
+    protected $id;
+
 
     /**
      * @ORM\Column(name="name", type="string", length=100)
      */
-    private $name;
+
+    protected $name;
+
     
         /**
      * @ORM\Column(name="is_delete", type="boolean" )
@@ -35,6 +39,7 @@ class Marca
      * @ORM\OneToMany(targetEntity="Articulo", mappedBy="marca")
      */
     protected $articulos;
+
     
     /**
      * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="marca")
@@ -42,11 +47,16 @@ class Marca
     protected $ingresos;
       
     
+     
+     
     
     public function __construct()
     {
         $this->isDelete=false;
         $this->modelos =  new ArrayCollection();
+        $this->articulos = new ArrayCollection();
+        $this->ingresos = new ArrayCollection();
+       
     }
  
      public function __toString()
@@ -175,6 +185,7 @@ class Marca
     {
         return $this->articulos;
     }
+
 
     /**
      * Add ingresos

@@ -64,7 +64,7 @@ class ModeloSubscriber implements EventSubscriberInterface
             return;
         }
  
-        $marca = ($data->modelo) ? $data->modelo->getMarca() : null ;
+        $marca = ($data->getModelo()) ? $data->getModelo()->getMarca() : null ;
         $this->addModeloForm($form, $marca);
     }
  
