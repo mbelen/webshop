@@ -270,4 +270,8 @@ class Ingreso
     {
         return $this->cantidad;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> aea6783cffb08a7ebc6a6935cfc88ed1ae6aa9b4
