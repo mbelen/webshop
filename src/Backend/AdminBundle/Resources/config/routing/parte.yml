@@ -1,0 +1,30 @@
+parte_new:
+    pattern:  /new
+    defaults: { _controller: "BackendAdminBundle:Parte:new" }
+
+parte_exportar:
+    pattern:  /exportar
+    defaults: { _controller: "BackendAdminBundle:Parte:exportar" }
+    
+parte_create:
+    pattern:  /create
+    defaults: { _controller: "BackendAdminBundle:Parte:create" }
+    requirements: { _method: post }
+
+parte_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BackendAdminBundle:Parte:edit" }
+
+parte_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BackendAdminBundle:Parte:update" }
+    requirements: { _method: post|put }
+
+parte_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BackendAdminBundle:Parte:delete" }
+    requirements: { _method: post|delete }
+
+parte:
+    pattern:  /{search}
+    defaults: { _controller: "BackendAdminBundle:Parte:index" , search: ''}
