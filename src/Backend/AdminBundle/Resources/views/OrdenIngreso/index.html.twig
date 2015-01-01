@@ -36,10 +36,10 @@
     <table class="table">
     <thead>
     <tr>
-     <th>Fecha</th>
-    <th {% if pagination.isSorted('u.tipo') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Tipo', 'u.tipo') }}</th>
-    <th>Disponible</th>
-    <th>Descripción</th>
+     <th {% if pagination.isSorted('u.createdAt') %} class="sorted"{% endif %} >{{ knp_pagination_sortable(pagination, 'Fecha', 'u.createdAt') }}</th>
+    <th>Cliente</th>
+    <th>Operador Logístico</th>
+    <th>Documento</th>
     <th>Observaciones</th>
     <th style="width: 36px;">Acciones</th>
     </tr>
@@ -49,24 +49,17 @@
     
      <tr>
                 <td>{{ orden.createdAt |date('d-m-Y ') }}</td>
-                <td>{{ orden.tipo.name }}</td>
-                <td>{% if articulo.isDisponible %}
-                    
-                    <span class="label label-success">Disponible</span>
-                   
-                  {% else %}
-                     <span class="label label-important">No Disponible</span> 
-                     
-                  {% endif%}</td>
-                <td>{{ articulo.descripcion}}</td>
-                <td>{{ articulo.observacion}}</td>
+                <td>{{ orden.cliente.name }}</td>
+                <td>{{ orden.operador.name }}</td>
+                <td>{{ orden.documento }}</td>
+                <td>{{ orden.observaciones }}</td>
                 <td>
                 {% if is_granted("ROLE_MODARTICULO") %}
-                <a href="{{ path('ordenIngreso_edit', { 'id': ordenIngreso.id }) }}"><i class="icon-pencil"></i></a>
+                <a href="{{ path('ordenIngreso_edit', { 'id': orden.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
                  {% if is_granted("ROLE_DELARTICULO") %}
                 
-                <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ ordenIngreso.id }} ><i class="icon-remove"></i></a>
+                <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ orden.id }} ><i class="icon-remove"></i></a>
                 
                  {% endif %}
                 </td>

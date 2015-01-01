@@ -3,11 +3,13 @@
 namespace Backend\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Backend\AdminBundle\Entity\OrdenIngreso;
 use Backend\AdminBundle\Entity\Ingreso;
 use Backend\AdminBundle\Form\OrdenIngresoType;
+use Backend\AdminBundle\Entity\Modelo;
 
 /**
  * OrdenIngreso controller.
@@ -302,59 +304,109 @@ class OrdenIngresoController extends Controller
     }
     
     /* Ajax */
-    
-    /*
-    
+
+  
     public function toProcesadoOrdenAction(Request $request){
+						
+			$clienteId 		= $request->request->get('cliente');
+			$operadorId		= $request->request->get('operador');
+			$documento 		= $request->request->get('documento');
+			$observaciones 	= $request->request->get('observaciones');
+
 			
-			$data = explode(",",$request->query->get("imeiNuevo"));
-			$em = $this->getDoctrine()->getManager();
-			$producto = $em->getRepository('BackendAdminBundle:Producto')->findOneByImei($imeiNuevo);
-			if(!$producto){
-				$data["modelo"]= false;
-			}else{
-				if($producto->getisAvailable() == true){
-					$modelo = $producto->getModelo()->getName();
-					$data["modelo"]= $modelo;
-					$id = $producto->getId();
-					$data["id"]=$id;
-				}else{
-				 
-				  $data["disponible"] = false;				
-				}	
-			}
+			$em = $this->getDoctrine()->getManager();	
+									
+			$orden = new OrdenIngreso();
+			
+			$tipo = $em->getRepository('BackendAdminBundle:TipoOrdenIngreso')->findOneById(1);
+			
+			$orden->setTipo($tipo);
+								
+			$cliente = $em->getRepository('BackendAdminBundle:Cliente')->findOneById($clienteId);
+			
+			$operador = $em->getRepository('BackendAdminBundle:OperadorLogistico')->findOneById($operadorId);
+						
+			$orden->setCliente($cliente);
+			$orden->setOperador($operador);
+			$orden->setDocumento($documento);
+			$orden->setObservaciones($observaciones);
+							
+			$em->persist($orden);
+			
+			$em->flush();
+
+			$ordenId = $orden->getId();
+						
+			$data["resultado"] = true;
+			$data["id"] = $ordenId;
+			
 			$response = new Response(json_encode($data));
 			$response->headers->set('Content-Type', 'application/json');
 			
 			return $response;
 	}
     
-    */
-    
-
     
     public function toProcesadoIngresosAction(Request $request){
 			
-			//$orden = explode(",",$request->query->get("datos"));
-			$orden = json_decode($this->getRequest()->getContent(), true);
-			
+						
+			$ordenId 		= $request->request->get('orden');
+			$cantidad		= $request->request->get('cantidad');
+			$marcaId 		= $request->request->get('marca');
+			$modeloId 		= $request->request->get('modelo');
+						
 			$em = $this->getDoctrine()->getManager();
-			$ordenIngreso = $em->getRepository('BackendAdminBundle:OrdenIngreso')->findOneBy(
-						array('documento' => $orden['documento'],
-							  'cliente'	  => $orden['cliente'])						
-						);
-						
-			$idOrden = $ordenIngreso->getId();		
+												
+			$marca = $em->getRepository('BackendAdminBundle:Marca')->findOneById($marcaId);
 			
-			$data["resultado"] = $idOrden;
+			$modelo = $em->getRepository('BackendAdminBundle:Modelo')->findOneById($modeloId);
+			
+			$orden =  $em->getRepository('BackendAdminBundle:OrdenIngreso')->findOneById($ordenId);
+			
+			$ingreso = new Ingreso();
 						
+			$ingreso->setCantidad($cantidad);
+			$ingreso->setMarca($marca);
+			$ingreso->SetModelo($modelo);	
+			$ingreso->setOrden($orden);
+							
+			$em->persist($ingreso);
+			$em->flush();
+								
+			$data["orden"] = $ordenId;
+			$data["resultado"] = true;
+									
 			$response = new Response(json_encode($data));
 			$response->headers->set('Content-Type', 'application/json');
 			
 			return $response;
 	}
     
-    
+    public function toGenerateComboAction(Request $request){
+		
+		    $items = array();
+		
+			$marcaId = $request->request->get('marca');
+			
+			$em = $this->getDoctrine()->getManager();
+		
+	        $modelos = $em->getRepository('BackendAdminBundle:Modelo')->findBy(array('marca' => $marcaId));
+												
+			foreach($modelos as $modelo)
+			{
+				$id = $modelo->getId();
+				$nombre = $modelo->getNameManufacture(); 
+				$model = array('id'=>$id,'nombre'=>$nombre);
+				$items[] = $model;
+			}			
+		
+			$data['items'] = $items;
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+		
+	}
     
         
     

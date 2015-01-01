@@ -21,8 +21,8 @@
     <div class="control-group">
     <!-- Button -->
     <div class="controls">
-    <button id="agregar" type="button" class="btn" data-url="{{ path('ordenIngreso_create') }}">Agregar productos</button>
-    <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>Crear</button>
+    <button id="agregar" type="button" class="btn" data-url="{{ path('ordenIngreso_toprocesadoorden') }}">Agregar productos</button>
+    <button type="submit" class="btn btn-primary" id="crear"><i class="icon-ok icon-white"></i>Crear</button>
     <button type="button" class="btn btn-inverse" data-url="{{ path('ordenIngreso') }}"><i class="icon-chevron-left icon-white"></i> Back</button>
     
     </div>
@@ -44,7 +44,7 @@
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
  
-{% javascripts '@BackendAdminBundle/Resources/public/js/validate_articulo.js' %}
+{% javascripts '@BackendAdminBundle/Resources/public/js/validate_orden.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {% endblock %}

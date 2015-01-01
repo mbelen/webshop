@@ -61,3 +61,7 @@ backend_orden_ingreso:
 backend_movimiento:
     resource: "@BackendAdminBundle/Resources/config/routing/movimiento.yml"
     prefix:   /movimiento    
+
+backend_parte:
+    resource: "@BackendAdminBundle/Resources/config/routing/parte.yml"
+    prefix:   /parte

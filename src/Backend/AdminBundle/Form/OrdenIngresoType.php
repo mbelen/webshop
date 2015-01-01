@@ -19,10 +19,6 @@ class OrdenIngresoType extends AbstractType
         $builder
             ->add('observaciones')
             ->add('documento')
-			->add('tipo','entity',array(
-                'class'=>'BackendAdminBundle:TipoOrdenIngreso',
-                'property'=>'name',
-            ))		
             ->add('cliente','entity',array(
                 'class'=>'BackendAdminBundle:Cliente',
                 'query_builder' => function(EntityRepository $er) {

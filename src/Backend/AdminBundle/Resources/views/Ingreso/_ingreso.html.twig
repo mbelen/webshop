@@ -1,4 +1,12 @@
 <div class="control-group">
+{{ form_label(form.cantidad,"Cantidad", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.cantidad, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_Ingreso_tipo_errorloc' class="help-inline error" >{{ form_errors(form.cantidad) }}</div>
+</div>
+</div>
+
+<div class="control-group">
 {{ form_label(form.operador,"Operador Logistico", { 'label_attr': {'class': 'control-label'} }) }}
 <div class="controls">
  {{ form_widget(form.operador, { 'attr': {'class': 'input-xlarge'} }) }}
@@ -29,38 +37,3 @@
  <div id='backend_adminbundle_ordenIngreso_observaciones_errorloc' class="help-inline error" >{{ form_errors(form.observaciones) }}</div>
 </div>
 </div>
-
-
-
-<div id = "productos">
-	
-
-	
-
-</div>
-<!--
-<div class="control-group" id="cantidad_label">
-	{{ form_label(form.cantidad,"Cantidad", { 'label_attr': {'class': 'control-label'} }) }}
-	<div class="controls">
-	 {{ form_widget(form.cantidad, { 'attr': {'class': 'input-xlarge'} }) }}
-	 <div id='backend_adminbundle_ordenIngreso_cantidad_errorloc' class="help-inline error" >{{ form_errors(form.cantidad) }}</div>
-	</div>
-</div>
-
-
-<div class="control-group" id="marca_label">
-	{{ form_label(form.marca,"Marca", { 'label_attr': {'class': 'control-label'} }) }}
-	<div class="controls">
-	 {{ form_widget(form.marca, { 'attr': {'class': 'input-xlarge'} }) }}
-	 <div id='backend_adminbundle_ordenIngreso_marca_errorloc' class="help-inline error" >{{ form_errors(form.marca) }}</div>
-	</div>
-</div>
-
-	<div class="control-group" id="modelo_label">
-	{{ form_label(form.modelo,"Modelo", { 'label_attr': {'class': 'control-label'} }) }}
-	<div class="controls">
-	 {{ form_widget(form.modelo, { 'attr': {'class': 'input-xlarge'} }) }}
-	 <div id='backend_adminbundle_ordenIngreso_modelo_errorloc' class="help-inline error" >{{ form_errors(form.modelo) }}</div>
-	</div>
-	</div>
--->

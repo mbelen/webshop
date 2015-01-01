@@ -55,7 +55,7 @@ class Ingreso
      * @ORM\JoinColumn(name="modelo_id", referencedColumnName="id")
      */ 
       
-    public $modelo;
+    protected $modelo;
     
     /**
      * @ORM\ManyToOne(targetEntity="OrdenIngreso", inversedBy="ingresos")
@@ -228,10 +228,10 @@ class Ingreso
     /**
      * Set orden
      *
-     * @param \Backend\AdminBundle\Entity\Orden $orden
+     * @param \Backend\AdminBundle\Entity\OrdenIngreso $orden
      * @return Ingreso
      */
-    public function setOrden(\Backend\AdminBundle\Entity\Orden $orden = null)
+    public function setOrden(\Backend\AdminBundle\Entity\OrdenIngreso $orden = null)
     {
         $this->orden = $orden;
     
@@ -241,7 +241,7 @@ class Ingreso
     /**
      * Get orden
      *
-     * @return \Backend\AdminBundle\Entity\Orden 
+     * @return \Backend\AdminBundle\Entity\OrdenIngreso 
      */
     public function getOrden()
     {
