@@ -395,7 +395,7 @@ class OrdenIngresoController extends Controller
 			foreach($modelos as $modelo)
 			{
 				$id = $modelo->getId();
-				$nombre = $modelo->getNameManufacture(); 
+				$nombre = $modelo->getNameManufacture()." ".$modelo->getVariante(); 
 				$model = array('id'=>$id,'nombre'=>$nombre);
 				$items[] = $model;
 			}			

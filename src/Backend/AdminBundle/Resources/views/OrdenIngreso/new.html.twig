@@ -1,5 +1,14 @@
 {% extends '::backend.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+     {% stylesheets '@BackendAdminBundle/Resources/public/css/ingresos.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+{% endblock %}
+
+
 {% block container -%}
     <h3>Nueva Orden</h3>
     

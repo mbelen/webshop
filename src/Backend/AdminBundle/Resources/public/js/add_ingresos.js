@@ -18,27 +18,34 @@ function agregarOtro(){
   //var lblCant = document.createElement('label')
   //lblCant.innerHTML = "Cantidad";
   
-  var nuevoArticulo = $('<div class="control-group"></div>');
+  var nuevoArticulo = $('<div class="producto_nuevo"></div>');
   
-  var lblCant = $('<div class="control-label">Cantidad</div>');
+  var lblCant = $('<div class="label_producto">Cantidad</div>');
   
-  var cantidad = $('<input type="text" class= "input-large"  id= "cantidad_'+j+'" name="cantidad_'+j+'">');
+  var cantidad = $('<input type="text" class= "input_producto"  id= "cantidad_'+j+'" name="cantidad_'+j+'">');
  
+/* 
   var lblMarca = document.createElement('label')
   lblMarca.innerHTML = "Marca"; 
+*/ 
+  
+  var lblMarca = $('<div class="label_producto">Marca</div>');
       
   var nuevaMarca = $('<div><select class="marca_select" id="marca_'+j+'" name="marca_'+j+'"><option value="0">Seleccione marca</option><option value="1">Alcatel</option><option value="2">Huawei</option></select></div>');
     
+/*    
   var lblModelo = document.createElement('label')
   lblModelo.innerHTML = "Modelo"; 
-  
-  //var nuevoModelo = $('<div class="controls"><select id="modelo_'+j+'"><option value="1">1100</option><option value="2">Lumia 620</option></select></div>');
+*/  
+  var lblModelo = $('<div class="label_producto">Modelo</div>');
+  	
+  var nuevoModelo = $('<div class="modelo_select"><select id="modelo_'+j+'"><option value="0">Seleccione modelo</option></select></div>');
 	
-  var nuevoModelo = $('<div class="controls"><select id="modelo_'+j+'"><option value="0">Seleccione modelo</option></select></div>');
-	
   
-  var nuevoBoton = $('<div class="controls"><input type="button" class="btn_agregar" id= "'+j+'" name="agregar" value="agregar"></div>');
+  var nuevoBoton = $('<div><input type="button" class="btn_agregar" id= "'+j+'" name="agregar" value="agregar"></div>');
 
+  var nuevoEliminar = $('<div><input type="button" class="btn_eliminar" id= "'+j+'" name="eliminar" value="eliminar"></div>');
+	
 
   
   nuevoArticulo.append(lblCant);
@@ -53,7 +60,9 @@ function agregarOtro(){
   
   nuevoArticulo.append(nuevoModelo);  
   
-  nuevoArticulo.append(nuevoBoton);   
+  nuevoArticulo.append(nuevoBoton);  
+  
+  nuevoArticulo.append(nuevoEliminar); 
     
   $('#productos').append(nuevoArticulo);  	
 
@@ -101,47 +110,63 @@ function agregarOtro(){
   
 $('.btn_agregar').click(function(){
 	
+	//var base_path = Routing.getBaseUrl().replace(/\w+\.php$/gi,'');
+	$("#sucess").html("");
+		
 	var path = "/prexey2/web/app_dev.php/panel/ordenIngreso/toprocesadoingresos";
 	
 	var id = $(this).attr('id');
 	
-	var params = {
+	console.log(id);
+	
+	console.log("valor: "+$('#cantidad_'+id).val());
+	
+	if($('#cantidad_'+id).val() == ""){ 
 		
-		'orden': ordenId,
-		'cantidad':	$('#cantidad_'+id).val(),
-		'marca': 	$('#marca_'+id).val(),	
-		'modelo': 	$('#modelo_'+id).val()
-	};
+		$('#errores').html("Debe ingresar una cantidad");
+		
 	
-	console.log(params);
+	}else{		 
 	
-	$.ajax({
-				dataType: 'json',
-				data:  params,
-	            url:   path,
-	            type:  'post',
-	            })
-	            .done(function (data) {
-							
-					  if(data.resultado){						  
-						  				  					
-						$("#respuesta").html("Se agrego correctamente");	                  
-	                  
-						agregarOtro();
-	                  
-	                  }
-	            })
-	            .always(function(){
-					
-					//agregarOtro();
-					  
-					$('#crear').show();
-					
-							
-					
-            });	
-  });	
+	    $('#errores').html("");
+	
+		var params = {
+			
+			'orden': ordenId,
+			'cantidad':	$('#cantidad_'+id).val(),
+			'marca': 	$('#marca_'+id).val(),	
+			'modelo': 	$('#modelo_'+id).val()
+		};
+		
+		console.log(params);
+		
+		$.ajax({
+					dataType: 'json',
+					data:  params,
+					url:   path,
+					type:  'post',
+					})
+					.done(function (data) {
+								
+						  if(data.resultado){						  
+																
+							$("#sucess").html("Se agrego correctamente");	                  
+						  
+							agregarOtro();
+						  
+						  }
+					})
+					.always(function(){
+						
+						//agregarOtro();
+						  
+						$('#crear').show();							
+						
+					});	
+			
+	 } 	
 
+	});
 }
 
 
@@ -167,75 +192,56 @@ $("#agregar").click(function() {
   var path=$("#agregar").data("url");	
 
   console.log(path);	
-
-  var parametros = {
-                "cliente" : $('#backend_adminbundle_ordenIngreso_cliente').val(),
-                "documento" : $('#backend_adminbundle_ordenIngreso_documento').val(),
-				"operador" : $('#backend_adminbundle_ordenIngreso_operador').val(),
-				"observaciones" : $('#backend_adminbundle_ordenIngreso_observaciones').val()
-      };
-	  
-	  $.ajax({
-				dataType: 'json',
-				data:  parametros,
-	            url:   path,
-	            type:  'post',
-	            })
-	            .done(function (data) {
-					
-					console.log(data.resultado);
-										
-					 if(!data.resultado){				  					
-	                  
-						alert("Se ha generado un error al cargar la orden de ingreso");
-						$("#respuesta").html("Se ha generado un error al cargar la orden de ingreso"); 
-	                 
-	                 }else{
-						 
-						console.log("ID:"+data.id); 
-						ordenId = data.id;
-						console.log("orden"+ordenId); 
-						alert("Se ha generado la orden de ingreso");
-						$("#agregar").hide();
-					 
-					 }                  
-	                  
-	            })
-	            .always(function(){					
-						
-					//$("#agregar").hide();
-					
-            });
-	  		
+  
+  if($('#backend_adminbundle_ordenIngreso_documento').val().length <= 1){
 	
-  agregarOtro();
+	$('#backend_adminbundle_ordenIngreso_documento_errorloc').html("Es un campo obligatorio");  
+	 
+  }else{  
+	  
+	  $('#backend_adminbundle_ordenIngreso_documento_errorloc').html("");
 
-/*
- var path=$("#agregar").data("url");
- 
-          var dataString = "imeiNuevo="+$("#backend_adminbundle_canje_imeiNuevo").val();
-                   
-          $.ajax({
-              type: "GET",
-              url: path,
-              dataType: 'json',
-              data: dataString,
-            })
-            .done(function(data){
-                if(!data.modelo){
-					$('#backend_adminbundle_imeiNuevo_errorloc').html("El imei no corresponde a un equipo disponible");					
-                }
-                else{
-					console.log(data.id);
-					console.log(data.modelo);
-					$('#crear').removeAttr("disabled");	
-					$('#backend_adminbundle_canje_modeloNuevo').html(data.modelo);
-					$('#backend_adminbundle_canje_productoNuevo').val(data.id);
-				}       
-                 
-            })
-            .always(function(){
-                $("#validar").removeAttr('disabled');
-            });
- */                       
+	  var parametros = {
+					"cliente" : $('#backend_adminbundle_ordenIngreso_cliente').val(),
+					"documento" : $('#backend_adminbundle_ordenIngreso_documento').val(),
+					"operador" : $('#backend_adminbundle_ordenIngreso_operador').val(),
+					"observaciones" : $('#backend_adminbundle_ordenIngreso_observaciones').val()
+		  };
+		  
+		  $.ajax({
+					dataType: 'json',
+					data:  parametros,
+					url:   path,
+					type:  'post',
+					})
+					.done(function (data) {
+						
+						console.log(data.resultado);
+											
+						 if(!data.resultado){				  					
+						  
+							alert("Se ha generado un error al cargar la orden de ingreso");
+							$("#respuesta").html("Se ha generado un error al cargar la orden de ingreso"); 
+						 
+						 }else{
+							 
+							console.log("ID:"+data.id); 
+							ordenId = data.id;
+							console.log("orden"+ordenId); 
+							alert("Se ha generado la orden de ingreso");
+							$("#agregar").hide();
+						 
+						 }                  
+						  
+					})
+					.always(function(){					
+							
+						//$("#agregar").hide();
+						
+				});
+				
+		
+	  agregarOtro();
+}
+             
 });
