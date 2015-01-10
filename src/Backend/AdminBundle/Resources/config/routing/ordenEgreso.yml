@@ -1,0 +1,43 @@
+ordenEgreso_new:
+    pattern:  /new
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:new" }
+
+ordenEgreso_exportar:
+    pattern:  /exportar
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:exportar" }
+    
+ordenEgreso_create:
+    pattern:  /create
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:create" }
+    requirements: { _method: post }
+
+ordenEgreso_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:edit" }
+
+ordenEgreso_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:update" }
+    requirements: { _method: post|put }
+
+ordenEgreso_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:delete" }
+    requirements: { _method: post|delete }
+    
+ordenEgreso_toprocesadoorden:
+    pattern:  /toprocesadoorden
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:toProcesadoOrden" }    
+
+ordenEgreso_togeneratecombo:
+    pattern:  /togeneratecombo
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:toGenerateCombo" }    
+
+
+ordenEgreso_toprocesadoingresos:
+    pattern:  /toprocesadoingresos
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:toProcesadoIngresos" }    
+
+ordenEgreso:
+    pattern:  /{search}
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:index" , search: '' }

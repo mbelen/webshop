@@ -56,7 +56,15 @@ backend_tipo_orden_ingreso:
     
 backend_orden_ingreso:
     resource: "@BackendAdminBundle/Resources/config/routing/ordenIngreso.yml"
-    prefix:   /ordenIngreso    
+    prefix:   /ordenIngreso
+    
+backend_orden_ingreso_parte:
+    resource: "@BackendAdminBundle/Resources/config/routing/ordenIngresoParte.yml"
+    prefix:   /ordenIngresoParte
+
+backend_orden_egreso:
+    resource: "@BackendAdminBundle/Resources/config/routing/ordenEgreso.yml"
+    prefix:   /ordenEgreso            
 
 backend_movimiento:
     resource: "@BackendAdminBundle/Resources/config/routing/movimiento.yml"

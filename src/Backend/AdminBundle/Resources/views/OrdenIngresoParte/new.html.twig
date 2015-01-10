@@ -1,0 +1,60 @@
+{% extends '::backend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+     {% stylesheets '@BackendAdminBundle/Resources/public/css/ingresos_partes.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+{% endblock %}
+
+
+{% block container -%}
+    <h3>Nueva Orden</h3>
+    
+   
+    <div class="well">
+    <div id="myTabContent" class="tab-content">
+    <div class="tab-pane active in" id="home">
+    <form class="form-horizontal" id="tab" name="tab" method="post" novalidate="true"    action="{{ path('ordenIngresoParte_create') }}" >
+     {{ form_errors(form) }}
+   
+    
+    {% include 'BackendAdminBundle:OrdenIngresoParte:_ordenIngresoParte.html.twig' %} 
+                         
+    {{ form_rest(form) }}
+	
+	<div id="#respuesta"></div>
+
+    <div class="control-group">
+    <!-- Button -->
+    <div class="controls">
+    <button id="agregar" type="button" class="btn" data-url="{{ path('ordenIngresoParte_toprocesadoorden') }}">Agregar partes</button>
+    <button type="submit" class="btn btn-primary" id="crear"><i class="icon-ok icon-white"></i>Crear</button>
+    <button type="button" class="btn btn-inverse" data-url="{{ path('ordenIngresoParte') }}"><i class="icon-chevron-left icon-white"></i> Back</button>
+    
+    </div>
+    
+    </div>
+    </form>
+    </div>
+    
+     </div>
+      </div>
+    
+
+       
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+
+{% javascripts '@BackendAdminBundle/Resources/public/js/add_partes.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+ 
+{% javascripts '@BackendAdminBundle/Resources/public/js/validate_orden.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+
+

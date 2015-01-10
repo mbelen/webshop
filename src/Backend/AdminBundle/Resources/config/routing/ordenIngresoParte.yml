@@ -1,0 +1,43 @@
+ordenIngresoParte_new:
+    pattern:  /new
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:new" }
+
+ordenIngresoParte_exportar:
+    pattern:  /exportar
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:exportar" }
+    
+ordenIngresoParte_create:
+    pattern:  /create
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:create" }
+    requirements: { _method: post }
+
+ordenIngresoParte_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:edit" }
+
+ordenIngresoParte_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:update" }
+    requirements: { _method: post|put }
+
+ordenIngresoParte_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:delete" }
+    requirements: { _method: post|delete }
+    
+ordenIngresoParte_toprocesadoorden:
+    pattern:  /toprocesadoorden
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:toProcesadoOrden" }    
+
+ordenIngresoParte_togeneratecombo:
+    pattern:  /togeneratecombo
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:toGenerateCombo" }    
+
+
+ordenIngresoParte_toprocesadoingresos:
+    pattern:  /toprocesadoingresos
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:toProcesadoIngresos" }    
+
+ordenIngresoParte:
+    pattern:  /{search}
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:index" , search: '' }
