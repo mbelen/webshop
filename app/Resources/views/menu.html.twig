@@ -77,13 +77,21 @@
                        <li> <a href="{{ path('articulo') }}"> Artículos</a> </li>
                        <li class="divider"></li>
                        {% endif %}
+                       {% if is_granted('ROLE_VIEWARTICULO') %}
+                       <li> <a href="{{ path('parte') }}"> Partes</a> </li>
+                       <li class="divider"></li>
+                       {% endif %}
                       </ul>                      
                     </li> 
                     <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ordenes<b class="caret"></b></a>
                       <ul class="dropdown-menu" >
                        {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('ordenIngreso') }}"> Ordenes de Ingreso</a> </li>
+                       <li> <a href="{{ path('ordenIngreso') }}">Ingreso de Equipos</a> </li>
+                       <li class="divider"></li>
+                       {% endif %}
+                       {% if is_granted('ROLE_VIEWCLIENTE') %}
+                       <li> <a href="{{ path('ordenIngresoParte') }}">Ingreso de Partes</a> </li>
                        <li class="divider"></li>
                        {% endif %}
                        {% if is_granted('ROLE_VIEWCLIENTE') %}
@@ -91,7 +99,7 @@
                        <li class="divider"></li>
                        {% endif %}
                        {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('cliente') }}"> Ordenes de Egreso</a> </li>
+                       <li> <a href="{{ path('ordenEgreso') }}">Egreso de equipos</a> </li>
                        {% endif %}
                       </ul>
                       {% endif %}

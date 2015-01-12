@@ -38,8 +38,10 @@
     <tr>
      <th {% if pagination.isSorted('u.createdAt') %} class="sorted"{% endif %} >{{ knp_pagination_sortable(pagination, 'Fecha', 'u.createdAt') }}</th>
     <th>Cliente</th>
+    <th>Propietario</th>
     <th>Operador Logístico</th>
     <th>Documento</th>
+    <th>Destino</th>
     <th>Observaciones</th>
     <th style="width: 36px;">Acciones</th>
     </tr>
@@ -50,8 +52,10 @@
      <tr>
                 <td>{{ orden.createdAt |date('d-m-Y ') }}</td>
                 <td>{{ orden.cliente.name }}</td>
+                <td>{{ orden.cliente.name }}</td>
                 <td>{{ orden.operador.name }}</td>
                 <td>{{ orden.documento }}</td>
+                <td>{{ orden.destino }}</td>
                 <td>{{ orden.observaciones }}</td>
                 <td>
                 {% if is_granted("ROLE_MODARTICULO") %}

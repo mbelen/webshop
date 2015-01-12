@@ -316,6 +316,7 @@ class Articulo
      *
      * @return \Backend\AdminBundle\Entity\Marca 
      */
+     
     public function getMarca()
     {
         return $this->marca;

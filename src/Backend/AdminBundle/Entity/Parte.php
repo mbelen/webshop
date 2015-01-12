@@ -29,31 +29,51 @@ class Parte
      * @ORM\Column(name="is_delete", type="boolean" )
      */
     private $isDelete;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="partes")
+     * @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
+     */
+
+    protected $tipo;
    
      /**
-     * @ORM\Column(name="codigo", type="string", length=15, nullable=true)
+     * @ORM\Column(name="codigo", type="string", length=15, nullable=false)
      */
      
     private $codigo;
     
      /**
-     * @ORM\Column(name="serial", type="string", length=100, nullable=true)
+     * @ORM\Column(name="nombre_fabricante", type="string", length=100, nullable=false)
      */ 
      
-    private $descripcion;
+    private $nombre_fabricante;
                
      /**
-     * @ORM\Column(name="observacion", type="text", nullable=true)
+     * @ORM\Column(name="nombre_interno", type="string", length=100, nullable=false)
+     */
+    
+    private $nombre_interno;
+               
+     /**
+     * @ORM\Column(name="observacion", type="text", nullable=false)
      */
     
     private $observacion;
-       
+    
     /**
-	 * @ORM\ManyToMany(targetEntity="Modelo", inversedBy="compatibilidades")
+	 * @ORM\ManyToMany(targetEntity="Marca", inversedBy="partes")
+     * @ORM\JoinTable(name="marca_parte")
+	 */    
+    
+    protected $marcas;
+           
+    /**
+	 * @ORM\ManyToMany(targetEntity="Modelo", inversedBy="partes")
      * @ORM\JoinTable(name="modelo_parte")
 	 */	               
          
-    public $modelos;
+    protected $modelos;
 
 		         
     /**
@@ -65,6 +85,11 @@ class Parte
          $this->isValido=true;
          $this->createdAt = new \DateTime('now');
          //$this->modelos = new ArrayCollection();   
+    }
+    
+    public function __toString()
+    {
+      return mb_convert_case($this->name, MB_CASE_TITLE,"UTF-8");
     }
     
     /**
@@ -223,5 +248,129 @@ class Parte
     public function getModelos()
     {
         return $this->modelos;
+    }
+    
+    /**
+     * Get modelo
+     *
+     * @return \Backend\AdminBundle\Entity\Modelo 
+     */
+    public function getModelo()
+    {
+        return $this->modelos;
+    }
+
+	/**
+     * Get marca
+     *
+     * @return \Backend\AdminBundle\Entity\Marca 
+     */
+     
+    public function getMarca()
+    {
+        return $this->marcas;
+    }
+
+
+    /**
+     * Set nombre_fabricante
+     *
+     * @param string $nombreFabricante
+     * @return Parte
+     */
+    public function setNombreFabricante($nombreFabricante)
+    {
+        $this->nombre_fabricante = $nombreFabricante;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombre_fabricante
+     *
+     * @return string 
+     */
+    public function getNombreFabricante()
+    {
+        return $this->nombre_fabricante;
+    }
+
+    /**
+     * Set nombre_interno
+     *
+     * @param string $nombreInterno
+     * @return Parte
+     */
+    public function setNombreInterno($nombreInterno)
+    {
+        $this->nombre_interno = $nombreInterno;
+    
+        return $this;
+    }
+
+    /**
+     * Get nombre_interno
+     *
+     * @return string 
+     */
+    public function getNombreInterno()
+    {
+        return $this->nombre_interno;
+    }
+
+    /**
+     * Set tipo
+     *
+     * @param \Backend\AdminBundle\Entity\TipoArticulo $tipo
+     * @return Parte
+     */
+    public function setTipo(\Backend\AdminBundle\Entity\TipoArticulo $tipo = null)
+    {
+        $this->tipo = $tipo;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipo
+     *
+     * @return \Backend\AdminBundle\Entity\TipoArticulo 
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * Add marcas
+     *
+     * @param \Backend\AdminBundle\Entity\Marca $marcas
+     * @return Parte
+     */
+    public function addMarca(\Backend\AdminBundle\Entity\Marca $marcas)
+    {
+        $this->marcas[] = $marcas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove marcas
+     *
+     * @param \Backend\AdminBundle\Entity\Marca $marcas
+     */
+    public function removeMarca(\Backend\AdminBundle\Entity\Marca $marcas)
+    {
+        $this->marcas->removeElement($marcas);
+    }
+
+    /**
+     * Get marcas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMarcas()
+    {
+        return $this->marcas;
     }
 }

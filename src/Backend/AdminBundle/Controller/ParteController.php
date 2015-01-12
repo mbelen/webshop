@@ -22,7 +22,7 @@ class ParteController extends Controller
         
        
         if ($search)
-          $dql.=" and u.nombre_interno like '%$search%' ";
+          $dql.=" and (u.codigo like '%$search%' or u.nombre_interno like '%$search%') ";
           
         $dql .=" order by u.nombre_interno"; 
         

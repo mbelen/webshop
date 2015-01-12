@@ -2,8 +2,47 @@ var j = 0;
 
 var ordenId;
 
+var marcas = new Array();
+
+var select_option = "";
+
+function generarMarcas(){
+
+	  var path = "/prexey2/web/app_dev.php/panel/ordenEgreso/togeneratecombomarca";
+  
+  $.ajax({
+					dataType: 'json',
+					data:  {'marca':1},
+					url:   path,
+					type:  'post',
+					})
+					.done(function (data) {
+					
+						if(data.items!=null){
+							/*	
+							$('#marca_'+j)
+							.empty()
+							.append('<option value="0">Seleccione marca</option>')
+							.find('option:first')
+							.attr("selected","selected");
+							*/
+         					 $.each(data.items, function(i, value) {
+						     //$('#marca_'+j).append('<option value='+value.id+'>'+value.nombre+'</option>');
+						     select_option = select_option + '<option value="'+value.id+'">'+value.nombre+'</option>';	 
+							 console.log("id:"+value.id+" nombre:"+value.nombre);
+							 console.log("marca:"+marcas);
+							 console.log(select_option);
+						    });
+					    }				
+				      
+	});
+			
+}
+
 function agregarOtro(){
-	
+		
+  //generarMarcas();
+ 	
   $('#productos').show();
  
   var nuevoBlock = $('<div class="prods" id="prods_' + j +'"></div>');
@@ -18,19 +57,18 @@ function agregarOtro(){
   
   var lblMarca = $('<div class="label_producto">Marca</div>');
       
-  var nuevaMarca = $('<div><select class="marca_select" id="marca_'+j+'" name="marca_'+j+'"><option value="0">Seleccione marca</option><option value="1">Alcatel</option><option value="2">Huawei</option></select></div>');
-
+  var nuevaMarca = $('<div><select class="marca_select" id="marca_'+j+'" name="marca_'+j+'"><option value="0">Seleccione marca</option>'+select_option+'</select></div>');
+  
+  console.log(nuevaMarca);
   
   var lblModelo = $('<div class="label_producto">Modelo</div>');
   	
   var nuevoModelo = $('<div class="modelo_select"><select id="modelo_'+j+'"><option value="0">Seleccione modelo</option></select></div>');
-	
   
   var nuevoBoton = $('<div><input type="button" class="btn_agregar" id= "'+j+'" name="agregar" value="agregar"></div>');
 
   var nuevoEliminar = $('<div><input type="button" class="btn_eliminar" id= "eliminar_'+j+'" name="eliminar" value="eliminar"></div>');
 	
-
   
   nuevoArticulo.append(lblCant);
   
@@ -39,7 +77,7 @@ function agregarOtro(){
   nuevoArticulo.append(lblMarca);
   
   nuevoArticulo.append(nuevaMarca);
-  
+    
   nuevoArticulo.append(lblModelo);
   
   nuevoArticulo.append(nuevoModelo);  
@@ -47,9 +85,9 @@ function agregarOtro(){
   nuevoArticulo.append(nuevoBoton);  
   
   nuevoArticulo.append(nuevoEliminar); 
-    
-  $('#productos').append(nuevoArticulo);  	
-
+  
+  $('#productos').append(nuevoArticulo); 	
+  	  
   j++;
   console.log(j);
 
@@ -63,7 +101,7 @@ $('.marca_select').change(function () {
 	  
 	  var modeloId = id.replace('marca_','modelo_')
 		  	 		   
-	  var path = "/prexey2/web/app_dev.php/panel/ordenIngreso/togeneratecombo";
+	  var path = "/prexey2/web/app_dev.php/panel/ordenEgreso/togeneratecombo";
 				
 				$.ajax({
 					dataType: 'json',
@@ -101,7 +139,7 @@ $('.btn_agregar').click(function(){
 	
 	alert("id del boton:"+id);
 		
-	var path = "/prexey2/web/app_dev.php/panel/ordenIngreso/toprocesadoingresos";
+	var path = "/prexey2/web/app_dev.php/panel/ordenEgreso/toprocesadoingresos";
 		
 	
 	console.log("valor: "+$('#cantidad_'+id).val());
@@ -157,7 +195,7 @@ $('.btn_agregar').click(function(){
 
 $(document).ready(function(){
 
-
+	generarMarcas();
 	$('#productos').hide();
 	$('#crear').hide();
 	/*
@@ -176,21 +214,36 @@ $("#agregar").click(function() {
 	
   var path=$("#agregar").data("url");	
 
-  console.log(path);	
+  console.log(path);
   
-  if($('#backend_adminbundle_ordenIngreso_documento').val().length <= 1){
+  var errores = 0;	
+  
+  if($('#backend_adminbundle_ordenEgreso_documento').val().length <= 1){
 	
-	$('#backend_adminbundle_ordenIngreso_documento_errorloc').html("Es un campo obligatorio");  
+	$('#backend_adminbundle_ordenEgreso_documento_errorloc').html("Es un campo obligatorio");  
+	
+	errores++;
 	 
-  }else{  
+  }if($('#backend_adminbundle_ordenEgreso_destino').val().length <=1){
 	  
-	  $('#backend_adminbundle_ordenIngreso_documento_errorloc').html("");
-
+	$('#backend_adminbundle_ordenEgreso_destino_errorloc').html("Es un campo obligatorio");  
+  
+	errores++;
+  }
+  
+  if(errores == 0)
+  {  
+	  
+	  $('#backend_adminbundle_ordenEgreso_documento_errorloc').html("");
+	  $('#backend_adminbundle_ordenEgreso_destino_errorloc').html("");
+	  
 	  var parametros = {
-					"cliente" : $('#backend_adminbundle_ordenIngreso_cliente').val(),
-					"documento" : $('#backend_adminbundle_ordenIngreso_documento').val(),
-					"operador" : $('#backend_adminbundle_ordenIngreso_operador').val(),
-					"observaciones" : $('#backend_adminbundle_ordenIngreso_observaciones').val()
+					"cliente" : $('#backend_adminbundle_ordenEgreso_cliente').val(),
+					"propietario" : $('#backend_adminbundle_ordenEgreso_propietario').val(),
+					"documento" : $('#backend_adminbundle_ordenEgreso_documento').val(),
+					"destino" : $('#backend_adminbundle_ordenEgreso_destino').val(),
+					"operador" : $('#backend_adminbundle_ordenEgreso_operador').val(),
+					"observaciones" : $('#backend_adminbundle_ordenEgreso_observaciones').val()
 		  };
 		  
 		  $.ajax({
@@ -205,8 +258,8 @@ $("#agregar").click(function() {
 											
 						 if(!data.resultado){				  					
 						  
-							alert("Se ha generado un error al cargar la orden de ingreso");
-							$("#respuesta").html("Se ha generado un error al cargar la orden de ingreso"); 
+							alert("Se ha generado un error al cargar la orden de egreso");
+							$("#respuesta").html("Se ha generado un error al cargar la orden de egreso"); 
 						 
 						 }else{
 							 

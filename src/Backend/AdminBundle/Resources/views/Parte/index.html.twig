@@ -24,7 +24,7 @@
     </div>
     
      <div class="span2">
-          {% if is_granted("ROLE_VIEWARTICULO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('articulo_exportar') }}" >Exportar </button> {% endif %}
+          {% if is_granted("ROLE_VIEWARTICULO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('parte_exportar') }}" >Exportar </button> {% endif %}
     </div>
     
  </div>
@@ -39,9 +39,9 @@
     <th {% if pagination.isSorted('u.codigo') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Codigo', 'u.codigo') }}</th>
     <th>Nombre Interno</th>
     <th>Nombre Fabricante</th>
-    <th>Marca</th>
-    <th>Modelo</th>
+    <th>Compatibilidad</th>
     <th>Observaciones</th>
+    <th>Stock</th>
     <th style="width: 36px;">Acciones</th>
     </tr>
     </thead>
@@ -50,11 +50,17 @@
     
      <tr>
                 <td>{{ parte.codigo }}</td>
-                <td>{{ parte.nombre_interno }}</td>
-                <td>{{ parte.nombre_fabricante }}</td>
-                <td>{{ parte.marcas}}</td>
-                <td>{{ parte.modelos}}</td>
+                <td>{{ parte.getNombreInterno() }}</td>
+                <td>{{ parte.getNombreFabricante() }}</td>
+                <td>
+                {% for modelo in parte.getModelos() %}
+                
+                {{ modelo.getMarca().getName ~" "~modelo.getName() }}
+                </br>
+                {% endfor %}
+                </td>                         
                 <td>{{ parte.observacion}}</td>
+                <td>500</td>
                 <td>
                 {% if is_granted("ROLE_MODARTICULO") %}
                 <a href="{{ path('parte_edit', { 'id': parte.id }) }}"><i class="icon-pencil"></i></a>

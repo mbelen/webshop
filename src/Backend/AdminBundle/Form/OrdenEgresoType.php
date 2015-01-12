@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
-use Backend\AdminBundle\Entity\Ingreso;
+use Backend\AdminBundle\Entity\OrdenEgreso;
 
 class OrdenEgresoType extends AbstractType
 {
@@ -31,6 +31,17 @@ class OrdenEgresoType extends AbstractType
                 'property'=>'name',
                 'multiple'=>false //un solo deposito por operario
             ))
+            ->add('propietario','entity',array(
+                'class'=>'BackendAdminBundle:Cliente',
+                'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder('u')
+                        ->where('u.isDelete = :delete')                        
+                        ->setParameter('delete',false)
+                        ->orderBy('u.name', 'ASC');                         
+            },
+                'property'=>'name',
+                'multiple'=>false //un solo deposito por operario
+            ))
             ->add('operador','entity',array(
                 'class'=>'BackendAdminBundle:OperadorLogistico',
                 'query_builder' => function(EntityRepository $er) {
@@ -42,19 +53,7 @@ class OrdenEgresoType extends AbstractType
                 'property'=>'name',
                 'multiple'=>false //un solo deposito por operario
             ))                        
-			/*
-			->add('ingresos', 'collection', array(
-				  'type' 			=> new IngresoType(),
-				  'label'			=> 'Ingresos',
-				  'by_reference' 	=> false,
-				  'prototype' 	=> new Ingreso(),
-				  'allow_delete'	=> true,
-				  'allow_add'   	=> true,
-				  'attr'			=> array(
-						'class'		=> 'row ingresos'
-				  )
-				   
-			));  */
+
 			->add('cantidad', 'text',
 				  array('mapped'=>false)
 			)		

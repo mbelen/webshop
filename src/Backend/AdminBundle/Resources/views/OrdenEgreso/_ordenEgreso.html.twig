@@ -2,7 +2,7 @@
 {{ form_label(form.operador,"Operador Logistico", { 'label_attr': {'class': 'control-label'} }) }}
 <div class="controls">
  {{ form_widget(form.operador, { 'attr': {'class': 'input-xlarge'} }) }}
- <div id='backend_adminbundle_ordenIngreso_operador_errorloc' class="help-inline error" >{{ form_errors(form.operador) }}</div>
+ <div id='backend_adminbundle_ordenEgreso_operador_errorloc' class="help-inline error" >{{ form_errors(form.operador) }}</div>
 </div>
 </div>
 
@@ -10,7 +10,15 @@
 {{ form_label(form.cliente,"Cliente", { 'label_attr': {'class': 'control-label'} }) }}
 <div class="controls">
  {{ form_widget(form.cliente, { 'attr': {'class': 'input-xlarge'} }) }}
- <div id='backend_adminbundle_ordenIngreso_cliente_errorloc' class="help-inline error" >{{ form_errors(form.cliente) }}</div>
+ <div id='backend_adminbundle_ordenEgreso_cliente_errorloc' class="help-inline error" >{{ form_errors(form.cliente) }}</div>
+</div>
+</div>
+
+<div class="control-group">
+{{ form_label(form.propietario,"Propietario", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.propietario, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_ordenEgreso_propietario_errorloc' class="help-inline error" >{{ form_errors(form.propietario) }}</div>
 </div>
 </div>
 
@@ -18,15 +26,24 @@
 {{ form_label(form.documento,"Documento", { 'label_attr': {'class': 'control-label'} }) }}
 <div class="controls">
  {{ form_widget(form.documento, { 'attr': {'class': 'input-xlarge'} }) }}
- <div id='backend_adminbundle_ordenIngreso_documento_errorloc' class="help-inline error" >{{ form_errors(form.documento) }}</div>
+ <div id='backend_adminbundle_ordenEgreso_documento_errorloc' class="help-inline error" >{{ form_errors(form.documento) }}</div>
 </div>
 </div>
+
+<div class="control-group">
+{{ form_label(form.destino,"Destino", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.destino, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_ordenEgreso_destino_errorloc' class="help-inline error" >{{ form_errors(form.destino) }}</div>
+</div>
+</div>
+
 
 <div class="control-group">
 {{ form_label(form.observaciones,"Observaciones", { 'label_attr': {'class': 'control-label'} }) }}
 <div class="controls">
  {{ form_widget(form.observaciones, { 'attr': {'class': 'input-xlarge'} }) }}
- <div id='backend_adminbundle_ordenIngreso_observaciones_errorloc' class="help-inline error" >{{ form_errors(form.observaciones) }}</div>
+ <div id='backend_adminbundle_ordenEgreso_observaciones_errorloc' class="help-inline error" >{{ form_errors(form.observaciones) }}</div>
 </div>
 </div>
 

@@ -382,6 +382,7 @@ class OrdenIngresoController extends Controller
 			return $response;
 	}
     
+    
     public function toGenerateComboAction(Request $request){
 		
 		    $items = array();

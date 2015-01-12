@@ -33,7 +33,10 @@ ordenEgreso_togeneratecombo:
     pattern:  /togeneratecombo
     defaults: { _controller: "BackendAdminBundle:OrdenEgreso:toGenerateCombo" }    
 
-
+ordenEgreso_togeneratecombomarca:
+    pattern:  /togeneratecombomarca
+    defaults: { _controller: "BackendAdminBundle:OrdenEgreso:toGenerateComboMarca" }    
+   
 ordenEgreso_toprocesadoingresos:
     pattern:  /toprocesadoingresos
     defaults: { _controller: "BackendAdminBundle:OrdenEgreso:toProcesadoIngresos" }    

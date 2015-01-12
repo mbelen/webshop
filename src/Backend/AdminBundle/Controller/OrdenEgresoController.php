@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Backend\AdminBundle\Entity\OrdenEgreso;
 use Backend\AdminBundle\Entity\Ingreso;
-use Backend\AdminBundle\Form\OrdenIngresoType;
+use Backend\AdminBundle\Form\OrdenEgresoType;
 use Backend\AdminBundle\Entity\Modelo;
 
 /**
@@ -308,17 +308,19 @@ class OrdenEgresoController extends Controller
   
     public function toProcesadoOrdenAction(Request $request){
 			
-			/*
+			
 						
 			$clienteId 		= $request->request->get('cliente');
+			$propietarioId	= $request->request->get('propietario');
 			$operadorId		= $request->request->get('operador');
 			$documento 		= $request->request->get('documento');
+			$destino		= $request->request->get('destino');
 			$observaciones 	= $request->request->get('observaciones');
 
 			
 			$em = $this->getDoctrine()->getManager();	
 									
-			$orden = new OrdenIngreso();
+			$orden = new OrdenEgreso();
 			
 			$tipo = $em->getRepository('BackendAdminBundle:TipoOrdenIngreso')->findOneById(1);
 			
@@ -327,9 +329,13 @@ class OrdenEgresoController extends Controller
 			$cliente = $em->getRepository('BackendAdminBundle:Cliente')->findOneById($clienteId);
 			
 			$operador = $em->getRepository('BackendAdminBundle:OperadorLogistico')->findOneById($operadorId);
+			
+			$propietario = $em->getRepository('BackendAdminBundle:Cliente')->findOneById($clienteId);
 						
 			$orden->setCliente($cliente);
+			$orden->setPropietario($propietario);
 			$orden->setOperador($operador);
+			$orden->setDestino($destino);
 			$orden->setDocumento($documento);
 			$orden->setObservaciones($observaciones);
 							
@@ -337,12 +343,17 @@ class OrdenEgresoController extends Controller
 			
 			$em->flush();
 
-			$ordenId = $orden->getId();
-						
+			$ordenId = $orden->getId();		
 			
-			$data["id"] = $ordenId;
+			if($ordenId){
 			
-			*/
+				$data["id"] = $ordenId;
+				$data["resultado"] = true;				
+			
+			}else{
+			
+				$data["resultado"] = false;			
+			}										
 			
 			$response = new Response(json_encode($data));
 			$response->headers->set('Content-Type', 'application/json');
@@ -353,7 +364,7 @@ class OrdenEgresoController extends Controller
     
     public function toProcesadoEgresosAction(Request $request){
 		
-		/*	
+			
 						
 			$ordenId 		= $request->request->get('orden');
 			$cantidad		= $request->request->get('cantidad');
@@ -366,7 +377,7 @@ class OrdenEgresoController extends Controller
 			
 			$modelo = $em->getRepository('BackendAdminBundle:Modelo')->findOneById($modeloId);
 			
-			$orden =  $em->getRepository('BackendAdminBundle:OrdenIngreso')->findOneById($ordenId);
+			$orden =  $em->getRepository('BackendAdminBundle:OrdenEgreso')->findOneById($ordenId);
 			
 			$ingreso = new Ingreso();
 						
@@ -378,9 +389,7 @@ class OrdenEgresoController extends Controller
 			$em->persist($ingreso);
 			$em->flush();
 								
-			$data["orden"] = $ordenId;
-		*/	
-			
+			$data["orden"] = $ordenId;		
 			$data["resultado"] = true;
 									
 			$response = new Response(json_encode($data));
@@ -416,6 +425,32 @@ class OrdenEgresoController extends Controller
 		
 	}
     
+    public function toGenerateComboMarcaAction(Request $request){
+		
+		    $items = array();
+		
+			$marcaId = $request->request->get('marca');
+			
+			$em = $this->getDoctrine()->getManager();
+		
+	        $marcas = $em->getRepository('BackendAdminBundle:Marca')->findAll();
+												
+			foreach($marcas as $marca)
+			{
+				$id = $marca->getId();
+				$nombre = $marca->getName(); 
+				$mark = array('id'=>$id,'nombre'=>$nombre);
+				$items[] = $mark;
+			}			
+		
+			$data['items'] = $items;
+			//$data['resultado'] = true;			
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+		
+	}
         
     
     /* Generar reportes de Ingresos */
@@ -439,9 +474,12 @@ class OrdenEgresoController extends Controller
                             
         $excelService->excelObj->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'Fecha Creación')
-                    ->setCellValue('B1', 'Tipo')
-                    ->setCellValue('C1', 'Cliente')
-                    ->setCellValue('D1', 'Observaciones')                    
+                    ->setCellValue('B1', 'Cliente')
+                    ->setCellValue('C1', 'Propietario')
+                    ->setCellValue('D1', 'Operador logistico')
+                    ->setCellValue('E1', 'Documento')
+                    ->setCellValue('F1', 'Destino')
+                    ->setCellValue('G1', 'Observacion')                    
                     ;
                     
         $resultados=$query->getResult();
@@ -450,15 +488,17 @@ class OrdenEgresoController extends Controller
         {
            $excelService->excelObj->setActiveSheetIndex(0)
                          ->setCellValue("A$i",$r->getCreatedAt()->format("d-m-Y"))
-                         ->setCellValue("B$i",$r->getTipo()->getName())
-                         ->setCellValue("C$i",$r->getDisponible())
-                         ->setCellValue("D$i",$r->getDescripcion())
-                         ->setCellValue("E$i",$r->getObservacion())
+                         ->setCellValue("B$i",$r->getCliente()->getName())
+                         ->setCellValue("C$i",$r->getCliente()->getName())
+                         ->setCellValue("D$i",$r->getOperador())
+                         ->setCellValue("E$i",$r->getDocumento())
+                         ->setCellValue("F$i",$r->getDestino())
+                         ->setCellValue("G$i",$r->getObservacion())
                          ;
           $i++;
         }
                             
-        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Ordenes');
+        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Ordenes de Egreso');
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excelService->excelObj->setActiveSheetIndex(0);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);

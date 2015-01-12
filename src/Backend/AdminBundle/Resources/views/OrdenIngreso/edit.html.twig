@@ -1,7 +1,7 @@
 {% extends '::backend.html.twig' %}
 
 {% block container -%}
-    <h3>Editar Articulo</h3>
+    <h3>Editar OrdenIngreso</h3>
     
     
     
@@ -9,22 +9,21 @@
     <div class="well">
     <div id="myTabContent" class="tab-content">
     <div class="tab-pane active in" id="home">
-    <form class="form-horizontal" id="tab" method="post" novalidate  {{ form_enctype(form) }} action="{{ path('articulo_update', { 'id': entity.id }) }}" >
+    <form class="form-horizontal" id="tab" method="post" novalidate  {{ form_enctype(form) }} action="{{ path('ordenIngreso_update', { 'id': entity.id }) }}" >
     <input type="hidden" name="_method" value="PUT" />
      {{ form_errors(form) }}
-     
-     
-   
+            
     
-     {% include 'BackendAdminBundle:Articulo:_articulo.html.twig' %} 
-        
+     {% include 'BackendAdminBundle:OrdenIngreso:_ordenIngreso.html.twig' %} 
+           
+    
     {{ form_rest(form) }}
 
     <div class="control-group">
     <!-- Button -->
     <div class="controls">
     <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>Actualizar</button>
-    <button type="button" class="btn btn-inverse" data-url="{{ path('articulo') }}" ><i class="icon-chevron-left icon-white"></i> Back</button>
+    <button type="button" class="btn btn-inverse" data-url="{{ path('ordenIngreso') }}" ><i class="icon-chevron-left icon-white"></i> Back</button>
     {% if is_granted("ROLE_DELARTICULO") %}
   
     <a href="#myModal" class="btn btn-danger confirm-delete" role="button" data-toggle="modal" data-id="{{ entity.id }}" ><i class="icon-remove icon-white"></i>Borrar</a>
@@ -47,11 +46,11 @@
       <h3 id="myModalLabel">Confirmar Borrado</h3>
      </div>
      <div class="modal-body">
-       <p class="error-text">Esta seguro que desea borrar el artículo?</p>
+       <p class="error-text">Esta seguro que desea borrar la orden de ingreso?</p>
      </div>
      <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-      <button class="btn btn-danger " data-id="0"  data-url="{{ path('articulo_delete', { 'id': 'id' }) }}" >Borrar</button>
+      <button class="btn btn-danger " data-id="0"  data-url="{{ path('ordenIngreso_delete', { 'id': 'id' }) }}" >Borrar</button>
      </div>
     </div>
 
@@ -61,7 +60,7 @@
     
     </form>
 
-    
+        
 {% endblock %}
 {% block javascripts %}
   {{ parent() }}
