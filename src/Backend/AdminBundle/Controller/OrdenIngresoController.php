@@ -409,6 +409,32 @@ class OrdenIngresoController extends Controller
 		
 	}
     
+    public function toGenerateComboMarcaAction(Request $request){
+		
+		    $items = array();
+		
+			$marcaId = $request->request->get('marca');
+			
+			$em = $this->getDoctrine()->getManager();
+		
+	        $marcas = $em->getRepository('BackendAdminBundle:Marca')->findAll();
+												
+			foreach($marcas as $marca)
+			{
+				$id = $marca->getId();
+				$nombre = $marca->getName(); 
+				$mark = array('id'=>$id,'nombre'=>$nombre);
+				$items[] = $mark;
+			}			
+		
+			$data['items'] = $items;
+			//$data['resultado'] = true;			
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+		
+	}
         
     
     /* Generar reportes de Ingresos */

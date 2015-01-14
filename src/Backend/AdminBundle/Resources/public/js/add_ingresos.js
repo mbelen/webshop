@@ -2,6 +2,40 @@ var j = 0;
 
 var ordenId;
 
+var select_option = "";
+
+function generarMarcas(){
+
+	  var path = "/prexey2/web/app_dev.php/panel/ordenIngreso/togeneratecombomarca";
+  
+  $.ajax({
+					dataType: 'json',
+					data:  {'marca':1},
+					url:   path,
+					type:  'post',
+					})
+					.done(function (data) {
+					
+						if(data.items!=null){
+							/*	
+							$('#marca_'+j)
+							.empty()
+							.append('<option value="0">Seleccione marca</option>')
+							.find('option:first')
+							.attr("selected","selected");
+							*/
+         					 $.each(data.items, function(i, value) {
+						     //$('#marca_'+j).append('<option value='+value.id+'>'+value.nombre+'</option>');
+						     select_option = select_option + '<option value="'+value.id+'">'+value.nombre+'</option>';	 
+							 console.log("id:"+value.id+" nombre:"+value.nombre);
+							 console.log(select_option);
+						    });
+					    }				
+				      
+	});
+			
+}
+
 function agregarOtro(){
 	
   $('#productos').show();
@@ -18,7 +52,7 @@ function agregarOtro(){
   
   var lblMarca = $('<div class="label_producto">Marca</div>');
       
-  var nuevaMarca = $('<div><select class="marca_select" id="marca_'+j+'" name="marca_'+j+'"><option value="0">Seleccione marca</option><option value="1">Alcatel</option><option value="2">Huawei</option></select></div>');
+  var nuevaMarca = $('<div><select class="marca_select" id="marca_'+j+'" name="marca_'+j+'"><option value="0">Seleccione marca</option>'+select_option+'</select></div>');
 
   
   var lblModelo = $('<div class="label_producto">Modelo</div>');
@@ -157,18 +191,9 @@ $('.btn_agregar').click(function(){
 
 $(document).ready(function(){
 
-
+	generarMarcas();
 	$('#productos').hide();
 	$('#crear').hide();
-	/*
-	$('#backend_adminbundle_ordenIngreso_cantidad').hide();
-	$('#cantidad_label').hide();
-	$('#backend_adminbundle_ordenIngreso_marca').hide();
-	$('#marca_label').hide();	
-	$('#backend_adminbundle_ordenIngreso_modelo').hide();
-	$('#modelo_label').hide();	
-	*/
-	
 });
 	
 $("#agregar").click(function() {
@@ -213,8 +238,9 @@ $("#agregar").click(function() {
 							console.log("ID:"+data.id); 
 							ordenId = data.id;
 							console.log("orden"+ordenId); 
-							alert("Se ha generado la orden de ingreso");
+							//alert("Se ha generado la orden de ingreso");
 							$("#agregar").hide();
+							agregarOtro();
 						 
 						 }                  
 						  
@@ -225,7 +251,7 @@ $("#agregar").click(function() {
 						
 				});				
 		
-	  agregarOtro();
+	  
 }
              
 });
