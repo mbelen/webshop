@@ -62,7 +62,7 @@ class ArticuloType extends AbstractType
         
 			$modeloSubscriber = new ModeloSubscriber($builder->getFormFactory());
 			$builder->addEventSubscriber($modeloSubscriber);
-        
+			        
     }
     
     /**

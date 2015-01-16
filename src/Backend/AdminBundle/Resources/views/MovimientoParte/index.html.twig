@@ -3,19 +3,19 @@
 {% block container %}
     
     
-        <h4>Listado de Partes </h4>
+        <h4>Listado de Movimientos de Partes</h4>
 
 <div class="row-fluid">
   
   
-  <div class="span2">  {% if is_granted("ROLE_ADDARTICULO") %} <button class="btn btn-primary" type="button" id="new_button" data-url="{{ path('parte_new') }}" >Nueva Parte</button> {% endif %} </div>
+  <div class="span2">  {% if is_granted("ROLE_ADDARTICULO") %} <button class="btn btn-primary" type="button" id="new_button" data-url="{{ path('movimientoParte_new') }}" >Nuevo Movimiento</button> {% endif %} </div>
   
     <div class="span3">
      
     <form id="custom-search-form" class="form-search form-horizontal pull-right" action="#">
       <div class="input-append span12">
       <input type="text" class="search-query" name="search-query" id="search-query" placeholder="Buscar" value="{{ search }}">
-      <button type="button" id="search-button" class="btn" data-url="{{ path('parte') }}" ><i class="icon-search"></i></button>
+      <button type="button" id="search-button" class="btn" data-url="{{ path('movimientoParte') }}" ><i class="icon-search"></i></button>
       </div>
       </form>
     
@@ -24,7 +24,7 @@
     </div>
     
      <div class="span2">
-          {% if is_granted("ROLE_VIEWARTICULO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('parte_exportar') }}" >Exportar </button> {% endif %}
+          {% if is_granted("ROLE_VIEWARTICULO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('movimiento_exportar') }}" >Exportar </button> {% endif %}
     </div>
     
  </div>
@@ -36,38 +36,38 @@
     <table class="table">
     <thead>
     <tr>
-    <th {% if pagination.isSorted('u.codigo') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Codigo', 'u.codigo') }}</th>
-    <th>Nombre Interno</th>
-    <th>Nombre Fabricante</th>
-    <th>Compatibilidad</th>
+     <th>Fecha</th>
+     <th>Documento</th>
+    <th>Deposito Origen</th>
+    <th>Deposito Destino</th>
     <th>Observaciones</th>
-    <th>Stock</th>
+    <th>Detalle</th>
     <th style="width: 36px;">Acciones</th>
     </tr>
     </thead>
     <tbody>
-     {% for parte in pagination %}
+     {% for orden in pagination %}
     
      <tr>
-                <td>{{ parte.codigo }}</td>
-                <td>{{ parte.getNombreInterno() }}</td>
-                <td>{{ parte.getNombreFabricante() }}</td>
-                <td>
-                {% for modelo in parte.getModelos() %}
-                
-                {{ modelo.getMarca().getName() ~" "~modelo.getName() }}
-                </br>
-                {% endfor %}
-                </td>                         
-                <td>{{ parte.observacion}}</td>
-                <td>{{ parte.stock}}</td>
+                <td>{{ orden.createdAt |date('d-m-Y ') }}</td>
+                <td>{{ orden.tipo.name }}</td>
+                <td>{% if articulo.isDisponible %}
+                    
+                    <span class="label label-success">Disponible</span>
+                   
+                  {% else %}
+                     <span class="label label-important">No Disponible</span> 
+                     
+                  {% endif%}</td>
+                <td>{{ articulo.descripcion}}</td>
+                <td>{{ articulo.observacion}}</td>
                 <td>
                 {% if is_granted("ROLE_MODARTICULO") %}
-                <a href="{{ path('parte_edit', { 'id': parte.id }) }}"><i class="icon-pencil"></i></a>
+                <a href="{{ path('ordenIngreso_edit', { 'id': ordenIngreso.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
                  {% if is_granted("ROLE_DELARTICULO") %}
                 
-                <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ parte.id }} ><i class="icon-remove"></i></a>
+                <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ ordenIngreso.id }} ><i class="icon-remove"></i></a>
                 
                  {% endif %}
                 </td>
@@ -90,11 +90,11 @@
       <h3 id="myModalLabel">Confirmar Borrado</h3>
      </div>
      <div class="modal-body">
-       <p class="error-text">Esta seguro que desea borrar los datos de la parte?</p>
+       <p class="error-text">Esta seguro que desea borrar los datos del artículo?</p>
      </div>
      <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-      <button class="btn btn-danger " data-id="0"  data-url="{{ path('parte_delete', { 'id': 'id' }) }}">Borrar</button>
+      <button class="btn btn-danger " data-id="0"  data-url="{{ path('articulo_delete', { 'id': 'id' }) }}">Borrar</button>
      </div>
     </div>
     

@@ -34,6 +34,7 @@
     
     <th {% if pagination.isSorted('u.nombre') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Nombre', 'u.nombre') }}</th>
     <th>Responsable</th>
+    <th>Depositos</th>
     <th>Observaciones</th>
     <th style="width: 36px;">Acciones</th>
     </tr>
@@ -46,6 +47,14 @@
                 
                 <td>{{ area.nombre|capitalize }}</td>
                 <td>{{ area.Responsable|capitalize }}</td>
+                <td>
+                {% for deposito in area.getDepositos() %}
+                
+                {{ deposito.getNombre() }}
+                </br>
+                {% endfor %}
+                </td>   
+                
                 <td>{{ area.observaciones|capitalize }}</td>
                 <td>
                 {% if is_granted("ROLE_MODSUCURSAL") %}

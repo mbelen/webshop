@@ -58,9 +58,7 @@ function agregarOtro(){
   var lblMarca = $('<div class="label_producto">Marca</div>');
       
   var nuevaMarca = $('<div><select class="marca_select" id="marca_'+j+'" name="marca_'+j+'"><option value="0">Seleccione marca</option>'+select_option+'</select></div>');
-  
-  console.log(nuevaMarca);
-  
+      
   var lblModelo = $('<div class="label_producto">Modelo</div>');
   	
   var nuevoModelo = $('<div class="modelo_select"><select id="modelo_'+j+'"><option value="0">Seleccione modelo</option></select></div>');

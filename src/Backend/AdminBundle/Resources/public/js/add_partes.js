@@ -228,7 +228,7 @@ $("#agregar").click(function() {
 							console.log("ID:"+data.id); 
 							ordenId = data.id;
 							console.log("orden"+ordenId); 
-							alert("Se ha generado la orden de ingreso");
+							//alert("Se ha generado la orden de ingreso");
 							$("#agregar").hide();
 						 
 						 }                  

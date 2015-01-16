@@ -3,24 +3,21 @@
 namespace Backend\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Backend\AdminBundle\Entity\OrdenIngresoParte;
-use Backend\AdminBundle\Entity\IngresoParte;
-use Backend\AdminBundle\Form\OrdenIngresoParteType;
-use Backend\AdminBundle\Entity\Modelo;
+use Backend\AdminBundle\Entity\MovimientoParte;
+use Backend\AdminBundle\Form\MovimientoParteType;
 
 /**
- * OrdenIngresoParte controller.
+ * Movimiento controller.
  *
  */
-class OrdenIngresoParteController extends Controller
+class MovimientoParteController extends Controller
 {
 
      public function generateSQL($search){
      
-        $dql="SELECT u FROM BackendAdminBundle:OrdenIngresoParte u where u.isDelete=false"  ;
+        $dql="SELECT u FROM BackendAdminBundle:MovimientoParte u where u.isDelete=false"  ;
         $search=mb_convert_case($search,MB_CASE_LOWER);
         
        /*
@@ -53,7 +50,7 @@ class OrdenIngresoParteController extends Controller
     );
         
         $deleteForm = $this->createDeleteForm(0);
-        return $this->render('BackendAdminBundle:OrdenIngresoParte:index.html.twig', 
+        return $this->render('BackendAdminBundle:MovimientoParte:index.html.twig', 
         array('pagination' => $pagination,
         'delete_form' => $deleteForm->createView(),
         'search'=>$search
@@ -64,27 +61,27 @@ class OrdenIngresoParteController extends Controller
          throw new AccessDeniedException(); 
     }
     /**
-     * Creates a new OrdenIngresoParte entity.
+     * Creates a new Movimiento entity.
      *
      */
     public function createAction(Request $request)
     {
         if ( $this->get('security.context')->isGranted('ROLE_ADDARTICULO')) {
-        $entity  = new OrdenIngresoParte();
-        $form = $this->createForm(new OrdenIngresoParteType(), $entity);
+        $entity  = new MovimientoParte();
+        $form = $this->createForm(new MovimientoParteType(), $entity);
         $form->bind($request);
          
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
-            //$em->flush();
-            $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado una nueva orden.');
-            return $this->redirect($this->generateUrl('ordenIngresoParte_edit', array('id' => $entity->getId())));
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado un nuevo movimiento.');
+            return $this->redirect($this->generateUrl('movimientoParte_edit', array('id' => $entity->getId())));
         }
         
         
 
-        return $this->render('BackendAdminBundle:OrdenIngresoParte:new.html.twig', array(
+        return $this->render('BackendAdminBundle:MovimientoParte:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView()
            
@@ -93,23 +90,22 @@ class OrdenIngresoParteController extends Controller
       else
        throw new AccessDeniedException();
     }
-    
+
     /**
-    * Creates a form to create a OrdenIngresoParte entity.
+    * Creates a form to create a Cliente entity.
     *
-    * @param OrdenIngresoParte $entity The entity
+    * @param Articulo $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(OrdenIngresoParte $entity)
+    private function createCreateForm(MovimientoParte $entity)
     {
-        $form = $this->createForm(new OrdenIngresoParteType(), $entity, array(
-            'action' => $this->generateUrl('ordenIngresoParte_create'),
+        $form = $this->createForm(new MovimientoParteType(), $entity, array(
+            'action' => $this->generateUrl('movimiento_create'),
             'method' => 'POST',
         ));
 
         $form->add('submit', 'submit', array('label' => 'Create'));
-        $form->add('saveAndNew', 'submit', array('label' => 'saveAndNew', 'attr'=> array('id'=>'new', 'class'=>'btn-primary')));
 
         return $form;
     }
@@ -118,15 +114,13 @@ class OrdenIngresoParteController extends Controller
      * Displays a form to create a new Articulo entity.
      *
      */
-     
     public function newAction()
     {
        if ( $this->get('security.context')->isGranted('ROLE_ADDARTICULO')) {
-		   
-        $entity = new OrdenIngresoParte();
-        $form   = $this->createForm(new OrdenIngresoParteType(), $entity);
+        $entity = new MovimientoParte();
+        $form   = $this->createForm(new MovimientoParteType(), $entity);
 
-		return $this->render('BackendAdminBundle:OrdenIngresoParte:new.html.twig', array(
+        return $this->render('BackendAdminBundle:MovimientoParte:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView()
             
@@ -135,8 +129,8 @@ class OrdenIngresoParteController extends Controller
        else
           throw new AccessDeniedException();
     }
-    
- 
+
+  
     /**
      * Displays a form to edit an existing Articulo entity.
      *
@@ -146,18 +140,18 @@ class OrdenIngresoParteController extends Controller
         if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) { 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BackendAdminBundle:OrdenIngresoParte')->find($id);
+        $entity = $em->getRepository('BackendAdminBundle:Movimiento')->find($id);
 
         if (!$entity) {
             
-             $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden .');
-             return $this->redirect($this->generateUrl('ordenIngresoParte'));
+             $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el movimiento .');
+             return $this->redirect($this->generateUrl('movimiento'));
         }
 
-        $editForm = $this->createForm(new OrdenIngresoParteType(), $entity);
+        $editForm = $this->createForm(new ArticuloType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BackendAdminBundle:OrdenIngresoParte:edit.html.twig', array(
+        return $this->render('BackendAdminBundle:Movimiento:edit.html.twig', array(
             'entity'      => $entity,
             'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -169,16 +163,16 @@ class OrdenIngresoParteController extends Controller
     }
 
     /**
-    * Creates a form to edit a OrdenIngresoParte entity.
+    * Creates a form to edit a Movimiento entity.
     *                                       
-    * @param OrdenIngresoParte $entity The entity
+    * @param Movimiento $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(OrdenIngresoParte $entity)
+    private function createEditForm(Movimiento $entity)
     {
-        $form = $this->createForm(new OrdenIngresoParteType(), $entity, array(
-            'action' => $this->generateUrl('ordenIngresoParte_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new MovimientoType(), $entity, array(
+            'action' => $this->generateUrl('movimiento_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -187,7 +181,7 @@ class OrdenIngresoParteController extends Controller
         return $form;
     }
     /**
-     * Edits an existing OrdenIngresoParte entity.
+     * Edits an existing Movimiento entity.
      *
      */
     public function updateAction(Request $request, $id)
@@ -195,25 +189,25 @@ class OrdenIngresoParteController extends Controller
         if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) {  
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BackendAdminBundle:OrdenIngresoParte')->find($id);
+        $entity = $em->getRepository('BackendAdminBundle:Movimiento')->find($id);
 
         if (!$entity) {
-             $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden.');
-             return $this->redirect($this->generateUrl('ordenIngresoParte'));
+             $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el movimiento.');
+             return $this->redirect($this->generateUrl('ordenIngreso'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new OrdenIngresoParteType(), $entity);
+        $editForm = $this->createForm(new MovimientoType(), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
-             $this->get('session')->getFlashBag()->add('success' , 'Se han actualizado los datos de la orden .');
-            return $this->redirect($this->generateUrl('ordenIngresoParte_edit', array('id' => $id)));
+             $this->get('session')->getFlashBag()->add('success' , 'Se han actualizado los datos del movimiento.');
+            return $this->redirect($this->generateUrl('movimiento_edit', array('id' => $id)));
         }
 
-        return $this->render('BackendAdminBundle:OrdenIngresoParte:edit.html.twig', array(
+        return $this->render('BackendAdminBundle:Movimiento:edit.html.twig', array(
             'entity'      => $entity,
             'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -224,7 +218,7 @@ class OrdenIngresoParteController extends Controller
          throw new AccessDeniedException();  
     }
     /**
-     * Deletes a OrdenIngresoParte entity.
+     * Deletes a Movimiento entity.
      *
      */
     public function deleteAction(Request $request, $id)
@@ -235,10 +229,10 @@ class OrdenIngresoParteController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BackendAdminBundle:OrdenIngresoParte')->find($id);
+            $entity = $em->getRepository('BackendAdminBundle:Movimiento')->find($id);
 
             if (!$entity) {
-                $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden.');
+                $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el movimiento.');
              
             }
            else{
@@ -247,12 +241,12 @@ class OrdenIngresoParteController extends Controller
             $entity->setIsDelete(true); //baja lógica
             $em->persist($entity);
             $em->flush();
-            $this->get('session')->getFlashBag()->add('success' , 'Se han borrado los datos de la orden.');
+            $this->get('session')->getFlashBag()->add('success' , 'Se han borrado los datos del movimiento.');
             
             }
         }
 
-        return $this->redirect($this->generateUrl('ordenIngresoParte'));
+        return $this->redirect($this->generateUrl('movimiento'));
       }
       else
        throw new AccessDeniedException(); 
@@ -272,113 +266,6 @@ class OrdenIngresoParteController extends Controller
             ->getForm()
         ;
     }
-    
-    /* Ajax */
-
-  
-    public function toProcesadoOrdenAction(Request $request){
-						
-			$clienteId 		= $request->request->get('cliente');
-			$operadorId		= $request->request->get('operador');
-			$documento 		= $request->request->get('documento');
-			$observaciones 	= $request->request->get('observaciones');
-
-			
-			$em = $this->getDoctrine()->getManager();	
-									
-			$orden = new OrdenIngresoParte();
-			
-			$tipo = $em->getRepository('BackendAdminBundle:TipoOrdenIngreso')->findOneById(2);
-			
-			$orden->setTipo($tipo);
-								
-			$cliente = $em->getRepository('BackendAdminBundle:Cliente')->findOneById($clienteId);
-			
-			$operador = $em->getRepository('BackendAdminBundle:OperadorLogistico')->findOneById($operadorId);
-						
-			$orden->setCliente($cliente);
-			$orden->setOperador($operador);
-			$orden->setDocumento($documento);
-			$orden->setObservaciones($observaciones);
-							
-			$em->persist($orden);
-			
-			$em->flush();
-
-			$ordenId = $orden->getId();
-						
-			$data["resultado"] = true;
-			$data["id"] = $ordenId;
-			
-			$response = new Response(json_encode($data));
-			$response->headers->set('Content-Type', 'application/json');
-			
-			return $response;
-	}
-    
-    
-    public function toProcesadoIngresosAction(Request $request){
-		
-						  			
-			$ordenId 		= $request->request->get('orden');
-			$cantidad		= $request->request->get('cantidad');
-			$parteId 		= $request->request->get('parte');
-									
-			$em = $this->getDoctrine()->getManager();
-												
-			$parte = $em->getRepository('BackendAdminBundle:Parte')->findOneById($parteId);
-						
-			$orden =  $em->getRepository('BackendAdminBundle:OrdenIngresoParte')->findOneById($ordenId);
-			
-			$ingresoParte = new IngresoParte();
-						
-			$ingresoParte->setCantidad($cantidad);
-			$ingresoParte->setParte($parte);
-			$ingresoParte->setOrden($orden);
-							
-			$em->persist($ingresoParte);
-			$em->flush();
-								
-			//$data["orden"] = $ordenId;
-							
-			$data["resultado"] = true;
-									
-			$response = new Response(json_encode($data));
-			$response->headers->set('Content-Type', 'application/json');
-			
-			return $response;
-	}
-    
-    
-    public function toGenerateComboAction(Request $request){
-		
-		    $items = array();
-							
-			$em = $this->getDoctrine()->getManager();
-		
-	        $partes = $em->getRepository('BackendAdminBundle:Parte')->findAll(); //By(array('marca' => $marcaId));
-												
-			foreach($partes as $parte)
-			{
-				$id = $parte->getId();
-				$codigo = $parte->getCodigo(); 
-				$part = array('id'=>$id,'codigo'=>$codigo);
-				$items[] = $part;
-			}			
-		
-			$data['items'] = $items;
-			$response = new Response(json_encode($data));
-			$response->headers->set('Content-Type', 'application/json');
-			
-			return $response;
-		
-	}
-    
-        
-    
-    /* Generar reportes de Ingresos */
-    
-    
     
      public function exportarAction(Request $request)
     {
@@ -416,7 +303,7 @@ class OrdenIngresoParteController extends Controller
           $i++;
         }
                             
-        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Ordenes');
+        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Movimientos');
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excelService->excelObj->setActiveSheetIndex(0);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);

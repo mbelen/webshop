@@ -19,8 +19,7 @@ class ParteController extends Controller
      
         $dql="SELECT u FROM BackendAdminBundle:Parte u where u.isDelete=false"  ;
         $search=mb_convert_case($search,MB_CASE_LOWER);
-        
-       
+               
         if ($search)
           $dql.=" and (u.codigo like '%$search%' or u.nombre_interno like '%$search%') ";
           
@@ -296,8 +295,7 @@ class ParteController extends Controller
          $em = $this->getDoctrine()->getManager();
 
        
-        $search=$this->generateSQL($request->query->get("search-query")); 
-           
+        $search=$this->generateSQL($request->query->get("search-query"));              
        
         $query = $em->createQuery($search);
         
@@ -305,11 +303,10 @@ class ParteController extends Controller
                          
                             
         $excelService->excelObj->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'Fecha Creación')
-                    ->setCellValue('B1', 'Tipo')
-                    ->setCellValue('C1', 'Codigo')
-                    ->setCellValue('D1', 'Nombre Fabricante')
-                    ->setCellValue('E1', 'Nombre Interno')
+                    ->setCellValue('A1', 'Codigo')
+                    ->setCellValue('B1', 'Nombre Interno')
+                    ->setCellValue('C1', 'Nombre Fabricante')
+                    ->setCellValue('D1', 'Observaciones')                    
                     ;
                     
         $resultados=$query->getResult();
@@ -317,24 +314,22 @@ class ParteController extends Controller
         foreach($resultados as $r)
         {
            $excelService->excelObj->setActiveSheetIndex(0)
-                         ->setCellValue("A$i",$r->getCreatedAt()->format("d-m-Y"))
-                         ->setCellValue("B$i",$r->getTipo()->getName())
-                         ->setCellValue("C$i",$r->getDisponible())
-                         ->setCellValue("D$i",$r->getDescripcion())
-                         ->setCellValue("E$i",$r->getObservacion())
+                         ->setCellValue("A$i",$r->getCodigo())
+                         ->setCellValue("B$i",$r->getNombreInterno())
+                         ->setCellValue("C$i",$r->getNombreFabricante())
+                         ->setCellValue("D$i",$r->getObservacion())
                          ;
           $i++;
         }
                             
-        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Articulos');
+        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Partes');
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excelService->excelObj->setActiveSheetIndex(0);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        
+                
         
         $fileName="partes_".date("Ymd").".xls";
         //create the response

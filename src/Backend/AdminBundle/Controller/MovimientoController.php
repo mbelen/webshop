@@ -76,7 +76,7 @@ class MovimientoController extends Controller
             $em->persist($entity);
             $em->flush();
             $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado un nuevo movimiento.');
-            return $this->redirect($this->generateUrl('ordenIngreso_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('movimiento_edit', array('id' => $entity->getId())));
         }
         
         
@@ -193,7 +193,7 @@ class MovimientoController extends Controller
 
         if (!$entity) {
              $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el movimiento.');
-             return $this->redirect($this->generateUrl('ordenIngreso'));
+             return $this->redirect($this->generateUrl('movimiento'));
         }
 
         $deleteForm = $this->createDeleteForm($id);

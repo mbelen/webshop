@@ -28,6 +28,7 @@ class Parte
      /**
      * @ORM\Column(name="is_delete", type="boolean" )
      */
+    
     private $isDelete;
     
     /**
@@ -61,11 +62,17 @@ class Parte
     
     private $observacion;
     
+     /**
+     * @ORM\Column(name="stock", type="integer")
+     */
+    
+    private $stock;
+        
     /**
 	 * @ORM\ManyToMany(targetEntity="Marca", inversedBy="partes")
      * @ORM\JoinTable(name="marca_parte")
 	 */    
-    
+           
     protected $marcas;
            
     /**
@@ -74,6 +81,20 @@ class Parte
 	 */	               
          
     protected $modelos;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="IngresoParte", mappedBy="parte")
+     * 
+     **/     
+    
+    private $ingresos;
+    
+    /**
+	 * @ORM\ManyToMany(targetEntity="MovimientoParte", inversedBy="partes")
+     * @ORM\JoinTable(name="parte_movimiento")
+	 */	
+		
+	protected $movimientos;
 
 		         
     /**
@@ -372,5 +393,94 @@ class Parte
     public function getMarcas()
     {
         return $this->marcas;
+    }
+
+    /**
+     * Add movimientos
+     *
+     * @param \Backend\AdminBundle\Entity\MovimientoParte $movimientos
+     * @return Parte
+     */
+    public function addMovimiento(\Backend\AdminBundle\Entity\MovimientoParte $movimientos)
+    {
+        $this->movimientos[] = $movimientos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove movimientos
+     *
+     * @param \Backend\AdminBundle\Entity\MovimientoParte $movimientos
+     */
+    public function removeMovimiento(\Backend\AdminBundle\Entity\MovimientoParte $movimientos)
+    {
+        $this->movimientos->removeElement($movimientos);
+    }
+
+    /**
+     * Get movimientos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovimientos()
+    {
+        return $this->movimientos;
+    }
+
+    /**
+     * Set stock
+     *
+     * @param integer $stock
+     * @return Parte
+     */
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
+    
+        return $this;
+    }
+
+    /**
+     * Get stock
+     *
+     * @return integer 
+     */
+    public function getStock()
+    {
+        return $this->stock;
+    }
+
+    /**
+     * Add ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\IngresoParte $ingresos
+     * @return Parte
+     */
+    public function addIngreso(\Backend\AdminBundle\Entity\IngresoParte $ingresos)
+    {
+        $this->ingresos[] = $ingresos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ingresos
+     *
+     * @param \Backend\AdminBundle\Entity\IngresoParte $ingresos
+     */
+    public function removeIngreso(\Backend\AdminBundle\Entity\IngresoParte $ingresos)
+    {
+        $this->ingresos->removeElement($ingresos);
+    }
+
+    /**
+     * Get ingresos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getIngresos()
+    {
+        return $this->ingresos;
     }
 }

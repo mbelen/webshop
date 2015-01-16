@@ -70,6 +70,10 @@ backend_movimiento:
     resource: "@BackendAdminBundle/Resources/config/routing/movimiento.yml"
     prefix:   /movimiento    
 
+backend_movimiento_parte:
+    resource: "@BackendAdminBundle/Resources/config/routing/movimientoParte.yml"
+    prefix:   /movimientoParte
+
 backend_parte:
     resource: "@BackendAdminBundle/Resources/config/routing/parte.yml"
     prefix:   /parte

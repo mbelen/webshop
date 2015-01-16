@@ -1,0 +1,30 @@
+movimientoParte_new:
+    pattern:  /new
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:new" }
+
+movimientoParte_exportar:
+    pattern:  /exportar
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:exportar" }
+    
+movimientoParte_create:
+    pattern:  /create
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:create" }
+    requirements: { _method: post }
+
+movimientoParte_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:edit" }
+
+movimientoParte_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:update" }
+    requirements: { _method: post|put }
+
+movimientoParte_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:delete" }
+    requirements: { _method: post|delete }
+
+movimientoParte:
+    pattern:  /{search}
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:index" , search: '' }

@@ -15,6 +15,14 @@
 </div>
 
 <div class="control-group">
+{{ form_label(form.area,"Destino", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.area, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_ordenIngreso_area_errorloc' class="help-inline error" >{{ form_errors(form.area) }}</div>
+</div>
+</div>
+
+<div class="control-group">
 {{ form_label(form.documento,"Documento", { 'label_attr': {'class': 'control-label'} }) }}
 <div class="controls">
  {{ form_widget(form.documento, { 'attr': {'class': 'input-xlarge'} }) }}
