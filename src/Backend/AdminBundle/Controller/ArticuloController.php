@@ -3,6 +3,7 @@
 namespace Backend\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Backend\AdminBundle\Entity\Articulo;
@@ -286,7 +287,33 @@ class ArticuloController extends Controller
 			return $response;
 	}
     
-    
+     public function addArticuloImeiAction(Request $request){
+     
+        $data=array("mensaje"=>'');
+         //TODO: add orden de ingreso ID 
+        try{ 
+        $em = $this->getDoctrine()->getManager();         
+        $entity  = new Articulo();
+        $entity->setMarca($em->getRepository('BackendAdminBundle:Marca')->find($request->request->get("marca")));
+        $entity->setModelo($em->getRepository('BackendAdminBundle:Modelo')->find($request->request->get("modelo")));
+        $entity->setImei($request->request->get("imei"));
+        $entity->setEstado($em->getRepository('BackendAdminBundle:Estado')->find($request->request->get("estado")));  
+        $entity->setGarantia($request->request->get("garantia"));
+        $em->persist($entity);
+        $em->flush();
+        
+          
+        }
+        catch(Exception $e){
+            $data["mensaje"]="error";
+        }
+           
+        $response = new Response(json_encode($data));
+			  $response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+     
+     }
     
      public function exportarAction(Request $request)
     {

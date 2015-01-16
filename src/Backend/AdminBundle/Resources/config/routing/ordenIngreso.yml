@@ -15,6 +15,10 @@ ordenIngreso_edit:
     pattern:  /{id}/edit
     defaults: { _controller: "BackendAdminBundle:OrdenIngreso:edit" }
 
+ordenIngreso_procesa:
+    pattern:  /{id}/procesa
+    defaults: { _controller: "BackendAdminBundle:OrdenIngreso:procesa" }    
+
 ordenIngreso_update:
     pattern:  /{id}/update
     defaults: { _controller: "BackendAdminBundle:OrdenIngreso:update" }

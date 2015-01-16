@@ -62,6 +62,7 @@
                 <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ orden.id }} ><i class="icon-remove"></i></a>
                 
                  {% endif %}
+                 <a href="{{ path('ordenIngreso_procesa',{ 'id': orden.id }) }}"><i class=" icon-refresh"></i></a>
                 </td>
     </tr>
     

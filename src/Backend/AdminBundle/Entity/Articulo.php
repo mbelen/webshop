@@ -110,7 +110,9 @@ class Articulo
     public function __construct()
     {
          $this->isDelete=false;
+         $this->isDisponible=true;
          $this->isValido=true;
+         $this->garantia=false;
          $this->createdAt = new \DateTime('now');
          $this->movimientos = new ArrayCollection();   
     }

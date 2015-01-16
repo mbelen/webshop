@@ -1,0 +1,68 @@
+{% extends '::backend.html.twig' %}
+ {% block stylesheets %}
+    {{ parent() }}
+     {% stylesheets '@BackendAdminBundle/Resources/public/css/ingresos.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+{% endblock %}
+{% block container -%}
+    <h3>Procesar OrdenIngreso: {{ entity.id }} </h3>
+
+<div class="control-group">
+  <label>Cliente : 
+  {{ entity.getCliente }}</label>
+</div>
+
+<div class="control-group">
+  <label>Documento: 
+  {{ entity.getDocumento }}</label>
+</div>
+
+{% for ingreso in entity.getIngresos %}
+{% for i in 0..ingreso.cantidad %}
+<div class="producto_nuevo">
+
+  <div class="label_producto">IMEI </div>
+  <input type="text" value="" class="input_imei" name="imei" id="imei_{{ i }}">
+  <div class="label_producto">Marca</div>
+  <div>
+    <select class="marca_select" style="width: 150px;" id="marca_{{ i }}" data-url="{{ path('ordenIngreso_togeneratecombo') }}">
+    <option value="0">Seleccione</option>
+    {% for item in marcas %}
+           <option value="{{ item.id }}">{{ item.name }}</option>
+     {% endfor %}
+    </select>
+  </div>
+  <div class="label_producto">Modelo</div>
+  <div class="modelo_select">
+    <select style="width: 150px;" id="modelo_{{ i }}">
+      <option value="0">Seleccione</option>
+    </select>
+  </div>
+  <div class="label_producto">Garantía</div>
+  <input class="check_garantia" type="checkbox" name="garantia" value="1" id="garantia_{{ i }}">
+  <div class="label_producto">Estado</div>
+  <div class="estado_select">
+  <select id="estado_{{ i }}">
+  {% for item in estados %}
+           <option value="{{ item.id }}">{{ item.name }}</option>
+     {% endfor %}
+  </select>
+  </div>
+  <button class="save_imei" data-id="{{ i }}" data-url="{{ path('articulo_add')}}">Guardar</button>
+
+</div>
+    {% endfor %}
+ {% endfor %}
+   <div>
+   <button id="finished" data-url="{{ path('ordenIngreso') }}" >Terminar</button>
+   </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+
+  {% javascripts '@BackendAdminBundle/Resources/public/js/procesa.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}    
