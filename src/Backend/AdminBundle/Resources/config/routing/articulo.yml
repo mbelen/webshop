@@ -2,6 +2,11 @@ articulo_new:
     pattern:  /new
     defaults: { _controller: "BackendAdminBundle:Articulo:new" }
 
+articulo_add:
+    pattern:  /addImei
+    defaults: { _controller: "BackendAdminBundle:Articulo:addArticuloImei" }
+
+
 articulo_exportar:
     pattern:  /exportar
     defaults: { _controller: "BackendAdminBundle:Articulo:exportar" }

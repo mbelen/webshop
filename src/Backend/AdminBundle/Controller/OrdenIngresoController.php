@@ -166,6 +166,37 @@ class OrdenIngresoController extends Controller
           throw new AccessDeniedException();
     }
     
+   public function procesaAction($id){
+       if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) { 
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BackendAdminBundle:OrdenIngreso')->find($id);
+
+        if (!$entity) {
+            
+             $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden .');
+             return $this->redirect($this->generateUrl('ordenIngreso'));
+        }
+
+        $estados = $em->getRepository('BackendAdminBundle:Estado')
+        ->findAll();
+        $marcas = $em->getRepository('BackendAdminBundle:Marca')
+        ->findAll(); 
+        
+
+        return $this->render('BackendAdminBundle:OrdenIngreso:procesa.html.twig', array(
+            'entity'      => $entity,
+            'marcas' => $marcas,
+            'estados'=> $estados
+            
+        ));
+      }
+      else
+         throw new AccessDeniedException(); 
+   
+   
+   }
+ 
  
     /**
      * Displays a form to edit an existing Articulo entity.
