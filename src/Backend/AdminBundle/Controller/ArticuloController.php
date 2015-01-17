@@ -299,6 +299,7 @@ class ArticuloController extends Controller
         $entity->setImei($request->request->get("imei"));
         $entity->setEstado($em->getRepository('BackendAdminBundle:Estado')->find($request->request->get("estado")));  
         $entity->setGarantia($request->request->get("garantia"));
+        $entity->setOrden($em->getRepository('BackendAdminBundle:OrdenIngreso')->find($request->request->get("orden")));
         $em->persist($entity);
         $em->flush();
         
