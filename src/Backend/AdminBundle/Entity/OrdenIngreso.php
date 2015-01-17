@@ -71,6 +71,11 @@ class OrdenIngreso
 
     protected $ingresos; 
     
+    /**
+     * @ORM\OneToMany(targetEntity="Articulo", mappedBy="orden")
+     */
+     
+     private $articulos;
         
     /**
      * Constructor
@@ -80,7 +85,8 @@ class OrdenIngreso
     {
          $this->isDelete=false;
          $this->createdAt = new \DateTime('now');
-         $this->ingresos =  new ArrayCollection();   
+         $this->ingresos =  new ArrayCollection();
+         $this->articulos = new ArrayCollection();    
     }
      
 
@@ -301,5 +307,38 @@ class OrdenIngreso
     public function getIngresos()
     {
         return $this->ingresos;
+    }
+
+    /**
+     * Add articulos
+     *
+     * @param \Backend\AdminBundle\Entity\Articulo $articulos
+     * @return OrdenIngreso
+     */
+    public function addArticulo(\Backend\AdminBundle\Entity\Articulo $articulos)
+    {
+        $this->articulos[] = $articulos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove articulos
+     *
+     * @param \Backend\AdminBundle\Entity\Articulo $articulos
+     */
+    public function removeArticulo(\Backend\AdminBundle\Entity\Articulo $articulos)
+    {
+        $this->articulos->removeElement($articulos);
+    }
+
+    /**
+     * Get articulos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getArticulos()
+    {
+        return $this->articulos;
     }
 }

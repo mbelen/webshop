@@ -183,11 +183,18 @@ class OrdenIngresoController extends Controller
         $marcas = $em->getRepository('BackendAdminBundle:Marca')
         ->findAll(); 
         
-
+        $articulos=$em->getRepository('BackendAdminBundle:Articulo')->findByOrden($id);
+        $cantidad=0;
+        foreach($entity->getIngresos() as $ingreso){
+            $cantidad += $ingreso->getCantidad();
+        }
+        $cantidad = $cantidad - count($articulos);
         return $this->render('BackendAdminBundle:OrdenIngreso:procesa.html.twig', array(
             'entity'      => $entity,
             'marcas' => $marcas,
-            'estados'=> $estados
+            'estados'=> $estados,
+            'articulos'=>$articulos,
+            'cantidad'=>$cantidad
             
         ));
       }

@@ -19,8 +19,38 @@
   {{ entity.getDocumento }}</label>
 </div>
 
-{% for ingreso in entity.getIngresos %}
-{% for i in 0..ingreso.cantidad %}
+
+{% for a in articulos %}
+  <div class="producto_nuevo">
+
+  <div class="label_producto">IMEI </div>
+  <input type="text" value="{{ a.imei }}"  disabled="true" class="input_imei" name="imei" id="imei_{{ a.id }}">
+  <div class="label_producto">Marca</div>
+  <div>
+    <input type="text" value="{{ a.getMarca }}"  disabled="true" class="input_imei" name="marca" id="marca{{ a.id }}">
+  </div>
+  <div class="label_producto">Modelo</div>
+  <div class="modelo_select">
+        <input type="text" value="{{ a.getModelo }}"  disabled="true" class="input_imei" name="modelo" id="modelo{{ a.id }}">
+  </div>
+  <div class="label_producto">Garantía</div>
+  <input disabled class="check_garantia" type="checkbox" {% if a.garantia %} checked {% endif %} name="garantia" value="1" id="garantia_{{ a.id }}">
+  <div class="label_producto">Estado</div>
+  <div class="estado_select">
+  <input type="text" value="{{ a.getEstado}}"  disabled="true" class="input_imei" name="estado" id="estado{{ a.id }}">
+  </div>
+
+  
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+{% for i in 1..cantidad %}
 <div class="producto_nuevo">
 
   <div class="label_producto">IMEI </div>
@@ -50,12 +80,12 @@
      {% endfor %}
   </select>
   </div>
-  <button class="save_imei" data-id="{{ i }}" data-url="{{ path('articulo_add')}}">Guardar</button>
+  <button style="margin-left: 20px;" class="save_imei" data-id="{{ i }}" data-orden="{{ entity.id }}" data-url="{{ path('articulo_add')}}">Guardar</button>
 
 </div>
-    {% endfor %}
+  
  {% endfor %}
-   <div>
+   <div style="clear:both; width: 100%">
    <button id="finished" data-url="{{ path('ordenIngreso') }}" >Terminar</button>
    </div>
 {% endblock %}

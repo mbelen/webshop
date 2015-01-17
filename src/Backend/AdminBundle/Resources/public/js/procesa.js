@@ -41,7 +41,8 @@ $(".save_imei").click(function(){
 		 var garantia=0;
      if ($("#garantia_"+id).is(":checked"))
     		   garantia=1;
-     var dataString= {'marca':$("#marca_"+id).val(),'modelo':$("#modelo_"+id).val(),'imei':$("#imei_"+id).val(),'estado':$("#estado_"+id).val(),'garantia':garantia};
+     var orden= $(this).data("orden");      
+     var dataString= {'marca':$("#marca_"+id).val(),'modelo':$("#modelo_"+id).val(),'imei':$("#imei_"+id).val(),'estado':$("#estado_"+id).val(),'garantia':garantia,'orden':orden};
      var self=$(this);
      
 		$.ajax({
