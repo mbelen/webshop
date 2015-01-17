@@ -71,6 +71,20 @@ class OrdenIngreso
 
     protected $ingresos; 
     
+    /**
+     * @ORM\ManyToOne(targetEntity="Deposito", inversedBy="ordeningreso")
+     * @ORM\JoinColumn(name="deposito_id", referencedColumnName="id")
+    */
+
+    protected $deposito; 
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AreaTrabajo", inversedBy="ordeningreso")
+     * @ORM\JoinColumn(name="area_id", referencedColumnName="id")
+    */
+
+    protected $area; 
+    
         
     /**
      * Constructor
@@ -301,5 +315,51 @@ class OrdenIngreso
     public function getIngresos()
     {
         return $this->ingresos;
+    }
+
+    /**
+     * Set deposito
+     *
+     * @param \Backend\AdminBundle\Entity\Deposito $deposito
+     * @return OrdenIngreso
+     */
+    public function setDeposito(\Backend\AdminBundle\Entity\Deposito $deposito = null)
+    {
+        $this->deposito = $deposito;
+    
+        return $this;
+    }
+
+    /**
+     * Get deposito
+     *
+     * @return \Backend\AdminBundle\Entity\Deposito 
+     */
+    public function getDeposito()
+    {
+        return $this->deposito;
+    }
+
+    /**
+     * Set area
+     *
+     * @param \Backend\AdminBundle\Entity\AreaTrabajo $area
+     * @return OrdenIngreso
+     */
+    public function setArea(\Backend\AdminBundle\Entity\AreaTrabajo $area = null)
+    {
+        $this->area = $area;
+    
+        return $this;
+    }
+
+    /**
+     * Get area
+     *
+     * @return \Backend\AdminBundle\Entity\AreaTrabajo 
+     */
+    public function getArea()
+    {
+        return $this->area;
     }
 }
