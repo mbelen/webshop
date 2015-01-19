@@ -34,7 +34,7 @@ class OrdenIngresoType extends AbstractType
                 'class'=>'BackendAdminBundle:OperadorLogistico',
                 'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('u')
-                        ->where('u.isDelete = :delete')                        
+                        ->where('u.isDelete = :delete')                                                
                         ->setParameter('delete',false)
                         ->orderBy('u.name', 'ASC');                         
             },
@@ -45,7 +45,8 @@ class OrdenIngresoType extends AbstractType
                 'class'=>'BackendAdminBundle:AreaTrabajo',
                 'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('u')
-                        ->where('u.isDelete = :delete')                        
+                        ->where('u.isDelete = :delete')
+                        ->andWhere('u.id != 2')                        
                         ->setParameter('delete',false)
                         ->orderBy('u.nombre', 'ASC');                         
             },

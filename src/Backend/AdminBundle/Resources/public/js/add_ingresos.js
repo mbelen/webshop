@@ -17,18 +17,10 @@ function generarMarcas(){
 					.done(function (data) {
 					
 						if(data.items!=null){
-							/*	
-							$('#marca_'+j)
-							.empty()
-							.append('<option value="0">Seleccione marca</option>')
-							.find('option:first')
-							.attr("selected","selected");
-							*/
          					 $.each(data.items, function(i, value) {
-						     //$('#marca_'+j).append('<option value='+value.id+'>'+value.nombre+'</option>');
-						     select_option = select_option + '<option value="'+value.id+'">'+value.nombre+'</option>';	 
-							 console.log("id:"+value.id+" nombre:"+value.nombre);
-							 console.log(select_option);
+								select_option = select_option + '<option value="'+value.id+'">'+value.nombre+'</option>';	 
+								console.log("id:"+value.id+" nombre:"+value.nombre);
+								console.log(select_option);
 						    });
 					    }				
 				      
@@ -41,10 +33,8 @@ function agregarOtro(){
   $('#productos').show();
  
   var nuevoBlock = $('<div class="prods" id="prods_' + j +'"></div>');
-  //var lblCant = document.createElement('label')
-  //lblCant.innerHTML = "Cantidad";
   
-  var nuevoArticulo = $('<div class="producto_nuevo"></div>');
+  var nuevoArticulo = $('<div class="producto_nuevo" id="producto_nuevo_'+j+'"></div>');
   
   var lblCant = $('<div class="label_producto">Cantidad</div>');
   
@@ -52,7 +42,7 @@ function agregarOtro(){
   
   var lblMarca = $('<div class="label_producto">Marca</div>');
       
-  var nuevaMarca = $('<div><select class="marca_select" id="marca_'+j+'" name="marca_'+j+'"><option value="0">Seleccione marca</option>'+select_option+'</select></div>');
+  var nuevaMarca = $('<div><select class="marca_select" id="marca_'+j+'" name="marca_'+j+'" data-url="togeneratecombo"><option value="0">Seleccione marca</option>'+select_option+'</select></div>');
 
   
   var lblModelo = $('<div class="label_producto">Modelo</div>');
@@ -60,11 +50,9 @@ function agregarOtro(){
   var nuevoModelo = $('<div class="modelo_select"><select id="modelo_'+j+'"><option value="0">Seleccione modelo</option></select></div>');
 	
   
-  var nuevoBoton = $('<div><input type="button" class="btn_agregar" id= "'+j+'" name="agregar" value="agregar"></div>');
+  var nuevoBoton = $('<div><input type="button" class="btn_agregar" id= "'+j+'" name="agregar" value="agregar" data-url="toprocesadoingresos"></div>');
 
-  var nuevoEliminar = $('<div><input type="button" class="btn_eliminar" id= "eliminar_'+j+'" name="eliminar" value="eliminar"></div>');
-	
-
+  var nuevoEliminar = $('<div><input type="button" class="btn_eliminar" id= "eliminar_'+j+'" name="eliminar" value="eliminar" data-url="toremoveingreso"></div>');
   
   nuevoArticulo.append(lblCant);
   
@@ -95,9 +83,9 @@ $('.marca_select').change(function () {
 	
 	  console.log("id:"+id+"value:"+$(this).val());
 	  
-	  var modeloId = id.replace('marca_','modelo_')
-		  	 		   
-	  var path = "/prexey2/web/app_dev.php/panel/ordenIngreso/togeneratecombo";
+	  var modeloId = id.replace('marca_','modelo_');	  
+	  
+	  var path = $(this).data("url");
 				
 				$.ajax({
 					dataType: 'json',
@@ -128,15 +116,11 @@ $('.marca_select').change(function () {
   
 $('.btn_agregar').click(function(){
 	
-	//var base_path = Routing.getBaseUrl().replace(/\w+\.php$/gi,'');
 	$("#sucess").html("");
 	
 	var id = $(this).attr('id');
-	
-	alert("id del boton:"+id);
-		
-	var path = "/prexey2/web/app_dev.php/panel/ordenIngreso/toprocesadoingresos";
-		
+				
+	var path = $(this).data("url");
 	
 	console.log("valor: "+$('#cantidad_'+id).val());
 	
@@ -186,6 +170,69 @@ $('.btn_agregar').click(function(){
 	 } 	
 
 });
+
+$('.btn_eliminar').click(function(){
+	
+	$("#sucess").html("");
+	
+	var id = $(this).attr('id');
+	
+	var path = $(this).data("url");
+	
+	console.log("btn_id: "+id);
+	
+	var productoId = id.replace('eliminar_','producto_nuevo_');
+		
+	var cantidadId = id.replace('eliminar_','cantidad_');
+
+	var cantidad = $('#'+cantidadId).val();
+	
+	var marcaId = id.replace('eliminar_','marca_');
+
+	var marca = $('#'+marcaId).val();
+	
+	var modeloId = id.replace('eliminar_','modelo_');
+
+	var modelo = $('#'+modeloId).val();
+	
+	var parametros = {
+					"orden" : ordenId,
+					"marca" : marca,
+					"modelo" : modelo,
+					"cantidad" : cantidad
+		  };
+	
+		   $.ajax({
+					dataType: 'json',
+					data:  parametros,
+					url:   path,
+					type:  'post',
+					})
+					.done(function (data) {
+						
+						console.log(data.resultado);
+						console.log(data.query);
+											
+						 if(!data.resultado){				  					
+						  
+							alert("Se ha generado un error al eliminar");
+							$("#respuesta").html("Se ha generado un error al eliminar"); 
+						 
+						 }else{
+							
+							$('#'+productoId).hide(); 
+							$("#sucess").html("El elemento se ha eliminado correctamente de la orden");				
+						 
+						 }                  
+						  
+					})
+					.always(function(){					
+							
+						//$("#agregar").hide();						
+					});					
+	
+	
+});	
 
 } // agregar otro 
 

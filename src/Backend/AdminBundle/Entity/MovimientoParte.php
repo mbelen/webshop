@@ -50,8 +50,7 @@ class MovimientoParte
      * @ORM\JoinColumn(name="origen_id", referencedColumnName="id")
     */
 
-    protected $depositoOrigen;        
-    
+    protected $depositoOrigen;    
 
     /**
      * @ORM\ManyToMany(targetEntity="Parte", mappedBy="movimientos")
@@ -65,7 +64,12 @@ class MovimientoParte
      */
      private $observaciones;
    
-    
+     /**
+     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="movimiento")
+     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
+	 */
+
+     protected $estado; 
 
     
     /**
@@ -431,5 +435,28 @@ class MovimientoParte
     public function getPartes()
     {
         return $this->partes;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param \Backend\AdminBundle\Entity\EstadoMovimiento $estado
+     * @return MovimientoParte
+     */
+    public function setEstado(\Backend\AdminBundle\Entity\EstadoMovimiento $estado = null)
+    {
+        $this->estado = $estado;
+    
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return \Backend\AdminBundle\Entity\EstadoMovimiento 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

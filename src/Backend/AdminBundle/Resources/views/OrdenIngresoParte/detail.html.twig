@@ -1,0 +1,76 @@
+{% extends '::backend.html.twig' %}
+ {% block stylesheets %}
+    {{ parent() }}
+     {% stylesheets '@BackendAdminBundle/Resources/public/css/ingresos.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+{% endblock %}
+{% block container -%}
+    <h3>Detalle de Orden de Ingreso de Partes n°: {{ entity.id }} </h3>
+
+<div class="control-group">
+  <label>Fecha de creación: 
+  {{ entity.createdAt |date('d-m-Y ') }}</label>
+</div>
+
+<div class="control-group">
+  <label>Cliente : 
+  {{ entity.getCliente }}</label>
+</div>
+
+<div class="control-group">
+  <label>Operador Logístico : 
+  {{ entity.getOperador }}</label>
+</div>
+
+<div class="control-group">
+  <label>Documento: 
+  {{ entity.getDocumento }}</label>
+</div>
+
+<div class="control-group">
+  <label>Observaciones: 
+  {{ entity.getObservaciones }}</label>
+</div>
+
+<div class="control-group">
+  <label>Estado: 
+  {{ entity.getEstado.name }}</label>
+</div>
+
+<div class="well">
+    <table class="table">
+    <thead>
+    <tr>
+    <th>Cantidad</th>
+    <th>Detalle de la parte</th>
+    </tr>
+    </thead>
+    <tbody>
+     {% for ingreso in entity.getIngresos() %}
+    
+     <tr>
+                <td>{{ i.cantidad }}</td>
+                <td>{{ i.parte }}</td>                
+     </tr>   
+     {% endfor %}        
+     </tbody>
+     </table>
+</div>
+	
+   
+     <button type="button" class="btn btn-primary" data-url="{{ path('ordenIngresoParte') }}" ><i class="icon-ok icon-white"></i>Aceptar</button>	
+	 <button type="button" class="btn btn-danger  data-url="{{ path('ordenIngresoParte')}} data-id="{{ entity.id }}" ><i class="icon-remove icon-white"></i>Rechazar</button>
+	 <button type="button" class="btn btn-inverse" data-url="{{ path('ordenIngresoParte') }}"><i class="icon-chevron-left icon-white"></i>Volver</button>
+   
+   
+   
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+
+  {% javascripts '@BackendAdminBundle/Resources/public/js/procesa.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}    

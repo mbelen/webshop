@@ -41,7 +41,9 @@
     <th>Operador Logístico</th>
     <th>Documento</th>
     <th>Observaciones</th>
-    <th style="width: 36px;">Acciones</th>
+    <th>Destino</th>
+    <th>Estado</th>
+    <th style="width: 86px;">Acciones</th>
     </tr>
     </thead>
     <tbody>
@@ -53,15 +55,29 @@
                 <td>{{ orden.operador.name }}</td>
                 <td>{{ orden.documento }}</td>
                 <td>{{ orden.observaciones }}</td>
+                <td>{{ orden.observaciones }}</th>
+                <td>{{ orden.estado.name }}</td>
+                
                 <td>
                 {% if is_granted("ROLE_MODARTICULO") %}
                 <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
+                {% if is_granted("ROLE_MODARTICULO") %}
+                <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-ok"></i></a>
+                {% endif %}
+                
                  {% if is_granted("ROLE_DELARTICULO") %}
                 
                 <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ orden.id }} ><i class="icon-remove"></i></a>
                 
                  {% endif %}
+                {% if is_granted("ROLE_MODARTICULO") %}
+                		<a href="{{ path('ordenIngresoParte_procesa',{ 'id': orden.id }) }}"><i class="icon-eye-open"></i></a>
+                {% endif %} 
+                {% if is_granted("ROLE_MODARTICULO") %}
+                <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-print"></i></a>
+                {% endif %}
+                 
                 </td>
     </tr>
     

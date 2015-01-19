@@ -71,7 +71,7 @@ class OrdenIngreso
 
     protected $ingresos; 
     
-    /**
+    /**   
      * @ORM\ManyToOne(targetEntity="Deposito", inversedBy="ordeningreso")
      * @ORM\JoinColumn(name="deposito_id", referencedColumnName="id")
     */
@@ -84,7 +84,21 @@ class OrdenIngreso
     */
 
     protected $area; 
-    
+   
+ 
+    /**
+     * @ORM\OneToMany(targetEntity="Articulo", mappedBy="orden")
+     */
+     
+     private $articulos;
+
+	/**
+     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="ordeningreso")
+     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
+    */
+
+    protected $estado; 
+
         
     /**
      * Constructor
@@ -94,7 +108,8 @@ class OrdenIngreso
     {
          $this->isDelete=false;
          $this->createdAt = new \DateTime('now');
-         $this->ingresos =  new ArrayCollection();   
+         $this->ingresos =  new ArrayCollection();
+         $this->articulos = new ArrayCollection();    
     }
      
 
@@ -317,6 +332,42 @@ class OrdenIngreso
         return $this->ingresos;
     }
 
+    /* 
+     * Add articulos
+     * @param \Backend\AdminBundle\Entity\Articulo $articulos
+     * @return OrdenIngreso
+     */
+     
+    public function addArticulo(\Backend\AdminBundle\Entity\Articulo $articulos)
+    {
+        $this->articulos[] = $articulos;
+    
+        return $this;
+    }
+
+
+	/*
+     * Remove articulos
+     *
+     * @param \Backend\AdminBundle\Entity\Articulo $articulos
+     */
+     
+    public function removeArticulo(\Backend\AdminBundle\Entity\Articulo $articulos)
+    {
+        $this->articulos->removeElement($articulos);
+    }
+
+    /**
+     * Get articulos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getArticulos()
+    {
+        return $this->articulos;
+
+    }
+
     /**
      * Set deposito
      *
@@ -361,5 +412,28 @@ class OrdenIngreso
     public function getArea()
     {
         return $this->area;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param \Backend\AdminBundle\Entity\EstadoMovimiento $estado
+     * @return OrdenIngreso
+     */
+    public function setEstado(\Backend\AdminBundle\Entity\EstadoMovimiento $estado = null)
+    {
+        $this->estado = $estado;
+    
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return \Backend\AdminBundle\Entity\EstadoMovimiento 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

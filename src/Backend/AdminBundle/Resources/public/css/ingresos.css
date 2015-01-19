@@ -32,6 +32,16 @@
 
 }
 
+.input_imei{
+
+  float:left;
+  padding-left: 4px;
+  width:120px;
+
+}
+.check_garantia{
+  float:left;
+}
 .marca_select{
 
   float:left;
@@ -46,6 +56,13 @@
   padding-left: 4px;
   padding-right: 10px;
 
+}
+.estado_select{
+  float:left;
+  
+}
+.estado_select select{
+ width: 100px;
 }
 
 .btn_eliminar{

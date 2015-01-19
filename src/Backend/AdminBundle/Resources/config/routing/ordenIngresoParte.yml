@@ -19,6 +19,10 @@ ordenIngresoParte_update:
     pattern:  /{id}/update
     defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:update" }
     requirements: { _method: post|put }
+    
+ordenIngresoParte_procesa:
+    pattern:  /{id}/procesa
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:procesa" }    
 
 ordenIngresoParte_delete:
     pattern:  /{id}/delete

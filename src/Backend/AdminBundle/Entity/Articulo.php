@@ -101,7 +101,12 @@ class Articulo
 		
 	protected $movimientos;
 
-
+  /**
+     * @ORM\ManyToOne(targetEntity="OrdenIngreso", inversedBy="articulos")
+     * @ORM\JoinColumn(name="orden_id", referencedColumnName="id")
+     */
+  
+  private $orden;
 		         
     /**
      * Constructor
@@ -110,7 +115,9 @@ class Articulo
     public function __construct()
     {
          $this->isDelete=false;
+         $this->isDisponible=true;
          $this->isValido=true;
+         $this->garantia=false;
          $this->createdAt = new \DateTime('now');
          $this->movimientos = new ArrayCollection();   
     }
@@ -471,5 +478,28 @@ class Articulo
     public function getMovimientos()
     {
         return $this->movimientos;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param \Backend\AdminBundle\Entity\OrdenIngreso $orden
+     * @return Articulo
+     */
+    public function setOrden(\Backend\AdminBundle\Entity\OrdenIngreso $orden = null)
+    {
+        $this->orden = $orden;
+    
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return \Backend\AdminBundle\Entity\OrdenIngreso 
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 }

@@ -71,6 +71,13 @@ class OrdenIngresoParte
 
     protected $ingresos; 
     
+     /**
+     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="ordenparte")
+     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
+     */
+
+    protected $estado; 
+    
         
     /**
      * Constructor
@@ -80,7 +87,7 @@ class OrdenIngresoParte
     {
          $this->isDelete=false;
          $this->createdAt = new \DateTime('now');
-         $this->ingresos =  new ArrayCollection();   
+         $this->ingresos =  new ArrayCollection();          
     }
      
 
@@ -301,5 +308,28 @@ class OrdenIngresoParte
     public function getIngresos()
     {
         return $this->ingresos;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param \Backend\AdminBundle\Entity\EstadoMovimiento $estado
+     * @return OrdenIngresoParte
+     */
+    public function setEstado(\Backend\AdminBundle\Entity\EstadoMovimiento $estado = null)
+    {
+        $this->estado = $estado;
+    
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return \Backend\AdminBundle\Entity\EstadoMovimiento 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

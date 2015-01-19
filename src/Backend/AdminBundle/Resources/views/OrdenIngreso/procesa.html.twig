@@ -1,0 +1,98 @@
+{% extends '::backend.html.twig' %}
+ {% block stylesheets %}
+    {{ parent() }}
+     {% stylesheets '@BackendAdminBundle/Resources/public/css/ingresos.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+{% endblock %}
+{% block container -%}
+    <h3>Procesar OrdenIngreso: {{ entity.id }} </h3>
+
+<div class="control-group">
+  <label>Cliente : 
+  {{ entity.getCliente }}</label>
+</div>
+
+<div class="control-group">
+  <label>Documento: 
+  {{ entity.getDocumento }}</label>
+</div>
+
+
+{% for a in articulos %}
+  <div class="producto_nuevo">
+
+  <div class="label_producto">IMEI </div>
+  <input type="text" value="{{ a.imei }}"  disabled="true" class="input_imei" name="imei" id="imei_{{ a.id }}">
+  <div class="label_producto">Marca</div>
+  <div>
+    <input type="text" value="{{ a.getMarca }}"  disabled="true" class="input_imei" name="marca" id="marca{{ a.id }}">
+  </div>
+  <div class="label_producto">Modelo</div>
+  <div class="modelo_select">
+        <input type="text" value="{{ a.getModelo }}"  disabled="true" class="input_imei" name="modelo" id="modelo{{ a.id }}">
+  </div>
+  <div class="label_producto">Garantía</div>
+  <input disabled class="check_garantia" type="checkbox" {% if a.garantia %} checked {% endif %} name="garantia" value="1" id="garantia_{{ a.id }}">
+  <div class="label_producto">Estado</div>
+  <div class="estado_select">
+  <input type="text" value="{{ a.getEstado}}"  disabled="true" class="input_imei" name="estado" id="estado{{ a.id }}">
+  </div>
+
+  
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+{% for i in 1..cantidad %}
+<div class="producto_nuevo">
+
+  <div class="label_producto">IMEI </div>
+  <input type="text" value="" class="input_imei" name="imei" id="imei_{{ i }}">
+  <div class="label_producto">Marca</div>
+  <div>
+    <select class="marca_select" style="width: 150px;" id="marca_{{ i }}" data-url="{{ path('ordenIngreso_togeneratecombo') }}">
+    <option value="0">Seleccione</option>
+    {% for item in marcas %}
+           <option value="{{ item.id }}">{{ item.name }}</option>
+     {% endfor %}
+    </select>
+  </div>
+  <div class="label_producto">Modelo</div>
+  <div class="modelo_select">
+    <select style="width: 150px;" id="modelo_{{ i }}">
+      <option value="0">Seleccione</option>
+    </select>
+  </div>
+  <div class="label_producto">Garantía</div>
+  <input class="check_garantia" type="checkbox" name="garantia" value="1" id="garantia_{{ i }}">
+  <div class="label_producto">Estado</div>
+  <div class="estado_select">
+  <select id="estado_{{ i }}">
+  {% for item in estados %}
+           <option value="{{ item.id }}">{{ item.name }}</option>
+     {% endfor %}
+  </select>
+  </div>
+  <button style="margin-left: 20px;" class="save_imei" data-id="{{ i }}" data-orden="{{ entity.id }}" data-url="{{ path('articulo_add')}}">Guardar</button>
+
+</div>
+  
+ {% endfor %}
+   <div style="clear:both; width: 100%">
+   <button id="finished" data-url="{{ path('ordenIngreso') }}" >Terminar</button>
+   </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+
+  {% javascripts '@BackendAdminBundle/Resources/public/js/procesa.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}    

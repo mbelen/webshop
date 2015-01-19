@@ -19,12 +19,12 @@ class MovimientoParteType extends AbstractType
             ->add('observaciones')
             ->add('documento')
             ->add('depositoOrigen','entity',array(
-                'class'=>'BackendAdminBundle:Deposito',
-                'property'=>'name',
+                'class'=>'BackendAdminBundle:AreaTrabajo',
+                'property'=>'nombre',
             ))	
 			->add('depositoDestino','entity',array(
-                'class'=>'BackendAdminBundle:Deposito',
-                'property'=>'name',
+                'class'=>'BackendAdminBundle:AreaTrabajo',
+                'property'=>'nombre',
             ))
             /*
             ->add('articulos','entity',array(

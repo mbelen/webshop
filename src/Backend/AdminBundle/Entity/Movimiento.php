@@ -54,7 +54,7 @@ class Movimiento
     
 
     /**
-     * @ORM\ManyToMany(targetEntity="Movimiento", mappedBy="articulos")
+     * @ORM\ManyToMany(targetEntity="Articulo", mappedBy="movimientos")
      */    
 	
     public $articulos;
@@ -63,9 +63,15 @@ class Movimiento
 	/**
      * @ORM\Column(name="observaciones", type="text", nullable=true)
      */
-     private $observaciones;
-   
     
+    private $observaciones;
+   
+    /**
+     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="movimiento")
+     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
+    */
+
+    protected $estado;  
 
     
     /**
@@ -398,5 +404,28 @@ class Movimiento
     public function getArticulos()
     {
         return $this->articulos;
+    }
+
+    /**
+     * Set estado
+     *
+     * @param \Backend\AdminBundle\Entity\EstadoMovimiento $estado
+     * @return Movimiento
+     */
+    public function setEstado(\Backend\AdminBundle\Entity\EstadoMovimiento $estado = null)
+    {
+        $this->estado = $estado;
+    
+        return $this;
+    }
+
+    /**
+     * Get estado
+     *
+     * @return \Backend\AdminBundle\Entity\EstadoMovimiento 
+     */
+    public function getEstado()
+    {
+        return $this->estado;
     }
 }

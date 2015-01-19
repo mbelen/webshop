@@ -273,8 +273,31 @@ class OrdenIngresoParteController extends Controller
         ;
     }
     
-    /* Ajax */
+    public function procesaAction($id){
+	   
+       if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) { 
+        $em = $this->getDoctrine()->getManager();
 
+        $entity = $em->getRepository('BackendAdminBundle:OrdenIngresoParte')->find($id);
+
+        if (!$entity) {
+            
+             $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden .');
+             return $this->redirect($this->generateUrl('ordenIngresoParte'));
+        }
+        
+        return $this->render('BackendAdminBundle:OrdenIngresoParte:detail.html.twig', array(
+            'entity'      => $entity                       
+        ));
+      }
+      else
+         throw new AccessDeniedException();  
+   
+   }
+    
+    
+    
+    /* Ajax */
   
     public function toProcesadoOrdenAction(Request $request){
 						
@@ -295,12 +318,15 @@ class OrdenIngresoParteController extends Controller
 			$cliente = $em->getRepository('BackendAdminBundle:Cliente')->findOneById($clienteId);
 			
 			$operador = $em->getRepository('BackendAdminBundle:OperadorLogistico')->findOneById($operadorId);
+			
+			$estado = $em->getRepository('BackendAdminBundle:EstadoMovimiento')->findOneById(1);
 						
 			$orden->setCliente($cliente);
 			$orden->setOperador($operador);
 			$orden->setDocumento($documento);
 			$orden->setObservaciones($observaciones);
-							
+			$orden->setEstado($estado);
+										
 			$em->persist($orden);
 			
 			$em->flush();
