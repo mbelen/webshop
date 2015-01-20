@@ -63,13 +63,15 @@
                 <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
                 {% if is_granted("ROLE_MODARTICULO") %}
-                <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-ok"></i></a>
+					{% if orden.estado.id == 1 %}
+					<a href="{{ path('ordenIngresoParte_toaceptado', { 'id': orden.id }) }}"><i class="icon-ok"></i></a>
+					{% endif %}
                 {% endif %}
                 
                  {% if is_granted("ROLE_DELARTICULO") %}
-                
-                <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ orden.id }} ><i class="icon-remove"></i></a>
-                
+					{% if orden.estado.id != 2 and orden.estado.id != 3  %}
+						<a href="{{ path('ordenIngresoParte_torechazado', { 'id': orden.id }) }}"><i class="icon-remove"></i></a>
+                	{% endif %}
                  {% endif %}
                 {% if is_granted("ROLE_MODARTICULO") %}
                 		<a href="{{ path('ordenIngresoParte_procesa',{ 'id': orden.id }) }}"><i class="icon-eye-open"></i></a>
@@ -98,11 +100,11 @@
       <h3 id="myModalLabel">Confirmar Borrado</h3>
      </div>
      <div class="modal-body">
-       <p class="error-text">Esta seguro que desea borrar los datos del artículo?</p>
+       <p class="error-text">Esta seguro que desea borrar los datos de la orden?</p>
      </div>
      <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-      <button class="btn btn-danger " data-id="0"  data-url="{{ path('articulo_delete', { 'id': 'id' }) }}">Borrar</button>
+      <button class="btn btn-danger " data-id="0"  data-url="{{ path('ordenIngresoParte_delete', { 'id': 'id' }) }}">Borrar</button>
      </div>
     </div>
     

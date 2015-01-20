@@ -66,7 +66,7 @@ class OrdenIngresoParte
     private $observaciones;
           
     /**
-     * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="orden")
+     * @ORM\OneToMany(targetEntity="IngresoParte", mappedBy="orden")
      */
 
     protected $ingresos; 
@@ -78,6 +78,11 @@ class OrdenIngresoParte
 
     protected $estado; 
     
+    /**
+     * @ORM\Column(name="updated_at", type="datetime")
+     */    
+     
+    private $updatedAt;
         
     /**
      * Constructor
@@ -331,5 +336,28 @@ class OrdenIngresoParte
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return OrdenIngresoParte
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

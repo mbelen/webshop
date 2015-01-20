@@ -24,6 +24,14 @@ ordenIngresoParte_procesa:
     pattern:  /{id}/procesa
     defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:procesa" }    
 
+ordenIngresoParte_toaceptado:
+    pattern:  /{id}/toaceptado
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:toAceptado" }    
+
+ordenIngresoParte_torechazado:
+    pattern:  /{id}/torechazado
+    defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:toRechazado" }    
+
 ordenIngresoParte_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "BackendAdminBundle:OrdenIngresoParte:delete" }

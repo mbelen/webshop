@@ -7,7 +7,8 @@
 
 {% endblock %}
 {% block container -%}
-    <h3>Detalle de Orden de Ingreso de Partes n°: {{ entity.id }} </h3>
+<div class="well">    
+    <h4>Detalle de Orden de Ingreso de Partes n°: {{ entity.id }} </h4>
 
 <div class="control-group">
   <label>Fecha de creación: 
@@ -39,29 +40,31 @@
   {{ entity.getEstado.name }}</label>
 </div>
 
+</div>
+
 <div class="well">
     <table class="table">
     <thead>
     <tr>
     <th>Cantidad</th>
-    <th>Detalle de la parte</th>
+    <th>Nombre fabricante</th>
+    <th>Nombre interno</th>
     </tr>
     </thead>
     <tbody>
-     {% for ingreso in entity.getIngresos() %}
-    
+     {% for ingreso in entity.getIngresos() %}    
      <tr>
-                <td>{{ i.cantidad }}</td>
-                <td>{{ i.parte }}</td>                
+                <td>{{ ingreso.cantidad }}</td>
+                <td>{{ ingreso.parte.getNombreFabricante() }}</td>
+                <td>{{ ingreso.parte.getNombreInterno() }}</td>                                
      </tr>   
      {% endfor %}        
      </tbody>
      </table>
-</div>
-	
+</div>	
    
-     <button type="button" class="btn btn-primary" data-url="{{ path('ordenIngresoParte') }}" ><i class="icon-ok icon-white"></i>Aceptar</button>	
-	 <button type="button" class="btn btn-danger  data-url="{{ path('ordenIngresoParte')}} data-id="{{ entity.id }}" ><i class="icon-remove icon-white"></i>Rechazar</button>
+     <button type="button" class="btn btn-inverse"  data-url="{{ path('ordenIngresoParte_toaceptado',{ 'id': entity.id }) }}" ><i class="icon-ok icon-white"></i>Aceptar</button>	
+	 <button type="button" class="btn btn-danger  data-url="{{ path('ordenIngresoParte_torechazado',{ 'id': entity.id })}}><i class="icon-remove icon-white"></i>Rechazar</button>
 	 <button type="button" class="btn btn-inverse" data-url="{{ path('ordenIngresoParte') }}"><i class="icon-chevron-left icon-white"></i>Volver</button>
    
    

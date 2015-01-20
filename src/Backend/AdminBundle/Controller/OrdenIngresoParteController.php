@@ -115,7 +115,7 @@ class OrdenIngresoParteController extends Controller
     }
 
     /**
-     * Displays a form to create a new Articulo entity.
+     * Displays a form to create a new Order entity.
      *
      */
      
@@ -138,7 +138,7 @@ class OrdenIngresoParteController extends Controller
     
  
     /**
-     * Displays a form to edit an existing Articulo entity.
+     * Displays a form to edit an existing Orden entity.
      *
      */
     public function editAction($id)
@@ -400,11 +400,68 @@ class OrdenIngresoParteController extends Controller
 		
 	}
     
+    public function toAceptadoAction($id){
+		
+		if ( $this->get('security.context')->isGranted('ROLE_DELARTICULO')) { 
         
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('BackendAdminBundle:OrdenIngresoParte')->find($id);
+
+            if (!$entity) {
+                $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden.');
+             
+            }
+           else{
+            
+            $estado = $em->getRepository('BackendAdminBundle:EstadoMovimiento')->find(2);
+            
+            $entity->setEstado($estado); //Aceptada
+            $entity->setUpdatedAt(new \DateTime('now'));
+            $em->persist($entity);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success' , 'Se ha aceptado la orden.');
+            
+            }        
+
+        return $this->redirect($this->generateUrl('ordenIngresoParte'));
+      }
+      else
+       throw new AccessDeniedException();					
+	}    
+	
+	public function toRechazadoAction($id){
+		
+		if ( $this->get('security.context')->isGranted('ROLE_DELARTICULO')) { 
+        
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('BackendAdminBundle:OrdenIngresoParte')->find($id);
+
+            if (!$entity) {
+                $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden.');
+             
+            }
+           else{
+            
+            $estado = $em->getRepository('BackendAdminBundle:EstadoMovimiento')->find(3);
+            
+            $entity->setEstado($estado); //Rechazado
+            $entity->setUpdatedAt(new \DateTime('now'));
+            $em->persist($entity);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success' , 'Se ha rechazado la orden.');
+            
+            }        
+
+        return $this->redirect($this->generateUrl('ordenIngresoParte'));
+      }
+      else
+       throw new AccessDeniedException();					
+	}
+	
+	
     
-    /* Generar reportes de Ingresos */
-    
-    
+    /* Generar reportes de Ingresos de Partes */
+       
     
      public function exportarAction(Request $request)
     {
@@ -425,7 +482,9 @@ class OrdenIngresoParteController extends Controller
                     ->setCellValue('A1', 'Fecha Creación')
                     ->setCellValue('B1', 'Tipo')
                     ->setCellValue('C1', 'Cliente')
-                    ->setCellValue('D1', 'Observaciones')                    
+                    ->setCellValue('D1', 'Operador Logistico')
+                    ->setCellValue('E1','Observaciones')
+                    ->setCellValue('F1','Estado')                    
                     ;
                     
         $resultados=$query->getResult();
@@ -435,14 +494,15 @@ class OrdenIngresoParteController extends Controller
            $excelService->excelObj->setActiveSheetIndex(0)
                          ->setCellValue("A$i",$r->getCreatedAt()->format("d-m-Y"))
                          ->setCellValue("B$i",$r->getTipo()->getName())
-                         ->setCellValue("C$i",$r->getDisponible())
-                         ->setCellValue("D$i",$r->getDescripcion())
+                         ->setCellValue("C$i",$r->getCliente()->getName())
+                         ->setCellValue("D$i",$r->getOperador()->getName())
                          ->setCellValue("E$i",$r->getObservacion())
+                         ->setCellValue("F$i",$r->getEstado()->getName())                         
                          ;
           $i++;
         }
                             
-        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Ordenes');
+        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Ordenes Ingreso de Partes');
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excelService->excelObj->setActiveSheetIndex(0);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -450,9 +510,9 @@ class OrdenIngresoParteController extends Controller
         $excelService->excelObj->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
         $excelService->excelObj->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        
-        
-        $fileName="ordenes_".date("Ymd").".xls";
+		$excelService->excelObj->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+	
+        $fileName="ordenes_ingreso_partes_".date("Ymd").".xls";
         //create the response
         $response = $excelService->getResponse();
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
