@@ -63,6 +63,9 @@
                 
                  {% endif %}
                  <a href="{{ path('ordenIngreso_procesa',{ 'id': orden.id }) }}"><i class=" icon-refresh"></i></a>
+                 {% if is_granted("ROLE_MODARTICULO") %}
+                <a href="{{ path('ordenIngreso_print', { 'id': orden.id }) }}"><i class="icon-print"></i></a>
+                {% endif %}
                 </td>
     </tr>
     

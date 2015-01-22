@@ -325,6 +325,35 @@ class OrdenIngresoController extends Controller
       else
        throw new AccessDeniedException(); 
     }
+    
+    public function printAction(Request $request, $id)
+   {
+    $em = $this->getDoctrine()->getManager();
+      $entity = $em->getRepository('BackendAdminBundle:OrdenIngreso')->find($id);
+
+      if (!$entity) {
+          $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden .');
+          return $this->redirect($this->generateUrl('ordenIngreso' ));
+      }
+      else{
+        require_once($this->get('kernel')->getRootDir().'/config/dompdf_config.inc.php');
+
+        $dompdf = new \DOMPDF();
+        $html= $this->renderView('BackendAdminBundle:OrdenIngreso:recibo_orden.html.twig',
+          array('entity'=>$entity)
+        );
+        $dompdf->load_html($html);
+        $dompdf->render();
+        $fileName="recibo_orden_ingreso_".$id.".pdf";
+        $response= new Response($dompdf->output(), 200, array(
+        	'Content-Type' => 'application/pdf; charset=utf-8'
+        ));
+        $response->headers->set('Content-Disposition', 'attachment;filename='.$fileName);
+        return $response;
+      }
+   
+   }
+    
 
     /**
      * Creates a form to delete a Articulo entity by id.
