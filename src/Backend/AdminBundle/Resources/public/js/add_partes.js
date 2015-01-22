@@ -4,13 +4,8 @@ var ordenId;
 
 function generarCombo() {
   
-      //var id = $(this).attr('id');
-	
-	  //console.log("id:"+id+"value:"+$(this).val());
-	  
-	  //var modeloId = id.replace('marca_','modelo_')
-		  	 		   
-	  var path = "/prexey2/web/app_dev.php/panel/ordenIngresoParte/togeneratecombo";
+  	 		   
+	  var path = $("#path").val(); 
 				
 				$.ajax({
 					dataType: 'json',
