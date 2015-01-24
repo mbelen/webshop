@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Backend\AdminBundle\Entity\Articulo;
 use Backend\AdminBundle\Form\ArticuloType;
+use Doctrine\DBAL\DriverManager;
 
 /**
  * Articulo controller.
@@ -49,12 +50,14 @@ class ArticuloController extends Controller
         $this->get('request')->query->get('page', 1)/*page number*/,
         $this->container->getParameter('max_on_listepage')/*limit per page*/
     );
-        
+         $estados = $em->getRepository('BackendAdminBundle:Estado')
+        ->findAll();
         $deleteForm = $this->createDeleteForm(0);
         return $this->render('BackendAdminBundle:Articulo:index.html.twig', 
         array('pagination' => $pagination,
         'delete_form' => $deleteForm->createView(),
-        'search'=>$search
+        'search'=>$search ,
+        'estados'=>$estados
         ));
         
     }
@@ -91,6 +94,33 @@ class ArticuloController extends Controller
       else
        throw new AccessDeniedException();
     }
+
+    public function changeEstadoAction(Request $request){
+        if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) {
+            $ids = $request->request->get("ids");
+            $estado_id = $request->request->get("estado"); 
+		      	
+			     $data=array("msg"=>'');
+           try{
+             $sql="update articulo set estado_id=$estado_id where id in ($ids)";
+             $conn = $this->getDoctrine()->getManager()->getConnection();
+             $stmt = $conn->executeUpdate($sql);
+             
+           }catch(\Exception $e){
+              $data["msg"]="No se pudo modificar el estado";
+           }
+      
+			     $response = new Response(json_encode($data));
+			     $response->headers->set('Content-Type', 'application/json');
+			
+			     return $response;
+        
+        
+        }else
+          throw new AccessDeniedException();
+    
+    }
+
 
     /**
     * Creates a form to create a Cliente entity.
@@ -271,7 +301,7 @@ class ArticuloController extends Controller
     public function toProcesadoAction(Request $request){
 			
 			$marca = explode(",",$request->query->get("marca"));
-			$em = $this->getDoctrine()->getManager();
+			$em = $this->getDoctrine()->getManager();                   //TODO: HARDCODEADO
 			$modelos = $em->getRepository('BackendAdminBundle:Modelo')->findOneById(1); // Bymarca_id($marca);
 			if(!$modelos){
 				$data["modelo"]= false;
@@ -290,23 +320,23 @@ class ArticuloController extends Controller
      public function addArticuloImeiAction(Request $request){
      
         $data=array("mensaje"=>'');
-         //TODO: add orden de ingreso ID 
+         
         try{ 
-        $em = $this->getDoctrine()->getManager();         
-        $entity  = new Articulo();
-        $entity->setMarca($em->getRepository('BackendAdminBundle:Marca')->find($request->request->get("marca")));
-        $entity->setModelo($em->getRepository('BackendAdminBundle:Modelo')->find($request->request->get("modelo")));
-        $entity->setImei($request->request->get("imei"));
-        $entity->setEstado($em->getRepository('BackendAdminBundle:Estado')->find($request->request->get("estado")));  
-        $entity->setGarantia($request->request->get("garantia"));
-        $entity->setOrden($em->getRepository('BackendAdminBundle:OrdenIngreso')->find($request->request->get("orden")));
-        $em->persist($entity);
-        $em->flush();
+            $em = $this->getDoctrine()->getManager();         
+            $entity  = new Articulo();
+            $entity->setMarca($em->getRepository('BackendAdminBundle:Marca')->find($request->request->get("marca")));
+            $entity->setModelo($em->getRepository('BackendAdminBundle:Modelo')->find($request->request->get("modelo")));
+            $entity->setImei($request->request->get("imei"));
+            $entity->setEstado($em->getRepository('BackendAdminBundle:Estado')->find($request->request->get("estado")));  
+            $entity->setGarantia($request->request->get("garantia"));
+            $entity->setOrden($em->getRepository('BackendAdminBundle:OrdenIngreso')->find($request->request->get("orden")));
+            $em->persist($entity);
+            $em->flush();
         
           
         }
-        catch(Exception $e){
-            $data["mensaje"]="error";
+        catch(\Exception $e){
+            $data["mensaje"]="Error: el IMEI no pudo guardarse. Posiblemente este duplicado.";
         }
            
         $response = new Response(json_encode($data));

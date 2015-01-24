@@ -23,12 +23,12 @@ class OrdenIngresoController extends Controller
         $dql="SELECT u FROM BackendAdminBundle:OrdenIngreso u where u.isDelete=false"  ;
         $search=mb_convert_case($search,MB_CASE_LOWER);
         
-       /*
+       
         if ($search)
-          $dql.=" and u.descripcion like '%$search%' ";
+          $dql.=" and u.id =$search  ";
           
-        $dql .=" order by u.descripcion"; 
-        */
+        $dql .=" order by u.id desc"; 
+        
         return $dql;
      
      }
@@ -77,9 +77,9 @@ class OrdenIngresoController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
-            //$em->flush();
+            $em->flush();
             $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado una nueva orden.');
-            return $this->redirect($this->generateUrl('ordenIngreso_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('ordenIngreso'));
         }
         
         
@@ -94,35 +94,7 @@ class OrdenIngresoController extends Controller
        throw new AccessDeniedException();
     }
     
-    /*
-     * public function createAction(Request $request)
-    {
-        if ( $this->get('security.context')->isGranted('ROLE_ADDARTICULO')) {
-        $entity  = new OrdenIngreso();
-        $form = $this->createForm(new OrdenIngresoType(), $entity);
-        $form->bind($request);
-         
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-            $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado una nueva orden.');
-            return $this->redirect($this->generateUrl('ordenIngreso_edit', array('id' => $entity->getId())));
-        }
-        
-        
-
-        return $this->render('BackendAdminBundle:OrdenIngreso:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView()
-           
-        ));
-      }
-      else
-       throw new AccessDeniedException();
-    }
-     * 
-     */ 
+    
 
     /**
     * Creates a form to create a OrdenIngreso entity.
@@ -189,6 +161,7 @@ class OrdenIngresoController extends Controller
             $cantidad += $ingreso->getCantidad();
         }
         $cantidad = $cantidad - count($articulos);
+       
         return $this->render('BackendAdminBundle:OrdenIngreso:procesa.html.twig', array(
             'entity'      => $entity,
             'marcas' => $marcas,

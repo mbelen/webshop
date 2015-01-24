@@ -52,4 +52,18 @@ Backend\AdminBundle\Entity\Cliente:
                 min: 2
                 max: 20
                 maxMessage: "el CUIT puede tener 20 carácteres máximo"
-                minMessage: "el CUIT puede tener 2 carácteres mínimo"                  
+                minMessage: "el CUIT puede tener 2 carácteres mínimo"
+
+Backend\AdminBundle\Entity\Articulo:
+  constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: 
+            fields: imei
+            message: "Ya existe el IMEI"
+
+  properties:
+        imei:
+            - Length: 
+                min: 15
+                max: 15
+                minMessage: "El IMEI debe tener 15 carácteres"
+                maxMessage: "El IMEI debe tener 15 carácteres"                                              
