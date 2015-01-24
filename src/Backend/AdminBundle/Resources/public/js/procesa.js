@@ -1,11 +1,7 @@
 $('.marca_select').change(function () {
   
-      var id = $(this).attr('id');
-	
-	  
-	  
+    var id = $(this).attr('id');
 	  var modeloId = id.replace('marca_','modelo_')
-		  	 		   
 	  var path = $(this).data("url");
 				
 				$.ajax({
@@ -36,6 +32,25 @@ $('.marca_select').change(function () {
 
 $(".save_imei").click(function(){
      var id=$(this).data("id");
+     
+     if ( $("#imei_"+id).val().length != 15){
+       alert("El IMEI debe tener 15 carácteres"); 
+       return false;
+     }
+     if ($("#marca_"+id).val() == 0 ){
+        alert("Debe indicar una Marca");
+        return false;
+     }
+     if ($("#modelo_"+id).val() == 0 ){
+        alert("Debe indicar un Modelo");
+        return false;
+     }
+     if ($("#estado_"+id).val() == 0 ){
+        alert("Debe indicar un Estado");
+        return false;
+     }
+     
+     
      var path = $(this).data("url");
      $(this).prop("disabled",true);
 		 var garantia=0;
@@ -53,7 +68,7 @@ $(".save_imei").click(function(){
 					})
 					.done(function (data) {
 					  if (data.mensaje != ''){
-              alert("error no se grabo");
+              alert(data.mensaje);
               self.prop("disabled",false);
             }else{
               self.hide();

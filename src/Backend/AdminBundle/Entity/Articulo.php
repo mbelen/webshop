@@ -43,7 +43,7 @@ class Articulo
     protected $tipo;    
 
      /**
-     * @ORM\Column(name="imei", type="string", length=15, nullable=true)
+     * @ORM\Column(name="imei", type="string", length=15, nullable=true, unique = true)
      */
      
     private $imei;
