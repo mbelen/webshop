@@ -40,6 +40,7 @@ class OrdenIngresoController extends Controller
     public function indexAction(Request $request,$search)
     {
        if ( $this->get('security.context')->isGranted('ROLE_VIEWARTICULO')) {
+        
         $em = $this->getDoctrine()->getManager();
         
         $dql=$this->generateSQL($search);
@@ -167,6 +168,7 @@ class OrdenIngresoController extends Controller
     }
     
    public function procesaAction($id){
+	   
        if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) { 
         $em = $this->getDoctrine()->getManager();
 
@@ -199,8 +201,7 @@ class OrdenIngresoController extends Controller
         ));
       }
       else
-         throw new AccessDeniedException(); 
-   
+         throw new AccessDeniedException();  
    
    }
  
@@ -419,6 +420,50 @@ class OrdenIngresoController extends Controller
 			
 			return $response;
 	}
+	
+	public function toRemoveIngresoAction(Request $request){
+			
+						
+			$ordenId 		= $request->request->get('orden');
+			$cantidad		= $request->request->get('cantidad');
+			$marcaId 		= $request->request->get('marca');
+			$modeloId 		= $request->request->get('modelo');
+						
+			$em = $this->getDoctrine()->getManager();
+												
+			$marca = $em->getRepository('BackendAdminBundle:Marca')->findOneById($marcaId);
+			
+			$modelo = $em->getRepository('BackendAdminBundle:Modelo')->findOneById($modeloId);
+			
+			$orden =  $em->getRepository('BackendAdminBundle:OrdenIngreso')->findOneById($ordenId);
+			
+			$ingreso = new Ingreso();
+						
+			$ingreso->setCantidad($cantidad);
+			$ingreso->setMarca($marca);
+			$ingreso->SetModelo($modelo);	
+			$ingreso->setOrden($orden);
+								
+			$dql = "UPDATE BackendAdminBundle:Ingreso i SET i.isDelete = true where i.orden=".$ordenId." and i.cantidad=".$cantidad." and i.marca=".$marcaId." and i.modelo=".$modeloId;
+			
+			$query = $em->createQuery($dql);
+			
+			$result = $query->execute();
+							
+			//$em->remove($ingreso);
+			$em->flush();
+			
+			$data["query"] = $dql;								
+			$data["resultado"] = true;
+									
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+	}
+    
+	
+	
     
     
     public function toGenerateComboAction(Request $request){
