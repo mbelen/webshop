@@ -33,12 +33,16 @@
     
     
     <div class="well">
-    <table class="table">
+    <table class="table" id="table_articulos">
     <thead>
     <tr>
+    <th> <input type="checkbox" name="todos" id="todos" value="1"></th>
      <th>Fecha</th>
+     <th>IMEI</th>
     <th {% if pagination.isSorted('u.tipo') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Tipo', 'u.tipo') }}</th>
     <th>Disponible</th>
+    <th>Estado</th>
+    <th>Garantía</th>
     <th>Descripción</th>
     <th>Observaciones</th>
     <th style="width: 36px;">Acciones</th>
@@ -48,7 +52,9 @@
      {% for articulo in pagination %}
     
      <tr>
+                <td><input type="checkbox" name="articulo[]" value="{{ articulo.id }}" ></td>
                 <td>{{ articulo.createdAt |date('d-m-Y ') }}</td>
+                <td> {{ articulo.imei }}</td>
                 <td>{{ articulo.tipo }}</td>
                 <td>{% if articulo.isDisponible %}
                     
@@ -58,6 +64,17 @@
                      <span class="label label-important">No Disponible</span> 
                      
                   {% endif%}</td>
+                <td>{{ articulo.estado }}</td>
+                <td>
+                    {% if articulo.garantia %}
+                    
+                    <span class="label label-success">SI</span>
+                   
+                  {% else %}
+                     <span class="label label-important">No</span> 
+                     
+                  {% endif%}
+                </td>
                 <td>{{ articulo.descripcion}}</td>
                 <td>{{ articulo.observacion}}</td>
                 <td>
@@ -76,6 +93,16 @@
    
     </tbody>
     </table>
+    </div>
+    
+    <div>
+    <p>Seleccione los artículos que desee para cambiar de estado: </p>
+    Estado <select id="estado" name="estado">
+           <option value="0">Seleccione</option>
+           {% for item in estados %}
+           <option value="{{ item.id }}">{{ item.name }}</option>
+     {% endfor %}
+           </select> <input type="button" name="cambiar" value="Cambiar" id="cambiar" data-url="{{ path("articulo_changeEstado")}}">
     </div>
     
     <div class="pagination">
@@ -113,6 +140,9 @@
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {% javascripts '@BackendAdminBundle/Resources/public/js/exportar_entidad.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% javascripts '@BackendAdminBundle/Resources/public/js/articulo.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}      
   

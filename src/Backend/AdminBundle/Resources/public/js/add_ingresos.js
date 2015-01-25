@@ -6,7 +6,7 @@ var select_option = "";
 
 function generarMarcas(){
 
-	  var path = "/prexey2/web/app_dev.php/panel/ordenIngreso/togeneratecombomarca";
+	  var path = $("#path").val();//"/prexey2/web/app_dev.php/panel/ordenIngreso/togeneratecombomarca";
   
   $.ajax({
 					dataType: 'json',

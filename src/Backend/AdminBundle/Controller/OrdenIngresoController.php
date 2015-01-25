@@ -23,12 +23,12 @@ class OrdenIngresoController extends Controller
         $dql="SELECT u FROM BackendAdminBundle:OrdenIngreso u where u.isDelete=false"  ;
         $search=mb_convert_case($search,MB_CASE_LOWER);
         
-       /*
+       
         if ($search)
-          $dql.=" and u.descripcion like '%$search%' ";
+          $dql.=" and u.id =$search  ";
           
-        $dql .=" order by u.descripcion"; 
-        */
+        $dql .=" order by u.id desc"; 
+        
         return $dql;
      
      }
@@ -78,9 +78,9 @@ class OrdenIngresoController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
-            //$em->flush();
+            $em->flush();
             $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado una nueva orden.');
-            return $this->redirect($this->generateUrl('ordenIngreso_edit', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('ordenIngreso'));
         }
         
         
@@ -95,35 +95,7 @@ class OrdenIngresoController extends Controller
        throw new AccessDeniedException();
     }
     
-    /*
-     * public function createAction(Request $request)
-    {
-        if ( $this->get('security.context')->isGranted('ROLE_ADDARTICULO')) {
-        $entity  = new OrdenIngreso();
-        $form = $this->createForm(new OrdenIngresoType(), $entity);
-        $form->bind($request);
-         
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-            $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado una nueva orden.');
-            return $this->redirect($this->generateUrl('ordenIngreso_edit', array('id' => $entity->getId())));
-        }
-        
-        
-
-        return $this->render('BackendAdminBundle:OrdenIngreso:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView()
-           
-        ));
-      }
-      else
-       throw new AccessDeniedException();
-    }
-     * 
-     */ 
+    
 
     /**
     * Creates a form to create a OrdenIngreso entity.
@@ -191,6 +163,7 @@ class OrdenIngresoController extends Controller
             $cantidad += $ingreso->getCantidad();
         }
         $cantidad = $cantidad - count($articulos);
+       
         return $this->render('BackendAdminBundle:OrdenIngreso:procesa.html.twig', array(
             'entity'      => $entity,
             'marcas' => $marcas,
@@ -326,6 +299,35 @@ class OrdenIngresoController extends Controller
       else
        throw new AccessDeniedException(); 
     }
+    
+    public function printAction(Request $request, $id)
+   {
+    $em = $this->getDoctrine()->getManager();
+      $entity = $em->getRepository('BackendAdminBundle:OrdenIngreso')->find($id);
+
+      if (!$entity) {
+          $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado la orden .');
+          return $this->redirect($this->generateUrl('ordenIngreso' ));
+      }
+      else{
+        require_once($this->get('kernel')->getRootDir().'/config/dompdf_config.inc.php');
+
+        $dompdf = new \DOMPDF();
+        $html= $this->renderView('BackendAdminBundle:OrdenIngreso:recibo_orden.html.twig',
+          array('entity'=>$entity)
+        );
+        $dompdf->load_html($html);
+        $dompdf->render();
+        $fileName="recibo_orden_ingreso_".$id.".pdf";
+        $response= new Response($dompdf->output(), 200, array(
+        	'Content-Type' => 'application/pdf; charset=utf-8'
+        ));
+        $response->headers->set('Content-Disposition', 'attachment;filename='.$fileName);
+        return $response;
+      }
+   
+   }
+    
 
     /**
      * Creates a form to delete a Articulo entity by id.

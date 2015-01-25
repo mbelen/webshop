@@ -7,7 +7,7 @@
 
 {% endblock %}
 {% block container -%}
-    <h3>Procesar OrdenIngreso: {{ entity.id }} </h3>
+    <h3>Procesar Orden de Ingreso: {{ entity.id }} </h3>
 
 <div class="control-group">
   <label>Cliente : 
@@ -18,6 +18,15 @@
   <label>Documento: 
   {{ entity.getDocumento }}</label>
 </div>
+
+<div class="control-group">
+<label>
+{% for i in entity.getIngresos %}
+   {{ i.cantidad }} {{ i.getMarca.getName }} {{ i.getModelo.getName }} | 
+{% endfor %}
+</label>
+</div>
+
 
 
 {% for a in articulos %}
@@ -49,7 +58,7 @@
 
 {% endfor %}
 
-
+{% if cantidad != 0 %}
 {% for i in 1..cantidad %}
 <div class="producto_nuevo">
 
@@ -75,6 +84,7 @@
   <div class="label_producto">Estado</div>
   <div class="estado_select">
   <select id="estado_{{ i }}">
+  <option value="0">Seleccione</option>
   {% for item in estados %}
            <option value="{{ item.id }}">{{ item.name }}</option>
      {% endfor %}
@@ -85,6 +95,7 @@
 </div>
   
  {% endfor %}
+ {% endif %}
    <div style="clear:both; width: 100%">
    <button id="finished" data-url="{{ path('ordenIngreso') }}" >Terminar</button>
    </div>

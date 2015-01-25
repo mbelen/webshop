@@ -36,6 +36,7 @@
     <table class="table">
     <thead>
     <tr>
+    <th>N°</th>
      <th {% if pagination.isSorted('u.createdAt') %} class="sorted"{% endif %} >{{ knp_pagination_sortable(pagination, 'Fecha', 'u.createdAt') }}</th>
     <th>Cliente</th>
     <th>Operador Logístico</th>
@@ -48,6 +49,7 @@
      {% for orden in pagination %}
     
      <tr>
+                <td>{{ orden.id }}</td>
                 <td>{{ orden.createdAt |date('d-m-Y ') }}</td>
                 <td>{{ orden.cliente.name }}</td>
                 <td>{{ orden.operador.name }}</td>
@@ -63,6 +65,9 @@
                 
                  {% endif %}
                  <a href="{{ path('ordenIngreso_procesa',{ 'id': orden.id }) }}"><i class=" icon-refresh"></i></a>
+                 {% if is_granted("ROLE_MODARTICULO") %}
+                <a href="{{ path('ordenIngreso_print', { 'id': orden.id }) }}"><i class="icon-print"></i></a>
+                {% endif %}
                 </td>
     </tr>
     
@@ -83,11 +88,11 @@
       <h3 id="myModalLabel">Confirmar Borrado</h3>
      </div>
      <div class="modal-body">
-       <p class="error-text">Esta seguro que desea borrar los datos del artículo?</p>
+       <p class="error-text">Esta seguro que desea borrar la orden de ingreso indicada?</p>
      </div>
      <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-      <button class="btn btn-danger " data-id="0"  data-url="{{ path('articulo_delete', { 'id': 'id' }) }}">Borrar</button>
+      <button class="btn btn-danger " data-id="0"  data-url="{{ path('ordenIngreso_delete', { 'id': 'id' }) }}">Borrar</button>
      </div>
     </div>
     
