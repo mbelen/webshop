@@ -56,16 +56,16 @@
                 <td>{{ orden.documento }}</td>
                 <td>{{ orden.observaciones }}</td>
                 <td>
-                {% if is_granted("ROLE_MODARTICULO") %}
+                {% if is_granted("ROLE_MODORDING") %}
                 <a href="{{ path('ordenIngreso_edit', { 'id': orden.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
-                 {% if is_granted("ROLE_DELARTICULO") %}
+                 {% if is_granted("ROLE_DELORDING") %}
                 
                 <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ orden.id }} ><i class="icon-remove"></i></a>
                 
                  {% endif %}
                  <a href="{{ path('ordenIngreso_procesa',{ 'id': orden.id }) }}"><i class=" icon-refresh"></i></a>
-                 {% if is_granted("ROLE_MODARTICULO") %}
+                 {% if is_granted("ROLE_MODORDING") %}
                 <a href="{{ path('ordenIngreso_print', { 'id': orden.id }) }}"><i class="icon-print"></i></a>
                 {% endif %}
                 </td>

@@ -286,10 +286,7 @@ class TipoDepositoController extends Controller
                          
                             
         $excelService->excelObj->setActiveSheetIndex(0)
-                    ->setCellValue('A1', 'Nombre')
-                    ->setCellValue('B1', 'Responsable')
-                    ->setCellValue('C1', 'Observaciones')
-                    ->setCellValue('D1', 'Sucursal')
+                    ->setCellValue('A1', 'Nombre')                
                     ;
         
         $resultados=$query->getResult();
@@ -299,28 +296,15 @@ class TipoDepositoController extends Controller
          
            $excelService->excelObj->setActiveSheetIndex(0)
                          ->setCellValue("A$i",$r->getNombre())
-                         ->setCellValue("B$i",$r->getResponsable())
-                         ->setCellValue("C$i",$r->getObservaciones())
-                         ->setCellValue("D$i",$r->getSucursal())
-                         ;
-                
-                           
-          $i++;
+                         ;  
+           $i++;
         }
                             
-        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Choferes');
+        $excelService->excelObj->getActiveSheet()->setTitle('Listado de Depositos');
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $excelService->excelObj->setActiveSheetIndex(0);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-        $excelService->excelObj->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         
-        $fileName="areas_".date("Ymd").".xls";
+        $fileName="depositos_".date("Ymd").".xls";
         //create the response
         $response = $excelService->getResponse();
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');

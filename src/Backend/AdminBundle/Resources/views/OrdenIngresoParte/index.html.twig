@@ -36,6 +36,7 @@
     <table class="table">
     <thead>
     <tr>
+    <th>N°</th>
      <th {% if pagination.isSorted('u.createdAt') %} class="sorted"{% endif %} >{{ knp_pagination_sortable(pagination, 'Fecha', 'u.createdAt') }}</th>
     <th>Cliente</th>
     <th>Operador Logístico</th>
@@ -50,6 +51,7 @@
      {% for orden in pagination %}
     
      <tr>
+                <td>{{ orden.id }}</td>
                 <td>{{ orden.createdAt |date('d-m-Y ') }}</td>
                 <td>{{ orden.cliente.name }}</td>
                 <td>{{ orden.operador.name }}</td>
@@ -59,24 +61,24 @@
                 <td>{{ orden.estado.name }}</td>
                 
                 <td>
-                {% if is_granted("ROLE_MODARTICULO") %}
+                {% if is_granted("ROLE_MODORDING") %}
                 <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
-                {% if is_granted("ROLE_MODARTICULO") %}
+                {% if is_granted("ROLE_MODORDING") %}
 					{% if orden.estado.id == 1 %}
 					<a href="{{ path('ordenIngresoParte_toaceptado', { 'id': orden.id }) }}"><i class="icon-ok"></i></a>
 					{% endif %}
                 {% endif %}
                 
-                 {% if is_granted("ROLE_DELARTICULO") %}
+                 {% if is_granted("ROLE_DELORDING") %}
 					{% if orden.estado.id != 2 and orden.estado.id != 3  %}
 						<a href="{{ path('ordenIngresoParte_torechazado', { 'id': orden.id }) }}"><i class="icon-remove"></i></a>
                 	{% endif %}
                  {% endif %}
-                {% if is_granted("ROLE_MODARTICULO") %}
+                {% if is_granted("ROLE_MODORDING") %}
                 		<a href="{{ path('ordenIngresoParte_procesa',{ 'id': orden.id }) }}"><i class="icon-eye-open"></i></a>
                 {% endif %} 
-                {% if is_granted("ROLE_MODARTICULO") %}
+                {% if is_granted("ROLE_MODORDING") %}
                 <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-print"></i></a>
                 {% endif %}
                  

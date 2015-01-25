@@ -327,7 +327,65 @@ class LoadAccesoData extends AbstractFixture implements OrderedFixtureInterface
         $accesoAdmin45->setAcceso('ROLE_DELTIPOORDENING');
         $manager->persist($accesoAdmin45);
         $manager->flush();
-        $this->addReference('del-tipo-orden-ingreso', $accesoAdmin45);        
+        $this->addReference('del-tipo-orden-ingreso', $accesoAdmin45); 
+        
+        $accesoAdmin46= new Acceso();
+        $accesoAdmin46->setName('Nueva Orden Ingreso');
+        $accesoAdmin46->setAcceso('ROLE_ADDORDENING');
+        $manager->persist($accesoAdmin46);
+        $manager->flush();
+        $this->addReference('add-orden-ingreso', $accesoAdmin46);
+        
+        $accesoAdmin47 = new Acceso();
+        $accesoAdmin47->setName('Listar Ordenes Ingreso');
+        $accesoAdmin47->setAcceso('ROLE_VIEWORDENING');
+        $manager->persist($accesoAdmin47);
+        $manager->flush();
+        $this->addReference('view-orden-ingreso', $accesoAdmin47);
+        
+        $accesoAdmin48 = new Acceso();
+        $accesoAdmin48->setName('Modificar Orden Ingreso');
+        $accesoAdmin48->setAcceso('ROLE_MODORDENING');
+        $manager->persist($accesoAdmin48);
+        $manager->flush();
+        $this->addReference('mod-orden-ingreso', $accesoAdmin48);
+        
+        $accesoAdmin49 = new Acceso();
+        $accesoAdmin49->setName('Borrar Orden Ingreso');
+        $accesoAdmin49->setAcceso('ROLE_DELORDENING');
+        $manager->persist($accesoAdmin49);
+        $manager->flush();
+        $this->addReference('del-orden-ingreso', $accesoAdmin49); 
+        
+        $accesoAdmin50= new Acceso();
+        $accesoAdmin50->setName('Nuevo Movimiento');
+        $accesoAdmin50->setAcceso('ROLE_ADDMOV');
+        $manager->persist($accesoAdmin50);
+        $manager->flush();
+        $this->addReference('add-movimiento', $accesoAdmin50);
+        
+        $accesoAdmin51 = new Acceso();
+        $accesoAdmin51->setName('Listar Movimientos');
+        $accesoAdmin51->setAcceso('ROLE_VIEWMOV');
+        $manager->persist($accesoAdmin51);
+        $manager->flush();
+        $this->addReference('view-movimiento', $accesoAdmin51);
+        
+        $accesoAdmin52 = new Acceso();
+        $accesoAdmin52->setName('Modificar Movimiento');
+        $accesoAdmin52->setAcceso('ROLE_MODMOV');
+        $manager->persist($accesoAdmin52);
+        $manager->flush();
+        $this->addReference('mod-movimiento', $accesoAdmin52);
+        
+        $accesoAdmin53 = new Acceso();
+        $accesoAdmin53->setName('Borrar Movimiento');
+        $accesoAdmin53->setAcceso('ROLE_DELMOV');
+        $manager->persist($accesoAdmin53);
+        $manager->flush();
+        $this->addReference('del-movimiento', $accesoAdmin53); 
+        
+               
     }
 
     /**
