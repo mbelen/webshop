@@ -43,7 +43,11 @@ ordenIngreso_togeneratecombomarca:
 
 ordenIngreso_toprocesadoingresos:
     pattern:  /toprocesadoingresos
-    defaults: { _controller: "BackendAdminBundle:OrdenIngreso:toProcesadoIngresos" }    
+    defaults: { _controller: "BackendAdminBundle:OrdenIngreso:toProcesadoIngresos" }  
+
+ordenIngreso_toremoveingreso:
+    pattern:  /toremoveingreso
+    defaults: { _controller: "BackendAdminBundle:OrdenIngreso:toRemoveIngreso" }      
 
 ordenIngreso:
     pattern:  /{search}
