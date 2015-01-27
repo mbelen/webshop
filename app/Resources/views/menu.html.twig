@@ -51,6 +51,10 @@
                        <li> <a href="{{ path('cliente') }}"> Clientes</a> </li>
                        <li class="divider"></li>
                        {% endif %}
+                       {% if is_granted('ROLE_VIEWCLIENTE') %}
+                       <li> <a href="{{ path('operadorLogistico') }}"> Operadores Logisticos</a> </li>
+                       <li class="divider"></li>
+                       {% endif %}
                        {% if is_granted('ROLE_VIEWSUCURSAL') %}
                        <li> <a href="{{ path('sucursal') }}"> Sucursales</a> </li>
                        <li class="divider"></li>
@@ -95,7 +99,11 @@
                        <li class="divider"></li>
                        {% endif %}
                        {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('movimiento') }}">Movimientos</a> </li>
+                       <li> <a href="{{ path('movimiento') }}">Movimientos de Equipos</a> </li>
+                       <li class="divider"></li>
+                       {% endif %}
+                       {% if is_granted('ROLE_VIEWCLIENTE') %}
+                       <li> <a href="{{ path('movimientoParte') }}">Movimientos de Partes</a> </li>
                        <li class="divider"></li>
                        {% endif %}
                        {% if is_granted('ROLE_VIEWCLIENTE') %}

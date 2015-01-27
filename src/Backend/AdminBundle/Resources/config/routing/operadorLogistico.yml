@@ -1,0 +1,30 @@
+operadorLogistico_new:
+    pattern:  /new
+    defaults: { _controller: "BackendAdminBundle:OperadorLogistico:new" }
+
+operadorLogistico_exportar:
+    pattern:  /exportar
+    defaults: { _controller: "BackendAdminBundle:OperadorLogistico:exportar" }
+    
+operadorLogistico_create:
+    pattern:  /create
+    defaults: { _controller: "BackendAdminBundle:OperadorLogistico:create" }
+    requirements: { _method: post }
+
+operadorLogistico_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BackendAdminBundle:OperadorLogistico:edit" }
+
+operadorLogistico_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BackendAdminBundle:OperadorLogistico:update" }
+    requirements: { _method: post|put }
+
+operadorLogistico_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BackendAdminBundle:operadorLogistico:delete" }
+    requirements: { _method: post|delete }
+
+operadorLogistico:
+    pattern:  /{search}
+    defaults: { _controller: "BackendAdminBundle:OperadorLogistico:index" , search: ''}

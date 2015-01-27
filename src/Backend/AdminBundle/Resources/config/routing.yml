@@ -77,3 +77,7 @@ backend_movimiento_parte:
 backend_parte:
     resource: "@BackendAdminBundle/Resources/config/routing/parte.yml"
     prefix:   /parte
+    
+backend_operador_logistico:
+    resource: "@BackendAdminBundle/Resources/config/routing/operadorLogistico.yml"
+    prefix:   /operadorLogistico  
