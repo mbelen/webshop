@@ -20,6 +20,13 @@
 </div>
 </div>
 <div class="control-group">
+{{ form_label(form.tipoArticulo,"Tipo de Articulo", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.tipoArticulo, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_modelo_tipoArticulo_errorloc' class="help-inline error" >{{ form_errors(form.tipoArticulo) }}</div>
+</div>
+</div>
+<div class="control-group">
 {{ form_label(form.marca,"Marca", { 'label_attr': {'class': 'control-label'} }) }}
 <div class="controls">
  {{ form_widget(form.marca, { 'attr': {'class': 'input-xlarge'} }) }}

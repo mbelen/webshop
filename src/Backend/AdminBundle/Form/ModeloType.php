@@ -28,6 +28,18 @@ class ModeloType extends AbstractType
                          ->orderBy('u.name', 'ASC');
                       
             }))
+            ->add('tipoArticulo', 'entity',array(
+            'class'=>'BackendAdminBundle:TipoArticulo',
+            'query_builder' => function(EntityRepository $er) {
+                return $er->createQueryBuilder("u")
+                         ->select("u")
+                         ->where('u.isDelete = :delete')
+                         ->andwhere('u.parent = :parent')
+                         ->setParameter('delete',false)
+                         ->setParameter('parent', 49)
+                         ->orderBy('u.name', 'ASC');
+                      
+            }))
             ;
     }
     
