@@ -23,13 +23,17 @@ class Modelo
      */
    
     protected $name;
+    
     /**
      * @ORM\Column(name="nameManufacture", type="string", length=100)
      */
+    
     protected $nameManufacture;
+    
     /**
      * @ORM\Column(name="variante", type="string", length=100, nullable=true)
      */
+    
     protected $variante;
 
     
@@ -48,11 +52,26 @@ class Modelo
     protected $marca;
 
 	/**
+     * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="modelos")
+     * @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
+     */    
+
+    
+    protected $tipoArticulo;
+
+
+	/**
      * @ORM\OneToMany(targetEntity="Articulo", mappedBy="modelo")
      * 
      **/     
     
     protected $articulos;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Parte", mappedBy="modelos")
+     */    
+	
+    protected $partes;
     
     /**
      * @ORM\OneToMany(targetEntity="Ingreso", mappedBy="modelo")
@@ -66,11 +85,11 @@ class Modelo
    public function __construct()
     {
         $this->isDelete=false;
-	     	$this->articulos = new ArrayCollection();
+	    $this->articulos = new ArrayCollection();
         $this->ingresos = new ArrayCollection();
     }
     
-      public function __toString()
+     public function __toString()
     {
       return mb_convert_case($this->name, MB_CASE_TITLE,"UTF-8");
     } 
@@ -280,5 +299,61 @@ class Modelo
     public function getIngresos()
     {
         return $this->ingresos;
+    }
+
+    /**
+     * Add partes
+     *
+     * @param \Backend\AdminBundle\Entity\Parte $partes
+     * @return Modelo
+     */
+    public function addParte(\Backend\AdminBundle\Entity\Parte $partes)
+    {
+        $this->partes[] = $partes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove partes
+     *
+     * @param \Backend\AdminBundle\Entity\Parte $partes
+     */
+    public function removeParte(\Backend\AdminBundle\Entity\Parte $partes)
+    {
+        $this->partes->removeElement($partes);
+    }
+
+    /**
+     * Get partes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPartes()
+    {
+        return $this->partes;
+    }
+
+    /**
+     * Set tipoArticulo
+     *
+     * @param \Backend\AdminBundle\Entity\TipoArticulo $tipoArticulo
+     * @return Modelo
+     */
+    public function setTipoArticulo(\Backend\AdminBundle\Entity\TipoArticulo $tipoArticulo = null)
+    {
+        $this->tipoArticulo = $tipoArticulo;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoArticulo
+     *
+     * @return \Backend\AdminBundle\Entity\TipoArticulo 
+     */
+    public function getTipoArticulo()
+    {
+        return $this->tipoArticulo;
     }
 }

@@ -42,14 +42,14 @@ class TipoArticulo
      
      
     /**
-     * @ORM\OneToMany(targetEntity="TipoArticulo", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="TipoArticulo", mappedBy="parent",cascade="all")
      **/
 
     private $children;
 
     /**
      * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id",onDelete="CASCADE")
      **/
 
 
@@ -60,10 +60,21 @@ class TipoArticulo
      * @ORM\OneToMany(targetEntity="Articulo", mappedBy="tipo")
      **/
 
-    protected $articulos;    
+    protected $articulos;   
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Modelo", mappedBy="tipo")
+     **/
 
+    protected $modelos;    
 
-   
+	/**
+     * @ORM\OneToMany(targetEntity="Parte", mappedBy="tipo")
+     **/
+
+    protected $partes;    
+
+	   
     /**
      * Constructor
      */
@@ -282,5 +293,71 @@ class TipoArticulo
     public function getIngresos()
     {
         return $this->ingresos;
+    }
+
+    /**
+     * Add partes
+     *
+     * @param \Backend\AdminBundle\Entity\Parte $partes
+     * @return TipoArticulo
+     */
+    public function addParte(\Backend\AdminBundle\Entity\Parte $partes)
+    {
+        $this->partes[] = $partes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove partes
+     *
+     * @param \Backend\AdminBundle\Entity\Parte $partes
+     */
+    public function removeParte(\Backend\AdminBundle\Entity\Parte $partes)
+    {
+        $this->partes->removeElement($partes);
+    }
+
+    /**
+     * Get partes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPartes()
+    {
+        return $this->partes;
+    }
+
+    /**
+     * Add modelos
+     *
+     * @param \Backend\AdminBundle\Entity\Modelo $modelos
+     * @return TipoArticulo
+     */
+    public function addModelo(\Backend\AdminBundle\Entity\Modelo $modelos)
+    {
+        $this->modelos[] = $modelos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove modelos
+     *
+     * @param \Backend\AdminBundle\Entity\Modelo $modelos
+     */
+    public function removeModelo(\Backend\AdminBundle\Entity\Modelo $modelos)
+    {
+        $this->modelos->removeElement($modelos);
+    }
+
+    /**
+     * Get modelos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getModelos()
+    {
+        return $this->modelos;
     }
 }
