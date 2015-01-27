@@ -1,5 +1,13 @@
 {% extends '::backend.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+     {% stylesheets '@BackendAdminBundle/Resources/public/css/group.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+    
 
+{% endblock %}
+{% form_theme form 'BackendAdminBundle:AreaTrabajo:checkboxlist.html.twig' %}
 {% block container -%}
     <h3>Editar Area de Trabajo</h3>    
     

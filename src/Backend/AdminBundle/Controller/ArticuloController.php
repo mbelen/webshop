@@ -24,7 +24,7 @@ class ArticuloController extends Controller
         
        
         if ($search)
-          $dql.=" and u.descripcion like '%$search%' ";
+          $dql.=" and (u.descripcion like '%$search%' or u.imei like '%$search%')";
           
         $dql .=" order by u.descripcion"; 
         
@@ -373,10 +373,18 @@ class ArticuloController extends Controller
         $i=2;
         foreach($resultados as $r)
         {
+            $disponible="No Disponible";
+            if ($r->getIsDisponible()){
+              $disponible= "Disponible";
+            } 
+            $tipo="";
+            if ($r->getTipo()){
+              $tipo=$r->getTipo()->getName();
+            }
            $excelService->excelObj->setActiveSheetIndex(0)
                          ->setCellValue("A$i",$r->getCreatedAt()->format("d-m-Y"))
-                         ->setCellValue("B$i",$r->getTipo()->getName())
-                         ->setCellValue("C$i",$r->getDisponible())
+                         ->setCellValue("B$i",$tipo)
+                         ->setCellValue("C$i",$disponible)
                          ->setCellValue("D$i",$r->getDescripcion())
                          ->setCellValue("E$i",$r->getObservacion())
                          ;

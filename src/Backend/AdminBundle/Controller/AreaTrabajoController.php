@@ -301,7 +301,7 @@ class AreaTrabajoController extends Controller
                          ->setCellValue("A$i",$r->getNombre())
                          ->setCellValue("B$i",$r->getResponsable())
                          ->setCellValue("C$i",$r->getObservaciones())
-                         ->setCellValue("D$i",$r->getSucursal())
+                         ->setCellValue("D$i",$r->getSucursal()->getNombre())
                          ;
                 
                            

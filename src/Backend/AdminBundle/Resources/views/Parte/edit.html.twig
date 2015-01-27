@@ -47,11 +47,11 @@
       <h3 id="myModalLabel">Confirmar Borrado</h3>
      </div>
      <div class="modal-body">
-       <p class="error-text">Esta seguro que desea borrar el artículo?</p>
+       <p class="error-text">Esta seguro que desea borrar la parte?</p>
      </div>
      <div class="modal-footer">
       <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-      <button class="btn btn-danger " data-id="0"  data-url="{{ path('articulo_delete', { 'id': 'id' }) }}" >Borrar</button>
+      <button class="btn btn-danger " data-id="0"  data-url="{{ path('parte_delete', { 'id': 'id' }) }}" >Borrar</button>
      </div>
     </div>
 
@@ -66,7 +66,7 @@
 {% block javascripts %}
   {{ parent() }}
 
-{% javascripts '@BackendAdminBundle/Resources/public/js/validate_articulo.js' %}
+{% javascripts '@BackendAdminBundle/Resources/public/js/validate_parte.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 {% endblock %}

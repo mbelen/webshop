@@ -6,7 +6,8 @@ $(document).ready(function() {
 					required:true,
 					minlength:2,
 					maxlength:100,
-				},
+				}
+      },
 				
 			
 			 messages: {
@@ -24,5 +25,7 @@ $(document).ready(function() {
         }
 			
 		});
+    
+    });
 		
-	});
+	
