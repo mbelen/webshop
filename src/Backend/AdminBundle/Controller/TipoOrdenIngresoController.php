@@ -229,7 +229,7 @@ class TipoOrdenIngresoController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BackendAdminBundle:TipoOrdenIngeso')->find($id);
+            $entity = $em->getRepository('BackendAdminBundle:TipoOrdenIngreso')->find($id);
 
             if (!$entity) {
                 $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el tipo de orden.');
