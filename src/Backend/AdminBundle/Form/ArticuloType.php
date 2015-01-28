@@ -18,6 +18,7 @@ class ArticuloType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            /*
             ->add('tipo', 'entity',array(
             'class'=>'BackendAdminBundle:TipoArticulo',
             'query_builder' => function(EntityRepository $er) {
@@ -28,7 +29,7 @@ class ArticuloType extends AbstractType
                          ->orderBy('u.name', 'ASC');
                       
             }))
-            /*
+            
             ->add('marca', 'entity',array(
             'mapped' => false,
             'class'=>'BackendAdminBundle:Marca',

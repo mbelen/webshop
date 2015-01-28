@@ -40,11 +40,12 @@
      <th>Fecha</th>
      <th>IMEI</th>
     <th {% if pagination.isSorted('u.tipo') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Tipo', 'u.tipo') }}</th>
+    <th>Marca</th>
+    <th>Modelo</th>
+    <th>Nombre fabricante</th>
     <th>Disponible</th>
     <th>Estado</th>
     <th>Garantía</th>
-    <th>Descripción</th>
-    <th>Observaciones</th>
     <th style="width: 36px;">Acciones</th>
     </tr>
     </thead>
@@ -55,7 +56,10 @@
                 <td><input type="checkbox" name="articulo[]" value="{{ articulo.id }}" ></td>
                 <td>{{ articulo.createdAt |date('d-m-Y ') }}</td>
                 <td> {{ articulo.imei }}</td>
-                <td>{{ articulo.tipo }}</td>
+                <td>{{ articulo.getModelo.getTipoArticulo.getName }}</td>
+                <td> {{ articulo.getMarca.getName }}</th>
+                <td> {{ articulo.getModelo.getName }}</th>
+                <td> {{ articulo.getModelo.getNameManufacture }}</th>
                 <td>{% if articulo.isDisponible %}
                     
                     <span class="label label-success">Disponible</span>
@@ -75,8 +79,6 @@
                      
                   {% endif%}
                 </td>
-                <td>{{ articulo.descripcion}}</td>
-                <td>{{ articulo.observacion}}</td>
                 <td>
                 {% if is_granted("ROLE_MODARTICULO") %}
                 <a href="{{ path('articulo_edit', { 'id': articulo.id }) }}"><i class="icon-pencil"></i></a>
