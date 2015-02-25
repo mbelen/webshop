@@ -61,11 +61,25 @@ class AreaTrabajo
     private $isDelete;
    
      /**
-     * @ORM\ManyToMany(targetEntity="TipoDeposito", inversedBy="areas")
+     * @ORM\ManyToMany(targetEntity="TipoDeposito", inversedBy="areasTrabajo")
      * @ORM\JoinTable(name="areas_depositos")
      */
      
-	  private $depositos;
+	 private $tipoDepositos;
+	
+	/**
+     * @ORM\OneToMany(targetEntity="Deposito", mappedBy="area")
+     */
+
+    protected $depositos;        
+	
+	  
+    /**
+     * @ORM\OneToMany(targetEntity="OrdenIngreso", mappedBy="area")
+     */
+
+    protected $ordenesIngreso;           
+   
 
     /**
      * Constructor
@@ -75,9 +89,13 @@ class AreaTrabajo
         $this->isHabilitada=true;
         $this->isDelete=false;
         $this->createdAt = new \DateTime('now');
-        //$this->depositos = new ArrayCollection();
-       
+        //$this->depositos = new ArrayCollection();       
     }    
+
+	public function __toString()
+    {
+      return mb_convert_case($this->name, MB_CASE_TITLE,"UTF-8");
+    } 
 
     /**
      * Get id
@@ -304,5 +322,71 @@ class AreaTrabajo
     public function getDepositos()
     {
         return $this->depositos;
+    }
+
+    /**
+     * Add ordenesIngreso
+     *
+     * @param \Backend\AdminBundle\Entity\OrdenIngreso $ordenesIngreso
+     * @return AreaTrabajo
+     */
+    public function addOrdenesIngreso(\Backend\AdminBundle\Entity\OrdenIngreso $ordenesIngreso)
+    {
+        $this->ordenesIngreso[] = $ordenesIngreso;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ordenesIngreso
+     *
+     * @param \Backend\AdminBundle\Entity\OrdenIngreso $ordenesIngreso
+     */
+    public function removeOrdenesIngreso(\Backend\AdminBundle\Entity\OrdenIngreso $ordenesIngreso)
+    {
+        $this->ordenesIngreso->removeElement($ordenesIngreso);
+    }
+
+    /**
+     * Get ordenesIngreso
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrdenesIngreso()
+    {
+        return $this->ordenesIngreso;
+    }
+   
+    /**
+     * Add tipoDepositos
+     *
+     * @param \Backend\AdminBundle\Entity\TipoDeposito $tipoDepositos
+     * @return AreaTrabajo
+     */
+    public function addTipoDeposito(\Backend\AdminBundle\Entity\TipoDeposito $tipoDepositos)
+    {
+        $this->tipoDepositos[] = $tipoDepositos;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tipoDepositos
+     *
+     * @param \Backend\AdminBundle\Entity\TipoDeposito $tipoDepositos
+     */
+    public function removeTipoDeposito(\Backend\AdminBundle\Entity\TipoDeposito $tipoDepositos)
+    {
+        $this->tipoDepositos->removeElement($tipoDepositos);
+    }
+
+    /**
+     * Get tipoDepositos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTipoDepositos()
+    {
+        return $this->tipoDepositos;
     }
 }

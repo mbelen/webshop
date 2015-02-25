@@ -3,6 +3,7 @@
 namespace Backend\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Backend\AdminBundle\Entity\MovimientoParte;
@@ -36,7 +37,7 @@ class MovimientoParteController extends Controller
      */
     public function indexAction(Request $request,$search)
     {
-       if ( $this->get('security.context')->isGranted('ROLE_VIEWARTICULO')) {
+       if ( $this->get('security.context')->isGranted('ROLE_VIEWORDENING')) {
         $em = $this->getDoctrine()->getManager();
         
         $dql=$this->generateSQL($search);
@@ -66,7 +67,7 @@ class MovimientoParteController extends Controller
      */
     public function createAction(Request $request)
     {
-        if ( $this->get('security.context')->isGranted('ROLE_ADDARTICULO')) {
+        if ( $this->get('security.context')->isGranted('ROLE_ADDORDENING')) {
         $entity  = new MovimientoParte();
         $form = $this->createForm(new MovimientoParteType(), $entity);
         $form->bind($request);
@@ -101,7 +102,7 @@ class MovimientoParteController extends Controller
     private function createCreateForm(MovimientoParte $entity)
     {
         $form = $this->createForm(new MovimientoParteType(), $entity, array(
-            'action' => $this->generateUrl('movimiento_create'),
+            'action' => $this->generateUrl('movimientoParte_create'),
             'method' => 'POST',
         ));
 
@@ -140,18 +141,18 @@ class MovimientoParteController extends Controller
         if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) { 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BackendAdminBundle:Movimiento')->find($id);
+        $entity = $em->getRepository('BackendAdminBundle:MovimientoParte')->find($id);
 
         if (!$entity) {
             
              $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el movimiento .');
-             return $this->redirect($this->generateUrl('movimiento'));
+             return $this->redirect($this->generateUrl('movimientoParte'));
         }
 
-        $editForm = $this->createForm(new ArticuloType(), $entity);
+        $editForm = $this->createForm(new MovimientoParteType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('BackendAdminBundle:Movimiento:edit.html.twig', array(
+        return $this->render('BackendAdminBundle:MovimientoParte:edit.html.twig', array(
             'entity'      => $entity,
             'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -186,14 +187,14 @@ class MovimientoParteController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) {  
+        if ( $this->get('security.context')->isGranted('ROLE_MODORDENING')) {  
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('BackendAdminBundle:Movimiento')->find($id);
+        $entity = $em->getRepository('BackendAdminBundle:MovimientoParte')->find($id);
 
         if (!$entity) {
              $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el movimiento.');
-             return $this->redirect($this->generateUrl('ordenIngreso'));
+             return $this->redirect($this->generateUrl('movimientoParte'));
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -204,10 +205,10 @@ class MovimientoParteController extends Controller
             $em->persist($entity);
             $em->flush();
              $this->get('session')->getFlashBag()->add('success' , 'Se han actualizado los datos del movimiento.');
-            return $this->redirect($this->generateUrl('movimiento_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('movimientoParte_edit', array('id' => $id)));
         }
 
-        return $this->render('BackendAdminBundle:Movimiento:edit.html.twig', array(
+        return $this->render('BackendAdminBundle:MovimientoParte:edit.html.twig', array(
             'entity'      => $entity,
             'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -223,13 +224,13 @@ class MovimientoParteController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
-        if ( $this->get('security.context')->isGranted('ROLE_DELARTICULO')) { 
+        if ( $this->get('security.context')->isGranted('ROLE_DELORDENING')) { 
         $form = $this->createDeleteForm($id);
         $form->bind($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('BackendAdminBundle:Movimiento')->find($id);
+            $entity = $em->getRepository('BackendAdminBundle:MovimientoParte')->find($id);
 
             if (!$entity) {
                 $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el movimiento.');
@@ -246,14 +247,14 @@ class MovimientoParteController extends Controller
             }
         }
 
-        return $this->redirect($this->generateUrl('movimiento'));
+        return $this->redirect($this->generateUrl('movimientoParte'));
       }
       else
        throw new AccessDeniedException(); 
     }
 
     /**
-     * Creates a form to delete a Articulo entity by id.
+     * Creates a form to delete a Movimiento entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -267,9 +268,189 @@ class MovimientoParteController extends Controller
         ;
     }
     
+    /**
+    *  Ajax
+    **/ 
+    
+    public function toProcesadoMovimientoAction(Request $request){
+						
+			$origenId 		= $request->request->get('origen');
+			$destinoId		= $request->request->get('destino');
+			$documento 		= $request->request->get('documento');
+			$observaciones 	= $request->request->get('observaciones');
+
+			
+			$em = $this->getDoctrine()->getManager();	
+									
+			$movimiento = new MovimientoParte();
+								
+			$origen = $em->getRepository('BackendAdminBundle:Deposito')->findOneById($origenId);
+			
+			$destino = $em->getRepository('BackendAdminBundle:Deposito')->findOneById($destinoId);
+			
+			$estado = $em->getRepository('BackendAdminBundle:EstadoMovimiento')->findOneById(1);
+						
+			$movimiento->setDepositoOrigen($origen);
+			$movimiento->setDepositoDestino($destino);
+			$movimiento->setDocumento($documento);
+			$movimiento->setObservaciones($observaciones);
+			$movimiento->setEstado($estado);
+										
+			$em->persist($movimiento);
+			
+			$em->flush();
+
+			$movimientoId = $movimiento->getId();
+						
+			$data["resultado"] = true;
+			$data["id"] = $movimientoId;
+			
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+	}
+	
+	public function toProcesadoMovsAction(Request $request){
+		
+			/*			  			
+			$movimientoId 	= $request->request->get('movimiento');
+			$cantidad		= $request->request->get('cantidad');
+			$parteId 		= $request->request->get('parte');
+									
+			$em = $this->getDoctrine()->getManager();
+												
+			$parte = $em->getRepository('BackendAdminBundle:Parte')->findOneById($parteId);
+						
+			$movimiento =  $em->getRepository('BackendAdminBundle:MovimientoParte')->findOneById($movimientoId);
+											
+			if($parte->getStock() < $cantidad) {					
+			
+				$data["stock"] = -1; // Si no hay stock no hace nada
+				$data["disponible"] = $parte->getStock();							
+			
+			}
+			
+			
+			
+			else{
+				
+				$data["stock"] = $parte->stock;
+				$nuevoStock = $parte->stock - $cantidad;	
+				$parte->setStock($nuevoStock);				
+				$em->persist($parte);
+				$em->flush();
+				
+				$movimientoParte = new IngresoParte();
+						
+				$ingresoParte->setCantidad($cantidad);
+				$ingresoParte->setParte($parte);
+				$ingresoParte->setOrden($orden);
+								
+				$em->persist($ingresoParte);
+				$em->flush();		
+			
+			}		
+			
+			*/				
+			//$data["disponible"] = $parte->getStock();			
+			
+			
+			$data["resultado"] = true;
+									
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+	}
+    
+    public function toGenerateComboAction(Request $request){
+		
+		    $items = array();
+							
+			$em = $this->getDoctrine()->getManager();
+		
+	        $partes = $em->getRepository('BackendAdminBundle:Parte')->findAll(); 
+												
+			foreach($partes as $parte)
+			{
+				$id = $parte->getId();
+				$codigo = $parte->getCodigo(); 
+				$part = array('id'=>$id,'codigo'=>$codigo);
+				$items[] = $part;
+			}			
+		
+			$data['items'] = $items;
+			$response = new Response(json_encode($data));
+			$response->headers->set('Content-Type', 'application/json');
+			
+			return $response;
+		
+	}
+    
+    public function toAceptadoAction($id){
+		
+		if ( $this->get('security.context')->isGranted('ROLE_MODORDENING')) { 
+        
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('BackendAdminBundle:MovimientoParte')->find($id);
+
+            if (!$entity) {
+                $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado ela movimiento.');
+             
+            }
+           else{
+            
+            $estado = $em->getRepository('BackendAdminBundle:EstadoMovimiento')->find(2);
+            
+            $entity->setEstado($estado); //Aceptada
+            $entity->setUpdatedAt(new \DateTime('now'));
+            $em->persist($entity);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success' , 'Se ha aceptado el movimiento.');
+            
+            }        
+
+        return $this->redirect($this->generateUrl('ordenIngresoParte'));
+      }
+      else
+       throw new AccessDeniedException();					
+	} 
+    
+    
+    public function toRechazadoAction($id){
+		
+		if ( $this->get('security.context')->isGranted('ROLE_DELORDENING')) { 
+        
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('BackendAdminBundle:MovimientoParte')->find($id);
+
+            if (!$entity) {
+                $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el movimiento.');
+             
+            }
+           else{
+            
+            $estado = $em->getRepository('BackendAdminBundle:EstadoMovimiento')->find(3);
+            
+            $entity->setEstado($estado); //Rechazado
+            $entity->setUpdatedAt(new \DateTime('now'));
+            $em->persist($entity);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success' , 'Se ha rechazado el movimiento.');
+            
+            }        
+
+        return $this->redirect($this->generateUrl('movimientoParte'));
+      }
+      else
+       throw new AccessDeniedException();					
+	}
+    
+    
      public function exportarAction(Request $request)
     {
-     if ( $this->get('security.context')->isGranted('ROLE_VIEWARTICULO')) {
+     if ( $this->get('security.context')->isGranted('ROLE_VIEWORDENING')) {
          
          $em = $this->getDoctrine()->getManager();
 
@@ -284,9 +465,10 @@ class MovimientoParteController extends Controller
                             
         $excelService->excelObj->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'Fecha Creación')
-                    ->setCellValue('B1', 'Tipo')
-                    ->setCellValue('C1', 'Cliente')
-                    ->setCellValue('D1', 'Observaciones')                    
+                    ->setCellValue('B1', 'Origen')
+                    ->setCellValue('C1', 'Destino')
+                    ->setCellValue('D1', 'Estado')
+                    ->setCellValue('E1', 'Observaciones')                    
                     ;
                     
         $resultados=$query->getResult();
@@ -295,10 +477,10 @@ class MovimientoParteController extends Controller
         {
            $excelService->excelObj->setActiveSheetIndex(0)
                          ->setCellValue("A$i",$r->getCreatedAt()->format("d-m-Y"))
-                         ->setCellValue("B$i",$r->getTipo()->getName())
-                         ->setCellValue("C$i",$r->getDisponible())
-                         ->setCellValue("D$i",$r->getDescripcion())
-                         ->setCellValue("E$i",$r->getObservacion())
+                         ->setCellValue("B$i",$r->getDepositoOrigen()->getNombre())
+                         ->setCellValue("C$i",$r->getDepositoDestino()->getNombre())
+                         ->setCellValue("D$i",$r->getEstado()->getName())
+                         ->setCellValue("E$i",$r->getObservaciones())
                          ;
           $i++;
         }

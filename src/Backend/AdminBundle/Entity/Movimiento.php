@@ -39,14 +39,14 @@ class Movimiento
     private $isDelete;
    
    /**
-     * @ORM\ManyToOne(targetEntity="Deposito", inversedBy="movimiento")
+     * @ORM\ManyToOne(targetEntity="Deposito", inversedBy="movimientosDestino")
      * @ORM\JoinColumn(name="destino_id", referencedColumnName="id")
     */
 
     protected $depositoDestino;
     
 	/**
-     * @ORM\ManyToOne(targetEntity="Deposito", inversedBy="movimiento")
+     * @ORM\ManyToOne(targetEntity="Deposito", inversedBy="movimientosOrigen")
      * @ORM\JoinColumn(name="origen_id", referencedColumnName="id")
     */
 
@@ -57,7 +57,7 @@ class Movimiento
      * @ORM\ManyToMany(targetEntity="Articulo", mappedBy="movimientos")
      */    
 	
-    public $articulos;
+    protected $articulos;
             
     
 	/**
@@ -67,11 +67,17 @@ class Movimiento
     private $observaciones;
    
     /**
-     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="movimiento")
+     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="movimientos")
      * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
     */
 
     protected $estado;  
+    
+    /**
+     * @ORM\Column(name="modified_at", type="datetime", nullable=true)
+     */    
+     
+    private $modifiedAt;
 
     
     /**
@@ -427,5 +433,28 @@ class Movimiento
     public function getEstado()
     {
         return $this->estado;
+    }
+
+    /**
+     * Set modifiedAt
+     *
+     * @param \DateTime $modifiedAt
+     * @return Movimiento
+     */
+    public function setModifiedAt($modifiedAt)
+    {
+        $this->modifiedAt = $modifiedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get modifiedAt
+     *
+     * @return \DateTime 
+     */
+    public function getModifiedAt()
+    {
+        return $this->modifiedAt;
     }
 }

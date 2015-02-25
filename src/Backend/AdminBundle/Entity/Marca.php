@@ -38,7 +38,14 @@ class Marca
     /**
      * @ORM\OneToMany(targetEntity="Articulo", mappedBy="marca")
      */
+     
     protected $articulos;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Parte", mappedBy="marcas")
+     */    
+	
+    protected $partes;
 
     
     /**
@@ -218,5 +225,38 @@ class Marca
     public function getIngresos()
     {
         return $this->ingresos;
+    }
+
+    /**
+     * Add partes
+     *
+     * @param \Backend\AdminBundle\Entity\Parte $partes
+     * @return Marca
+     */
+    public function addParte(\Backend\AdminBundle\Entity\Parte $partes)
+    {
+        $this->partes[] = $partes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove partes
+     *
+     * @param \Backend\AdminBundle\Entity\Parte $partes
+     */
+    public function removeParte(\Backend\AdminBundle\Entity\Parte $partes)
+    {
+        $this->partes->removeElement($partes);
+    }
+
+    /**
+     * Get partes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPartes()
+    {
+        return $this->partes;
     }
 }

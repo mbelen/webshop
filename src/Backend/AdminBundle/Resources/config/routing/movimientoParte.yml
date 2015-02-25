@@ -25,6 +25,29 @@ movimientoParte_delete:
     defaults: { _controller: "BackendAdminBundle:MovimientoParte:delete" }
     requirements: { _method: post|delete }
 
+movimientoParte_toaceptado:
+    pattern:  /{id}/toaceptado
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:toAceptado" }    
+
+movimientoParte_torechazado:
+    pattern:  /{id}/torechazado
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:toRechazado" }    
+
+    
+movimientoParte_toprocesadomovimiento:
+    pattern:  /toprocesadomovimiento
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:toProcesadoMovimiento" }    
+
+movimientoParte_togeneratecombo:
+    pattern:  /togeneratecombo
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:toGenerateCombo" }    
+
+
+movimientoParte_toprocesadomovs:
+    pattern:  /toprocesadopartes
+    defaults: { _controller: "BackendAdminBundle:MovimientoParte:toProcesadoMovs" }    
+    
+
 movimientoParte:
     pattern:  /{search}
     defaults: { _controller: "BackendAdminBundle:MovimientoParte:index" , search: '' }

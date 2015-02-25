@@ -72,14 +72,14 @@ class OrdenIngreso
     protected $ingresos; 
     
     /**   
-     * @ORM\ManyToOne(targetEntity="Deposito", inversedBy="ordeningreso")
+     * @ORM\ManyToOne(targetEntity="Deposito", inversedBy="ordenesIngreso")
      * @ORM\JoinColumn(name="deposito_id", referencedColumnName="id")
     */
 
     protected $deposito; 
     
     /**
-     * @ORM\ManyToOne(targetEntity="AreaTrabajo", inversedBy="ordeningreso")
+     * @ORM\ManyToOne(targetEntity="AreaTrabajo", inversedBy="ordenesIngreso")
      * @ORM\JoinColumn(name="area_id", referencedColumnName="id")
     */
 
@@ -93,7 +93,7 @@ class OrdenIngreso
      private $articulos;
 
 	/**
-     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="ordeningreso")
+     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="ordenes")
      * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
     */
 

@@ -58,30 +58,28 @@
                 <td>{{ orden.documento }}</td>
                 <td>{{ orden.observaciones }}</td>
                 <td>{{ orden.observaciones }}</th>
-                <td>{{ orden.estado.name }}</td>
+                <td>{{ orden.estado.getName }}</td>
                 
                 <td>
-                {% if is_granted("ROLE_MODORDING") %}
+                {% if is_granted("ROLE_MODORDENING") %}
                 <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
-                {% if is_granted("ROLE_MODORDING") %}
+                {% if is_granted("ROLE_MODORDENING") %}
 					{% if orden.estado.id == 1 %}
 					<a href="{{ path('ordenIngresoParte_toaceptado', { 'id': orden.id }) }}"><i class="icon-ok"></i></a>
 					{% endif %}
-                {% endif %}
-                
-                 {% if is_granted("ROLE_DELORDING") %}
+                {% endif %}                
+                {% if is_granted("ROLE_DELORDENING") %}
 					{% if orden.estado.id != 2 and orden.estado.id != 3  %}
 						<a href="{{ path('ordenIngresoParte_torechazado', { 'id': orden.id }) }}"><i class="icon-remove"></i></a>
                 	{% endif %}
-                 {% endif %}
-                {% if is_granted("ROLE_MODORDING") %}
+                {% endif %}
+                {% if is_granted("ROLE_MODORDENING") %}
                 		<a href="{{ path('ordenIngresoParte_procesa',{ 'id': orden.id }) }}"><i class="icon-eye-open"></i></a>
                 {% endif %} 
-                {% if is_granted("ROLE_MODORDING") %}
+                {% if is_granted("ROLE_MODORDENING") %}
                 <a href="{{ path('ordenIngresoParte_edit', { 'id': orden.id }) }}"><i class="icon-print"></i></a>
-                {% endif %}
-                 
+                {% endif %}                 
                 </td>
     </tr>
     

@@ -366,11 +366,14 @@ class OrdenIngresoController extends Controller
 			$cliente = $em->getRepository('BackendAdminBundle:Cliente')->findOneById($clienteId);
 			
 			$operador = $em->getRepository('BackendAdminBundle:OperadorLogistico')->findOneById($operadorId);
+			
+			$estado = $em->getRepository('BackendAdminBundle:EstadoMovimiento')->findOneById(1);
 						
 			$orden->setCliente($cliente);
 			$orden->setOperador($operador);
 			$orden->setDocumento($documento);
 			$orden->setObservaciones($observaciones);
+			$orden->setEstado($estado);
 							
 			$em->persist($orden);
 			

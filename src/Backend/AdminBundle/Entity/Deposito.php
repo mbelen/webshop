@@ -49,10 +49,43 @@ class Deposito
     private $tipoDeposito;
     
      /**
-     * @ORM\OneToMany(targetEntity="Movimiento", mappedBy="deposito")
+     * @ORM\ManyToOne(targetEntity="AreaTrabajo", inversedBy="depositos")
+     * @ORM\JoinColumn(name="area_id", referencedColumnName="id")
+     */
+     
+    private $area; 
+    
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Movimiento", mappedBy="depositoDestino")
      */
 
-    protected $movimientos;   
+    protected $movimientosDestino;   
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Movimiento", mappedBy="depositoOrigen")
+     */
+
+    protected $movimientosOrigen; 
+            
+    /**
+     * @ORM\OneToMany(targetEntity="MovimientoParte", mappedBy="depositoOrigen")
+     */
+
+    protected $movimientosPartesOrigen;
+    
+	/**
+     * @ORM\OneToMany(targetEntity="MovimientoParte", mappedBy="depositoDestino")
+     */
+
+    protected $movimientosPartesDestino;
+ 
+        
+     /**
+     * @ORM\OneToMany(targetEntity="OrdenIngreso", mappedBy="deposito")
+     */
+
+    protected $ordenesIngreso;           
     
     
     /**
@@ -219,5 +252,226 @@ class Deposito
     public function getMovimientos()
     {
         return $this->movimientos;
+    }
+
+    /**
+     * Add ordenesIngreso
+     *
+     * @param \Backend\AdminBundle\Entity\OrdenIngreso $ordenesIngreso
+     * @return Deposito
+     */
+    public function addOrdenesIngreso(\Backend\AdminBundle\Entity\OrdenIngreso $ordenesIngreso)
+    {
+        $this->ordenesIngreso[] = $ordenesIngreso;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ordenesIngreso
+     *
+     * @param \Backend\AdminBundle\Entity\OrdenIngreso $ordenesIngreso
+     */
+    public function removeOrdenesIngreso(\Backend\AdminBundle\Entity\OrdenIngreso $ordenesIngreso)
+    {
+        $this->ordenesIngreso->removeElement($ordenesIngreso);
+    }
+
+    /**
+     * Get ordenesIngreso
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrdenesIngreso()
+    {
+        return $this->ordenesIngreso;
+    }
+
+    /**
+     * Set area
+     *
+     * @param \Backend\AdminBundle\Entity\AreaTrabajo $area
+     * @return Deposito
+     */
+    public function setArea(\Backend\AdminBundle\Entity\AreaTrabajo $area = null)
+    {
+        $this->area = $area;
+    
+        return $this;
+    }
+
+    /**
+     * Get area
+     *
+     * @return \Backend\AdminBundle\Entity\AreaTrabajo 
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * Add movimientosPartes
+     *
+     * @param \Backend\AdminBundle\Entity\MovimientoParte $movimientosPartes
+     * @return Deposito
+     */
+    public function addMovimientosParte(\Backend\AdminBundle\Entity\MovimientoParte $movimientosPartes)
+    {
+        $this->movimientosPartes[] = $movimientosPartes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove movimientosPartes
+     *
+     * @param \Backend\AdminBundle\Entity\MovimientoParte $movimientosPartes
+     */
+    public function removeMovimientosParte(\Backend\AdminBundle\Entity\MovimientoParte $movimientosPartes)
+    {
+        $this->movimientosPartes->removeElement($movimientosPartes);
+    }
+
+    /**
+     * Get movimientosPartes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovimientosPartes()
+    {
+        return $this->movimientosPartes;
+    }
+
+    /**
+     * Add movimientosDestino
+     *
+     * @param \Backend\AdminBundle\Entity\Movimiento $movimientosDestino
+     * @return Deposito
+     */
+    public function addMovimientosDestino(\Backend\AdminBundle\Entity\Movimiento $movimientosDestino)
+    {
+        $this->movimientosDestino[] = $movimientosDestino;
+    
+        return $this;
+    }
+
+    /**
+     * Remove movimientosDestino
+     *
+     * @param \Backend\AdminBundle\Entity\Movimiento $movimientosDestino
+     */
+    public function removeMovimientosDestino(\Backend\AdminBundle\Entity\Movimiento $movimientosDestino)
+    {
+        $this->movimientosDestino->removeElement($movimientosDestino);
+    }
+
+    /**
+     * Get movimientosDestino
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovimientosDestino()
+    {
+        return $this->movimientosDestino;
+    }
+
+    /**
+     * Add movimientosOrigen
+     *
+     * @param \Backend\AdminBundle\Entity\Movimiento $movimientosOrigen
+     * @return Deposito
+     */
+    public function addMovimientosOrigen(\Backend\AdminBundle\Entity\Movimiento $movimientosOrigen)
+    {
+        $this->movimientosOrigen[] = $movimientosOrigen;
+    
+        return $this;
+    }
+
+    /**
+     * Remove movimientosOrigen
+     *
+     * @param \Backend\AdminBundle\Entity\Movimiento $movimientosOrigen
+     */
+    public function removeMovimientosOrigen(\Backend\AdminBundle\Entity\Movimiento $movimientosOrigen)
+    {
+        $this->movimientosOrigen->removeElement($movimientosOrigen);
+    }
+
+    /**
+     * Get movimientosOrigen
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovimientosOrigen()
+    {
+        return $this->movimientosOrigen;
+    }
+
+    /**
+     * Add movimientosPartesOrigen
+     *
+     * @param \Backend\AdminBundle\Entity\MovimientoParte $movimientosPartesOrigen
+     * @return Deposito
+     */
+    public function addMovimientosPartesOrigen(\Backend\AdminBundle\Entity\MovimientoParte $movimientosPartesOrigen)
+    {
+        $this->movimientosPartesOrigen[] = $movimientosPartesOrigen;
+    
+        return $this;
+    }
+
+    /**
+     * Remove movimientosPartesOrigen
+     *
+     * @param \Backend\AdminBundle\Entity\MovimientoParte $movimientosPartesOrigen
+     */
+    public function removeMovimientosPartesOrigen(\Backend\AdminBundle\Entity\MovimientoParte $movimientosPartesOrigen)
+    {
+        $this->movimientosPartesOrigen->removeElement($movimientosPartesOrigen);
+    }
+
+    /**
+     * Get movimientosPartesOrigen
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovimientosPartesOrigen()
+    {
+        return $this->movimientosPartesOrigen;
+    }
+
+    /**
+     * Add movimientosPartesDestino
+     *
+     * @param \Backend\AdminBundle\Entity\MovimientoParte $movimientosPartesDestino
+     * @return Deposito
+     */
+    public function addMovimientosPartesDestino(\Backend\AdminBundle\Entity\MovimientoParte $movimientosPartesDestino)
+    {
+        $this->movimientosPartesDestino[] = $movimientosPartesDestino;
+    
+        return $this;
+    }
+
+    /**
+     * Remove movimientosPartesDestino
+     *
+     * @param \Backend\AdminBundle\Entity\MovimientoParte $movimientosPartesDestino
+     */
+    public function removeMovimientosPartesDestino(\Backend\AdminBundle\Entity\MovimientoParte $movimientosPartesDestino)
+    {
+        $this->movimientosPartesDestino->removeElement($movimientosPartesDestino);
+    }
+
+    /**
+     * Get movimientosPartesDestino
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMovimientosPartesDestino()
+    {
+        return $this->movimientosPartesDestino;
     }
 }

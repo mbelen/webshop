@@ -364,8 +364,10 @@ class OrdenIngresoParteController extends Controller
 							
 			$em->persist($ingresoParte);
 			$em->flush();
-								
-			//$data["orden"] = $ordenId;
+			
+			$parte->setStock($cantidad);
+			$em->persist($parte);
+			$em->flush();								
 							
 			$data["resultado"] = true;
 									

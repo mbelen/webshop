@@ -32,10 +32,18 @@ class TipoDeposito
     private $isDelete;
       
     /**
-     * @ORM\ManyToMany(targetEntity="AreaTrabajo", mappedBy="tipo_deposito")
+     * @ORM\ManyToMany(targetEntity="AreaTrabajo", mappedBy="tipoDepositos")
      */
         
     protected $areasTrabajo;
+    
+     /**
+     * @ORM\OneToMany(targetEntity="Deposito", mappedBy="tipoDeposito")
+     */
+
+    protected $depositos; 
+    
+    
 
     /**
      * Get id

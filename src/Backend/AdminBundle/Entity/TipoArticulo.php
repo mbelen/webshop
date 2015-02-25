@@ -63,7 +63,7 @@ class TipoArticulo
     protected $articulos;   
     
     /**
-     * @ORM\OneToMany(targetEntity="Modelo", mappedBy="tipo")
+     * @ORM\OneToMany(targetEntity="Modelo", mappedBy="tipoArticulo")
      **/
 
     protected $modelos;    
@@ -86,9 +86,7 @@ class TipoArticulo
          $this->children = new  ArrayCollection();
              
     }
-    
-  
-
+    	
     /**
      * Get id
      *

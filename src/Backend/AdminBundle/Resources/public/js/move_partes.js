@@ -1,6 +1,6 @@
 var j = 0;
 
-var ordenId;
+var movimientoId;
 
 function generarCombo() {
   
@@ -54,7 +54,7 @@ function agregarOtro(){
       
   var nuevaParte = $('<div><select class="parte_select" id="parte_'+j+'" name="parte_'+j+'"></select></div>');    
   
-  var nuevoBoton = $('<div><input type="button" class="btn_agregar" id= "'+j+'" name="agregar" value="agregar" data-url="toprocesadoingresos"></div>');
+  var nuevoBoton = $('<div><input type="button" class="btn_agregar" id= "'+j+'" name="agregar" value="agregar" data-url="toprocesadomovs"></div>');
 
   var nuevoEliminar = $('<div><input type="button" class="btn_eliminar" id= "eliminar_'+j+'" name="eliminar" value="eliminar"></div>');
 	
@@ -106,12 +106,12 @@ $('.btn_agregar').click(function(){
 	if(errores == 0){		 
 	
 		var path = $(this).data("url");
-		
+					
 	    $('#errores').html("");
 	
 		var params = {
 			
-			'orden': ordenId,
+			'movimiento': movimientoId,
 			'cantidad':	$('#cantidad_'+id).val(),
 			'parte': 	$('#parte_'+id).val()
 		};
@@ -124,19 +124,32 @@ $('.btn_agregar').click(function(){
 					url:   path,
 					type:  'post',
 					})
-					.done(function (data) {
+					.done(function (data) {												 
 								
 						  if(data.resultado){						  
-																
+							/*														
+							if(data.stock == 0){ 
+								
+								$("#sucess").html("Se agrego correctamente. Ya no hay stock de esta parte");								
+							}
+							if(data.stock < 0){
+							
+								$("#sucess").html("Solo hay "+data.disponible+" partes");
+							
+							}
+							
 							$("#sucess").html("Se agrego correctamente");	                  
-						  
+						  */
 							agregarOtro();
 						  
+						  }else{
+							  
+							  $("#sucess").html("Se produjo un error al cargar el movimiento");
 						  }
 					})
 					.always(function(){
 											  
-						$('#crear').show();							
+						//$('#crear').show();							
 						
 					});	
 			
@@ -184,22 +197,22 @@ $("#agregar").click(function() {
 	
   var path=$("#agregar").data("url");	
 
-  console.log(path);	
+  console.log("path:"+path);	
   
-  if($('#backend_adminbundle_ordenIngresoParte_documento').val().length <= 1){
+  if($('#backend_adminbundle_movimiento_parte_documento').val().length <= 1){
 	
-	$('#backend_adminbundle_ordenIngresoParte_documento_errorloc').html("Es un campo obligatorio");  
+	$('#backend_adminbundle_movimientoParte_documento_errorloc').html("Es un campo obligatorio");  
 	 
   }else{  
 	  
-	  $('#backend_adminbundle_ordenIngresoParte_documento_errorloc').html("");
+	  $('#backend_adminbundle_movimientoParte_documento_errorloc').html("");
 
 	  var parametros = {
-					"cliente" : $('#backend_adminbundle_ordenIngresoParte_cliente').val(),
-					"documento" : $('#backend_adminbundle_ordenIngresoParte_documento').val(),
-					"operador" : $('#backend_adminbundle_ordenIngresoParte_operador').val(),
-					"observaciones" : $('#backend_adminbundle_ordenIngresoParte_observaciones').val()
-		  };
+					"origen" : $('#backend_adminbundle_movimiento_parte_depositoOrigen').val(),
+					"documento" : $('#backend_adminbundle_movimiento_parte_documento').val(),
+					"destino" : $('#backend_adminbundle_movimiento_parte_depositoDestino').val(),
+					"observaciones" : $('#backend_adminbundle_movimiento_parte_observaciones').val()
+      };
 		  
 		  $.ajax({
 					dataType: 'json',
@@ -213,14 +226,14 @@ $("#agregar").click(function() {
 											
 						 if(!data.resultado){				  					
 						  
-							alert("Se ha generado un error al cargar la orden de ingreso");
-							$("#respuesta").html("Se ha generado un error al cargar la orden de ingreso"); 
+							alert("Se ha generado un error al cargar el movimiento");
+							$("#respuesta").html("Se ha generado un error al cargar el movimiento"); 
 						 
 						 }else{
 							 
 							console.log("ID:"+data.id); 
-							ordenId = data.id;
-							console.log("orden"+ordenId); 
+							movimientoId = data.id;
+							console.log("orden"+movimientoId); 
 							//alert("Se ha generado la orden de ingreso");
 							$("#agregar").hide();
 						 

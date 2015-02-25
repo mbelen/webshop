@@ -41,8 +41,9 @@
     <th>Cliente</th>
     <th>Operador Logístico</th>
     <th>Documento</th>
+    <th>Estado</th>
     <th>Observaciones</th>
-    <th style="width: 36px;">Acciones</th>
+    <th style="width: 60px;">Acciones</th>
     </tr>
     </thead>
     <tbody>
@@ -54,18 +55,30 @@
                 <td>{{ orden.cliente.name }}</td>
                 <td>{{ orden.operador.name }}</td>
                 <td>{{ orden.documento }}</td>
+                <td>{{ orden.estado.name }}</td>
                 <td>{{ orden.observaciones }}</td>
                 <td>
-                {% if is_granted("ROLE_MODORDING") %}
+             
+                {% if is_granted("ROLE_MODORDENING") %}
                 <a href="{{ path('ordenIngreso_edit', { 'id': orden.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
-                 {% if is_granted("ROLE_DELORDING") %}
+                {% if is_granted("ROLE_MODORDENING") %}
+					{% if orden.estado.id == 1 %}
+					<a href="{{ path('ordenIngresoParte_toaceptado', { 'id': orden.id }) }}"><i class="icon-ok"></i></a>
+					{% endif %}
+                {% endif %}               
+                
+                 {% if is_granted("ROLE_DELORDENING") %}
                 
                 <a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ orden.id }} ><i class="icon-remove"></i></a>
                 
                  {% endif %}
+                 {% if is_granted("ROLE_MODORDENING") %}
+                		<a href="{{ path('ordenIngresoParte_procesa',{ 'id': orden.id }) }}"><i class="icon-eye-open"></i></a>
+                {% endif %} 
+                
                  <a href="{{ path('ordenIngreso_procesa',{ 'id': orden.id }) }}"><i class=" icon-refresh"></i></a>
-                 {% if is_granted("ROLE_MODORDING") %}
+                 {% if is_granted("ROLE_MODORDENING") %}
                 <a href="{{ path('ordenIngreso_print', { 'id': orden.id }) }}"><i class="icon-print"></i></a>
                 {% endif %}
                 </td>

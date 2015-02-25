@@ -1,5 +1,14 @@
 {% extends '::backend.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+     {% stylesheets '@BackendAdminBundle/Resources/public/css/ingresos_partes.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+{% endblock %}
+
+
 {% block container -%}
     <h3>Nuevo Movimiento de Partes</h3>
     
@@ -20,7 +29,7 @@
     <div class="control-group">
     <!-- Button -->
     <div class="controls">
-    <button type="submit" class="btn btn-primary"><i class="icon-ok icon-white"></i>Crear</button>
+    <button id="agregar" type="button" class="btn" data-url="{{ path('movimientoParte_toprocesadomovimiento') }}">Agregar partes</button>
     <button type="button" class="btn btn-inverse" data-url="{{ path('movimientoParte') }}"><i class="icon-chevron-left icon-white"></i> Back</button>
     
     </div>
@@ -37,6 +46,9 @@
 {% endblock %}
 {% block javascripts %}
   {{ parent() }}
+{% javascripts '@BackendAdminBundle/Resources/public/js/move_partes.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
  
 {% javascripts '@BackendAdminBundle/Resources/public/js/validate_movimiento_partes.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>

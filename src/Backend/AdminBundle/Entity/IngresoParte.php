@@ -36,7 +36,7 @@ class IngresoParte
     
     private $cantidad;
     
-   /**
+    /**
      * @ORM\ManyToOne(targetEntity="TipoArticulo", inversedBy="ingresos")
      * @ORM\JoinColumn(name="tipo_id", referencedColumnName="id")
      */
@@ -56,7 +56,7 @@ class IngresoParte
      */
         
     protected $orden;
-			
+		
 		         
     /**
      * Constructor

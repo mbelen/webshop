@@ -93,18 +93,6 @@ class OrdenIngresoType extends AbstractType
                 'multiple'=>false, //un solo deposito por operario
                 'mapped' => false
             ));  			
-			/*
-			->add('ingresos','entity',array(
-                'class'=>'BackendAdminBundle:Ingreso',
-                'property'=>'name',
-                'multiple'=>true,
-                'expanded'=>true,
-                'attr'   =>  array(
-                             'class'   => 'c4'),
-            ));
-            */
-			
-			
 			
        }
     
