@@ -72,14 +72,14 @@ class OrdenIngresoParte
     protected $ingresos; 
     
      /**
-     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="ordenparte")
+     * @ORM\ManyToOne(targetEntity="EstadoMovimiento", inversedBy="ordenesParte")
      * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
      */
 
     protected $estado; 
     
     /**
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */    
      
     private $updatedAt;
