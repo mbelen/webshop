@@ -33,5 +33,5 @@ articulo_delete:
     defaults: { _controller: "BackendAdminBundle:Articulo:delete" }
     requirements: { _method: post|delete }
 articulo:
-    pattern:  /{search}
-    defaults: { _controller: "BackendAdminBundle:Articulo:index" , search: ''}
+    pattern:  /{search}/{model}
+    defaults: { _controller: "BackendAdminBundle:Articulo:index" , search: '',model: ''}
