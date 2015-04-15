@@ -6,47 +6,43 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Backend\AdminBundle\Entity\Articulo;
-use Backend\AdminBundle\Form\ArticuloType;
+use Backend\AdminBundle\Entity\Pedido;
+use Backend\AdminBundle\Form\PedidoType;
 use Doctrine\DBAL\DriverManager;
 
 /**
- * Articulo controller.
+ * Pedido controller.
  *
  */
-class ArticuloController extends Controller
+class PedidoController extends Controller
 {
 
-     public function generateSQL($search,$model){
+     public function generateSQL($search){
      
-        $dql="SELECT u FROM BackendAdminBundle:Articulo u where u.isDelete=false and u.isDisponible=true"  ;
-        $search=mb_convert_case($search,MB_CASE_LOWER);        
+        $dql="SELECT u FROM BackendAdminBundle:Pedido u where u.isDelete=false"  ;
+        $search=mb_convert_case($search,MB_CASE_LOWER);
+        
        
         if ($search)
+          //$dql.=" and (u.estado like '%$search%' or u.imei like '%$search%')";
           
-          $dql.=" and (u.codigo like '%$search%' or u.nameManufacture like '%$search%')";          
-        
-        if($model)
-        
-		  $dql.=" and (u.modelo = $model )";	
-        
-		  $dql .=" order by u.nameManufacture";
+                  
+        $dql .=" order by u.createdAt desc"; 
         
         return $dql;
      
      }
 
     /**
-     * Lists all Articulo entities.
+     * Lists all Pedido entities.
      *
      */
-    public function indexAction(Request $request,$search,$model=null)
+    public function indexAction(Request $request,$search)
     {
        if ( $this->get('security.context')->isGranted('ROLE_VIEWARTICULO')) {
+		   
         $em = $this->getDoctrine()->getManager();
-        
-                
-        $dql=$this->generateSQL($search,$model);
+        $dql=$this->generateSQL($search);
         $query = $em->createQuery($dql);
         
         $paginator  = $this->get('knp_paginator');
@@ -54,22 +50,18 @@ class ArticuloController extends Controller
         $query,
         $this->get('request')->query->get('page', 1)/*page number*/,
         $this->container->getParameter('max_on_listepage')/*limit per page*/
-		);
-		$modelos = $em->getRepository('BackendAdminBundle:Modelo')
-        ->findAll();
-        $estados = $em->getRepository('BackendAdminBundle:Estado')
+    );
+         $estados = $em->getRepository('BackendAdminBundle:Estado')
         ->findAll();
         $deleteForm = $this->createDeleteForm(0);
-        return $this->render('BackendAdminBundle:Articulo:index.html.twig', 
+        return $this->render('BackendAdminBundle:Pedido:index.html.twig', 
         array('pagination' => $pagination,
         'delete_form' => $deleteForm->createView(),
         'search'=>$search ,
-        'estados'=>$estados,
-        'modelos'=>$modelos
+        'estados'=>$estados
         ));
-        
-    }
-     else
+    	
+    }else
          throw new AccessDeniedException(); 
     }
     /**
@@ -79,21 +71,20 @@ class ArticuloController extends Controller
     public function createAction(Request $request)
     {
         if ( $this->get('security.context')->isGranted('ROLE_ADDARTICULO')) {
-        $entity  = new Articulo();
-        $form = $this->createForm(new ArticuloType(), $entity);
+        $entity  = new Pedido();
+        $form = $this->createForm(new PedidoType(), $entity);
         $form->bind($request);
          
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-            $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado un nuevo articulo.');
-            return $this->redirect($this->generateUrl('articulo_edit', array('id' => $entity->getId())));
-        }
-        
+            $this->get('session')->getFlashBag()->add('success' , 'Se ha agregado un nuevo pedido.');
+            return $this->redirect($this->generateUrl('pedido_edit', array('id' => $entity->getId())));
+        }      
         
 
-        return $this->render('BackendAdminBundle:Articulo:new.html.twig', array(
+        return $this->render('BackendAdminBundle:Pedido:new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView()
            
@@ -102,16 +93,20 @@ class ArticuloController extends Controller
       else
        throw new AccessDeniedException();
     }
+    
+    /**
+     * Cambia el estado del pedido
+     * 
+     */ 
 
     public function changeEstadoAction(Request $request){
-		
         if ( $this->get('security.context')->isGranted('ROLE_MODARTICULO')) {
             $ids = $request->request->get("ids");
             $estado_id = $request->request->get("estado"); 
 		      	
 			     $data=array("msg"=>'');
            try{
-             $sql="update articulo set estado_id=$estado_id where id in ($ids)";
+             $sql="update pedido set estado_id=$estado_id where id in ($ids)";
              $conn = $this->getDoctrine()->getManager()->getConnection();
              $stmt = $conn->executeUpdate($sql);
              
@@ -132,16 +127,16 @@ class ArticuloController extends Controller
 
 
     /**
-    * Creates a form to create a Cliente entity.
+    * Creates a form to create a Pedido entity.
     *
-    * @param Articulo $entity The entity
+    * @param Pedido $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm(Articulo $entity)
+    private function createCreateForm(Pedido $entity)
     {
-        $form = $this->createForm(new ArticuloType(), $entity, array(
-            'action' => $this->generateUrl('articulo_create'),
+        $form = $this->createForm(new PedidoType(), $entity, array(
+            'action' => $this->generateUrl('pedido_create'),
             'method' => 'POST',
         ));
 
@@ -354,6 +349,61 @@ class ArticuloController extends Controller
 			return $response;
      
      }
+     
+     /**
+      *  Print detalle de pedido para generarlo
+      * 
+      */ 
+     
+     public function printAction(Request $request, $id)
+   {
+    $em = $this->getDoctrine()->getManager();
+      $entity = $em->getRepository('BackendAdminBundle:Pedido')->find($id);
+
+      if (!$entity) {
+          $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el pedido.');
+          return $this->redirect($this->generateUrl('pedido' ));
+      }
+      else{
+        require_once($this->get('kernel')->getRootDir().'/config/dompdf_config.inc.php');
+
+        $dompdf = new \DOMPDF();
+        $html= $this->renderView('BackendAdminBundle:Pedido:detail_print.html.twig',
+          array('entity'=>$entity)
+        );
+        $dompdf->load_html($html);
+        $dompdf->render();
+        $fileName="detalle_pedido_".$id.".pdf";
+        $response= new Response($dompdf->output(), 200, array(
+        	'Content-Type' => 'application/pdf; charset=utf-8'
+        ));
+        $response->headers->set('Content-Disposition', 'attachment;filename='.$fileName);
+        return $response;
+      }
+   
+   } 
+   
+   	public function detailAction($id){
+	   
+       if ( $this->get('security.context')->isGranted('ROLE_MODORDENING')) { 
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('BackendAdminBundle:Pedido')->find($id);
+
+        if (!$entity) {
+            
+             $this->get('session')->getFlashBag()->add('error' , 'No se ha encontrado el pedido.');
+             return $this->redirect($this->generateUrl('pedido'));
+        }
+        
+        return $this->render('BackendAdminBundle:Pedido:detail.html.twig', array(
+            'entity'      => $entity                       
+        ));
+      }
+      else
+         throw new AccessDeniedException();  
+   
+   }  
     
      public function exportarAction(Request $request)
     {

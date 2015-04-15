@@ -1,0 +1,66 @@
+<div class="control-group">
+
+{{ form_label(form.marca,"Marca", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.marca, { 'attr': {'class': 'input-xlarge', 'data-url':  path ('modelo_marca')} }) }}
+ <div id='backend_adminbundle_articulo_marca_errorloc' class="help-inline error" >{{ form_errors(form.marca) }}</div>
+  
+</div>
+</div>
+
+<div class="control-group">
+{{ form_label(form.modelo,"Modelo", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.modelo, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_articulo_modelo_errorloc' class="help-inline error" >{{ form_errors(form.modelo) }}</div>
+</div>
+</div>
+
+<div class="control-group">
+{{ form_label(form.imei,"Imei", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.imei, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_articulo_nameManufacture_errorloc' class="help-inline error" >{{ form_errors(form.imei) }}</div>
+</div>
+</div>
+
+<div class="control-group">
+{{ form_label(form.serial,"Serial number", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.serial, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_articulo_serial_errorloc' class="help-inline error" >{{ form_errors(form.serial) }}</div>
+</div>
+</div>
+
+<div class="control-group">
+{{ form_label(form.estado,"Estado", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.estado, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_articulo_estado_errorloc' class="help-inline error" >{{ form_errors(form.estado) }}</div>
+</div>
+</div>
+
+
+<div class="control-group">
+{{ form_label(form.garantia,"En garantia", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.garantia, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_articulo_garantia_errorloc' class="help-inline error" >{{ form_errors(form.garantia) }}</div>
+</div>
+</div>
+
+<div class="control-group">
+{{ form_label(form.descripcion,"Descripción", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.descripcion, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_articulo_descripcion_errorloc' class="help-inline error" >{{ form_errors(form.descripcion) }}</div>
+</div>
+</div>
+
+<div class="control-group">
+{{ form_label(form.observacion,"Observaciones", { 'label_attr': {'class': 'control-label'} }) }}
+<div class="controls">
+ {{ form_widget(form.observacion, { 'attr': {'class': 'input-xlarge'} }) }}
+ <div id='backend_adminbundle_articulo_observacion_errorloc' class="help-inline error" >{{ form_errors(form.observacion) }}</div>
+</div>
+</div>

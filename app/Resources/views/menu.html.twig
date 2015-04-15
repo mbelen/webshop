@@ -4,116 +4,22 @@
                 <ul class="nav">
                     {% if is_granted('ROLE_VIEWUSER') %}
                     <li><a href="{{ path('user') }}">Usuarios</a></li>
+                    {% endif %} 
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('articulo') }}">Productos<b class="caret"></b></a></li>                         
+                    {% endif %}
+                    {% if is_granted('ROLE_WEB') %}
+                    <li><a href="{{ path('articulo') }}">Inicio<b class="caret"></b></a></li>                         
                     {% endif %}
                     
-                    {% if  is_granted('ROLE_SETEO') or is_granted('ROLE_ADMIN') or
-                    is_granted('ROLE_VIEWPROVINCIA') or is_granted('ROLE_VIEWZONA') 
-                     %}
-                    <li class="dropdown">           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuración<b class="caret"></b></a>
-                      <ul class="dropdown-menu">
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <li><a href="{{ path('group') }}">Accesos</a></li>
-						{% endif %}                        
-                        {% if is_granted('ROLE_SETEO') %}
-                            <li class="divider"></li>
-                            <li><a href="{{ path('seteo') }}">Seteos</a></li>
-                        {% endif %}
-                        {% if is_granted('ROLE_ADMIN') %}                        
-							<li class="divider"></li>
-							<li><a href="{{ path('tipoDeposito') }}">Depositos</a></li>
-                        {% endif %}                       
-                        {% if is_granted('ROLE_VIEWPROVINCIA') %}
-                            <li class="divider"></li>
-                            <li><a href="{{ path('provincia') }}">Provincias</a></li>
-                        {% endif %}
-                        {% if is_granted('ROLE_VIEWZONA') %}
-                            <li class="divider"></li>
-                            <li><a href="{{ path('zona') }}">Zonas</a></li>
-                        {% endif %}
-                        {% if is_granted('ROLE_ADMIN') %}
-							<li class="divider"></li>
-                            <li><a href="{{ path('tipo_ordeningreso') }}">Tipo de ordenes de Ingreso</a></li>
-						{% endif %}                        
-                      </ul>
-                    </li>
-                    {% endif %}
-                    
-                    {% if  is_granted('ROLE_VIEWCLIENTE') or is_granted('ROLE_VIEWSUCURSAL') or
-                       is_granted('ROLE_VIEWMARCA') or  is_granted('ROLE_VIEWMODELO') or 
-                       is_granted('ROLE_VIEWSINTOMA') or is_granted('ROLE_VIEWTIPOARTICULO')
-                       or is_granted('ROLE_VIEWARTICULO')
-                     %}
-                    
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entidades<b class="caret"></b></a>
-                      <ul class="dropdown-menu" >
-                       {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('cliente') }}"> Clientes</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('operadorLogistico') }}"> Operadores Logisticos</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWSUCURSAL') %}
-                       <li> <a href="{{ path('sucursal') }}"> Sucursales</a> </li>
-                       <li class="divider"></li>
-                       <li> <a href="{{ path('areaTrabajo') }}"> Areas de Trabajo</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWMARCA') %}
-                       <li> <a href="{{ path('marca') }}"> Marcas</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWMODELO') %}
-                       <li> <a href="{{ path('modelo') }}"> Modelos</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}                     
-                       {% if is_granted('ROLE_VIEWSINTOMA') %}
-                       <li> <a href="{{ path('sintoma') }}"> Sintomas</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWTIPOARTICULO') %}
-                       <li> <a href="{{ path('tipo_articulo') }}"> Tipo Artículos</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWARTICULO') %}
-                       <li> <a href="{{ path('articulo') }}"> Artículos</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWARTICULO') %}
-                       <li> <a href="{{ path('parte') }}"> Partes</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                      </ul>                      
-                    </li> 
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ordenes<b class="caret"></b></a>
-                      <ul class="dropdown-menu" >
-                       {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('ordenIngreso') }}">Ingreso de Equipos</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('ordenIngresoParte') }}">Ingreso de Partes</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('movimiento') }}">Movimientos de Equipos</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('movimientoParte') }}">Movimientos de Partes</a> </li>
-                       <li class="divider"></li>
-                       {% endif %}
-                       {% if is_granted('ROLE_VIEWCLIENTE') %}
-                       <li> <a href="{{ path('ordenEgreso') }}">Egreso de equipos</a> </li>
-                       {% endif %}
-                      </ul>
-                      {% endif %}
-                    </li>  
-                </ul>
-              {% endif %}  
+                    <li><a href="{{ path('pedido') }}">Pedidos<b class="caret"></b></a></li>                                                       
+				</ul>	
+				
+				{% endif %}  
+              			
+				
+				
+              
                 
              {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                 
@@ -129,7 +35,7 @@
                         </ul>
                     </li>
                 </ul>
-                {% endif %}    
+             {% endif %}    
               
              
             </div><!--/.nav-collapse -->

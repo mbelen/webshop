@@ -1,0 +1,127 @@
+{% extends '::backend.html.twig' %}
+
+{% block container %}
+    
+    
+        <h4>Listado de Pedidos </h4>
+
+<div class="row-fluid">
+  
+  
+  <div class="span2">  {% if is_granted("ROLE_ADDARTICULO") %} <button class="btn btn-primary" type="button" id="new_button" data-url="{{ path('pedido_new') }}" >Nuevo Pedido</button> {% endif %} </div>
+  
+    <div class="span3">
+     
+    <form id="custom-search-form" class="form-search form-horizontal pull-right" action="#">
+      <div class="input-append span12">
+      <input type="text" class="search-query" name="search-query" id="search-query" placeholder="Buscar" value="{{ search }}">
+      <button type="button" id="search-button" class="btn" data-url="{{ path('pedido') }}" ><i class="icon-search"></i></button>
+      </div>
+      </form>
+    
+    
+    
+    </div>
+    
+     <div class="span2">
+          {% if is_granted("ROLE_VIEWARTICULO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('pedido_exportar') }}" >Exportar </button> {% endif %}
+    </div>
+    
+ </div>
+    
+    
+    
+    
+    <div class="well">
+    <table class="table" id="table_articulos">
+    <thead>
+    <tr>
+    <th> <input type="checkbox" name="todos" id="todos" value="1"></th>
+    <th>N° de Pedido</th>
+    <th {% if pagination.isSorted('u.createdAt') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Fecha', 'u.createdAt') }}</th>
+    <th>Cliente</th>
+    <th>Estado</th>
+    <th style="width: 86px;">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+     {% for pedido in pagination %}
+    
+     <tr>
+                <td><input type="checkbox" name="pedido[]" value="{{ pedido.id }}" ></td>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.createdAt |date('d-m-Y ') }}</td>
+                <td>{{ pedido.getCliente.getName }}</td>
+                <td>{% if pedido.estado.getId == 1 %}                
+						<span class="label label-warning">{{ pedido.getEstado.getName }}</span>
+					{% endif %}
+					{% if pedido.estado.getId == 2 %}
+						<span class="label label-important">{{ pedido.getEstado.getName }}</span>
+					{% endif %}
+                </td>
+                <td>
+                {% if is_granted("ROLE_MODARTICULO") %}
+					<a href="{{ path('pedido_edit', { 'id': pedido.id }) }}"><i class="icon-pencil"></i></a>
+                {% endif %}
+                {% if is_granted("ROLE_MODARTICULO") %}
+					<a href="{{ path('pedido_detail', { 'id': pedido.id }) }}"><i class="icon-eye-open"></i></a>
+                {% endif %}
+                {% if is_granted("ROLE_MODARTICULO") %}
+					<a href="{{ path('pedido_print', { 'id': pedido.id }) }}"><i class="icon-print"></i></a>
+                {% endif %}
+                {% if is_granted("ROLE_DELARTICULO") %}                
+					<a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ pedido.id }} ><i class="icon-remove"></i></a>
+                {% endif %}
+                </td>
+    </tr>
+    
+    {% endfor %}
+   
+    </tbody>
+    </table>
+    </div>
+    
+    <div class="pagination">
+     {{ knp_pagination_render(pagination) }}
+    
+    </div>
+    
+    <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+     <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Confirmar Borrado</h3>
+     </div>
+     <div class="modal-body">
+       <p class="error-text">Esta seguro que desea borrar los datos del pedido?</p>
+     </div>
+     <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+      <button class="btn btn-danger " data-id="0"  data-url="{{ path('pedido_delete', { 'id': 'id' }) }}">Borrar</button>
+     </div>
+    </div>
+    
+    
+    <form action="" id="delete-form" method="post" {{ form_enctype(delete_form) }}>
+    {{ form_widget(delete_form) }}
+    <input type="hidden" value="DELETE" name="_method">
+    
+    </form>
+    
+    
+    {% endblock %}
+  {% block javascripts %}
+  {{ parent() }}
+ 
+{% javascripts '@BackendAdminBundle/Resources/public/js/search_index.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% javascripts '@BackendAdminBundle/Resources/public/js/exportar_entidad.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% javascripts '@BackendAdminBundle/Resources/public/js/articulo.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}      
+  
+{% endblock %}
+
+

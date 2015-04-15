@@ -1,0 +1,77 @@
+{% extends '::backend.html.twig' %}
+ {% block stylesheets %}
+    {{ parent() }}
+     {% stylesheets '@BackendAdminBundle/Resources/public/css/ingresos.css' %}
+     <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+
+{% endblock %}
+{% block container -%}
+<div class="well">    
+    <h4>Pedido n°: {{ entity.id }} </h4>
+
+<div class="control-group">
+  <label>Fecha de creación: 
+  {{ entity.createdAt |date('d-m-Y ') }}</label>
+</div>
+
+<div class="control-group">
+  <label>Cliente : 
+  {{ entity.getCliente.getName }}</label>
+</div>
+
+<div class="control-group">
+Estado: 
+{% if entity.estado.id == 1 %}                    
+   <span class="label label-warning">{{ entity.estado.name }}</span>                    
+{% endif %}                   
+{% if entity.estado.id == 2 %}                                 
+   <span class="label label-success">{{ entity.estado.name }}</span>					
+{% endif %}				  
+{% if entity.estado.id == 3 %}                                    
+   <span class="label label-important">{{ entity.estado.name }}</span>					
+{% endif %}  
+<br/>	  
+{% if entity.estado.getId == 2 or  entity.estado.getId == 3 %}		  
+Fecha aceptada/rechazada: {{ entity.getModifiedAt |date('d-m-Y ') }}		  
+{% endif %}	
+</div>
+
+</div>
+
+<div class="well">
+    <table class="table">
+    <thead>
+    <tr>
+    <th>Cantidad</th>
+    <th>Codigo</th>
+    <th>Descripcion</th>
+    </tr>
+    </thead>
+    <tbody>
+     {% for articulo in entity.getArticulosPedidos() %}    
+     <tr>
+                <td>{{ articulo.getCantidad() }}</td>
+                <td>{{ articulo.getArticulo().getCodigo() }}</td>
+                <td>{{ articulo.getArticulo().getName() }}</td>                       
+     </tr>   
+     {% endfor %}        
+     </tbody>
+     </table>
+</div>	
+{% if entity.estado.getId != 1 %}  	
+     <button type="button" class="btn btn-inverse" data-url="{{ path('movimiento_toaceptado',{ 'id': entity.id }) }}"><i class="icon-ok icon-white"></i>Aceptar</button>	
+	 <button type="button" class="btn btn-danger"  data-url="{{ path('movimiento_torechazado',{ 'id': entity.id })}}"><i class="icon-remove icon-white"></i>Rechazar</button>
+{% endif %}
+	 <button type="button" class="btn btn-inverse" data-url="{{ path('pedido') }}" style="float:right"><i class="icon-chevron-left icon-white"></i>Volver</button>
+   
+   
+   
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+
+  {% javascripts '@BackendAdminBundle/Resources/public/js/procesa.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+  {% endjavascripts %}
+{% endblock %}    

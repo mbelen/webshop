@@ -9,13 +9,18 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+	  	
        if ( $this->get('security.context')->isGranted('ROLE_VISITOR')) {
-        
-           return $this->render('BackendAdminBundle:Default:index.html.twig');
-       }
-       else
-           return $this->redirect($this->generateUrl('user'));
-        
+		   		    
+           return $this->render('BackendAdminBundle:Default:index.html.twig');   
+         
+       }else if ( $this->get('security.context')->isGranted('ROLE_WEB')) {
+           
+           return $this->redirect($this->generateUrl('articulo'));
+       
+       }else
+       
+           return $this->redirect($this->generateUrl('user'));        
         
     }
     

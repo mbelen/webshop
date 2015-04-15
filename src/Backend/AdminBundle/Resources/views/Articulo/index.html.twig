@@ -1,16 +1,18 @@
 {% extends '::backend.html.twig' %}
 
 {% block container %}
-    
+
+ {% if is_granted("ROLE_ADDARTICULO") %}   
     
         <h4>Listado de Artículos </h4>
-
+ {% endif %}
+ 
 <div class="row-fluid">
   
   
   <div class="span2">  {% if is_granted("ROLE_ADDARTICULO") %} <button class="btn btn-primary" type="button" id="new_button" data-url="{{ path('articulo_new') }}" >Nuevo Artículo</button> {% endif %} </div>
   
-    <div class="span3">
+    <div>
      
     <form id="custom-search-form" class="form-search form-horizontal pull-right" action="#">
       <div class="input-append span12">
@@ -18,35 +20,49 @@
       <button type="button" id="search-button" class="btn" data-url="{{ path('articulo') }}" ><i class="icon-search"></i></button>
       </div>
       </form>
-    
-    
-    
+           
     </div>
-    
+   
      <div class="span2">
-          {% if is_granted("ROLE_VIEWARTICULO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('articulo_exportar') }}" >Exportar </button> {% endif %}
-    </div>
+          {% if is_granted("ROLE_ADDARTICULO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('articulo_exportar') }}" >Exportar </button> {% endif %}
+     </div>
     
  </div>
-    
-    
+
+<div class="span2" style="width: 248px;">
+	    <div class="well">
+	    <p>MODELOS</p>
+		<ul style="list-style-type: none;margin: 0px 0px 10px 0px;">
+		{% for item in modelos %}
+		<li><a href="{{ path('articulo', { 'model': item.id }) }}">{{ item.name ~ " "~ item.variante }}</a></li>
+		{% endfor %}
+		</ul>
+		</div>
+</div>	
+    <div style="float:right">       
+    <div class="well">
+		<button style="float:right" class="btn btn-primary" type="button" id="agregar" data-url="{{ path('articulo_exportar') }}" >Agregar</button>
+		<p><b>Pedido:</b> Regular | <b>Circuito:</b> En garantía </p>
+		
+	</div>
     
     
     <div class="well">
     <table class="table" id="table_articulos">
     <thead>
     <tr>
-    <th> <input type="checkbox" name="todos" id="todos" value="1"></th>
-     <th>Fecha</th>
-     <th>IMEI</th>
-    <th {% if pagination.isSorted('u.tipo') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Tipo', 'u.tipo') }}</th>
-    <th>Marca</th>
-    <th>Modelo</th>
-    <th>Nombre fabricante</th>
-    <th>Disponible</th>
-    <th>Estado</th>
-    <th>Garantía</th>
+    <th><input type="checkbox" name="todos" id="todos" value="1"></th>
+    <th></th>
+     <th><b>Codigo del fabricante</b></th>
+     <th>Descripcion del fabricante</th>
+     <th>Descripcion interna</th>
+     {% if is_granted("ROLE_ADDARTICULO") %}
+     <th>Disponible</th>
+     {% endif %}
+     <th style="width: 36px;">Cantidad</th>
+    {% if is_granted("ROLE_ADDARTICULO") %}
     <th style="width: 36px;">Acciones</th>
+    {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -54,33 +70,23 @@
     
      <tr>
                 <td><input type="checkbox" name="articulo[]" value="{{ articulo.id }}" ></td>
-                <td>{{ articulo.createdAt |date('d-m-Y ') }}</td>
-                <td> {{ articulo.imei }}</td>
-                <td>{{ articulo.getModelo.getTipoArticulo.getName }}</td>
-                <td> {{ articulo.getMarca.getName }}</th>
-                <td> {{ articulo.getModelo.getName }}</th>
-                <td> {{ articulo.getModelo.getNameManufacture }}</th>
+                <td><a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ articulo.id }} ><i class="icon-info-sign"></i></a></td>
+                <td>{{ articulo.codigo }}</td>
+                <td>{{ articulo.nameManufacture }}</td>
+                <td> {{ articulo.name }}</th>
+                {% if is_granted("ROLE_ADDARTICULO") %}
                 <td>{% if articulo.isDisponible %}
                     
                     <span class="label label-success">Disponible</span>
                    
                   {% else %}
-                     <span class="label label-important">No Disponible</span> 
-                     
+                     <span class="label label-important">No Disponible</span>                     
                   {% endif%}</td>
-                <td>{{ articulo.estado }}</td>
-                <td>
-                    {% if articulo.garantia %}
-                    
-                    <span class="label label-success">SI</span>
-                   
-                  {% else %}
-                     <span class="label label-important">No</span> 
-                     
-                  {% endif%}
+                 {% endif %}
+                 <td><input type="input" name="articulo[]" value="" style="width: 40px;"></td>
                 </td>
                 <td>
-                {% if is_granted("ROLE_MODARTICULO") %}
+                {% if is_granted("ROLE_ADDARTICULO") %}
                 <a href="{{ path('articulo_edit', { 'id': articulo.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
                  {% if is_granted("ROLE_DELARTICULO") %}
@@ -96,15 +102,7 @@
     </tbody>
     </table>
     </div>
-    
-    <div>
-    <p>Seleccione los artículos que desee para cambiar de estado: </p>
-    Estado <select id="estado" name="estado">
-           <option value="0">Seleccione</option>
-           {% for item in estados %}
-           <option value="{{ item.id }}">{{ item.name }}</option>
-     {% endfor %}
-           </select> <input type="button" name="cambiar" value="Cambiar" id="cambiar" data-url="{{ path("articulo_changeEstado")}}">
+    </div>
     </div>
     
     <div class="pagination">
@@ -114,15 +112,10 @@
     
     <div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
      <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Confirmar Borrado</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
      </div>
      <div class="modal-body">
-       <p class="error-text">Esta seguro que desea borrar los datos del artículo?</p>
-     </div>
-     <div class="modal-footer">
-      <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-      <button class="btn btn-danger " data-id="0"  data-url="{{ path('articulo_delete', { 'id': 'id' }) }}">Borrar</button>
+       <img src="{{ asset('img/no_image_available.png') }}" alt="" />
      </div>
     </div>
     

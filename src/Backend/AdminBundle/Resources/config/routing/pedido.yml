@@ -1,0 +1,37 @@
+pedido_new:
+    pattern:  /new
+    defaults: { _controller: "BackendAdminBundle:Pedido:new" }
+
+pedido_exportar:
+    pattern:  /exportar
+    defaults: { _controller: "BackendAdminBundle:Pedido:exportar" }
+pedido_create:
+    pattern:  /create
+    defaults: { _controller: "BackendAdminBundle:Pedido:create" }
+    requirements: { _method: post }
+
+pedido_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BackendAdminBundle:Pedido:edit" }
+
+pedido_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BackendAdminBundle:Pedido:update" }
+    requirements: { _method: post|put }
+
+pedido_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BackendAdminBundle:Pedido:delete" }
+    requirements: { _method: post|delete }
+
+pedido_detail:
+    pattern:  /{id}/detail
+    defaults: { _controller: "BackendAdminBundle:Pedido:detail" }
+
+pedido_print:
+    pattern:  /{id}/print
+    defaults: { _controller: "BackendAdminBundle:Pedido:print" }
+    
+pedido:
+    pattern:  /{search}
+    defaults: { _controller: "BackendAdminBundle:Pedido:index" , search: ''}

@@ -25,6 +25,17 @@ class Articulo
      */
     private $createdAt;
     
+    /**
+     * @ORM\Column(name="updated_at", type="datetime",nullable=true)
+     */
+    private $updatedAt;
+    
+     /**
+     * @ORM\Column(name="price", type="float", scale=2, nullable=true)
+     */
+     
+    private $price;
+    
      /**
      * @ORM\Column(name="is_delete", type="boolean" )
      */
@@ -43,70 +54,53 @@ class Articulo
     protected $tipo;    
 
      /**
-     * @ORM\Column(name="imei", type="string", length=15, nullable=true, unique = true)
+     * @ORM\Column(name="codigo", type="string", nullable=true, unique = true)
      */
      
-    private $imei;
-    
-     /**
-     * @ORM\Column(name="serial", type="string", length=15, nullable=true)
-     */ 
-     
-    private $serial;
+    private $codigo;
     
     /**
-     * @ORM\Column(name="is_gtia", type="boolean" )
-     */ 
-            
-    private $garantia;
+     * @ORM\Column(name="name", type="string", nullable=true)
+     */
+     
+    private $name;    
     
+    /**
+     * @ORM\Column(name="nameManufacture", type="string", nullable=true, unique = true)
+     */
+     
+    private $nameManufacture;  
+    
+    /**
+     * @ORM\Column(name="imagen", type="string", nullable=true)
+     */
+     
+    private $imagen;   
+     
     /**
      * @ORM\Column(name="descripcion", type="text", nullable=true)
      */    
      
     private $descripcion;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Estado", inversedBy="articulos")
-     * @ORM\JoinColumn(name="estado_id", referencedColumnName="id")
-     */    
-    
-    protected $estado;
-       
-     /**
-     * @ORM\Column(name="observacion", type="text", nullable=true)
+             
+	/**
+	 * @ORM\ManyToMany(targetEntity="Modelo", inversedBy="articulos")
+     * @ORM\JoinTable(name="modelo_articulo")
+	 */	               
+         
+    protected $modelos;
+    	
+	/**
+     * @ORM\Column(name="stock", type="integer", nullable=true)
      */
-    
-    private $observacion;
-        
-    /**
-     * @ORM\ManyToOne(targetEntity="Marca", inversedBy="articulos")
-     * @ORM\JoinColumn(name="marca_id", referencedColumnName="id")
-     */    
-
-    protected $marca;
-           
-    /**
-     * @ORM\ManyToOne(targetEntity="Modelo", inversedBy="articulos")
-     * @ORM\JoinColumn(name="modelo_id", referencedColumnName="id")
-     */ 
-      
-    protected $modelo;
-	
+     
+    private $stock;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="Movimiento", inversedBy="articulos")
-     * @ORM\JoinTable(name="articulo_movimiento")
-	 */	
-		
-	protected $movimientos;
-
-  /**
-     * @ORM\ManyToOne(targetEntity="OrdenIngreso", inversedBy="articulos")
-     * @ORM\JoinColumn(name="orden_id", referencedColumnName="id")
-     */
-  
-  private $orden;
+     * @ORM\OneToMany(targetEntity="ArticuloPedido", mappedBy="articulo")
+     **/
+	
+    protected $articulosPedidos;
 		         
     /**
      * Constructor
@@ -119,7 +113,7 @@ class Articulo
          $this->isValido=true;
          $this->garantia=false;
          $this->createdAt = new \DateTime('now');
-         $this->movimientos = new ArrayCollection();   
+          
     }
     
   
@@ -306,200 +300,196 @@ class Articulo
     }
 
     /**
-     * Set marca
+     * Set codigo
      *
-     * @param \Backend\AdminBundle\Entity\Marca $marca
+     * @param string $codigo
      * @return Articulo
      */
-    public function setMarca(\Backend\AdminBundle\Entity\Marca $marca = null)
+    public function setCodigo($codigo)
     {
-        $this->marca = $marca;
+        $this->codigo = $codigo;
     
         return $this;
     }
 
     /**
-     * Get marca
-     *
-     * @return \Backend\AdminBundle\Entity\Marca 
-     */
-     
-    public function getMarca()
-    {
-        return $this->marca;
-    }
-   
-
-    /**
-     * Set modelo
-     *
-     * @param \Backend\AdminBundle\Entity\Modelo $modelo
-     * @return Articulo
-     */
-    public function setModelo(\Backend\AdminBundle\Entity\Modelo $modelo = null)
-    {
-        $this->modelo = $modelo;
-    
-        return $this;
-    }
-
-    /**
-     * Get modelo
-     *
-     * @return \Backend\AdminBundle\Entity\Modelo 
-     */
-    public function getModelo()
-    {
-        return $this->modelo;
-    }
-
-    /**
-     * Set imei
-     *
-     * @param string $imei
-     * @return Articulo
-     */
-    public function setImei($imei)
-    {
-        $this->imei = $imei;
-    
-        return $this;
-    }
-
-    /**
-     * Get imei
+     * Get codigo
      *
      * @return string 
      */
-    public function getImei()
+    public function getCodigo()
     {
-        return $this->imei;
+        return $this->codigo;
     }
 
     /**
-     * Set serial
+     * Set name
      *
-     * @param string $serial
+     * @param string $name
      * @return Articulo
      */
-    public function setSerial($serial)
+    public function setName($name)
     {
-        $this->serial = $serial;
+        $this->name = $name;
     
         return $this;
     }
 
     /**
-     * Get serial
+     * Get name
      *
      * @return string 
      */
-    public function getSerial()
+    public function getName()
     {
-        return $this->serial;
+        return $this->name;
     }
 
     /**
-     * Set garantia
+     * Add articulosPedidos
      *
-     * @param boolean $garantia
+     * @param \Backend\AdminBundle\Entity\ArticuloPedido $articulosPedidos
      * @return Articulo
      */
-    public function setGarantia($garantia)
+    public function addArticulosPedido(\Backend\AdminBundle\Entity\ArticuloPedido $articulosPedidos)
     {
-        $this->garantia = $garantia;
+        $this->articulosPedidos[] = $articulosPedidos;
     
         return $this;
     }
 
     /**
-     * Get garantia
+     * Remove articulosPedidos
      *
-     * @return boolean 
+     * @param \Backend\AdminBundle\Entity\ArticuloPedido $articulosPedidos
      */
-    public function getGarantia()
+    public function removeArticulosPedido(\Backend\AdminBundle\Entity\ArticuloPedido $articulosPedidos)
     {
-        return $this->garantia;
+        $this->articulosPedidos->removeElement($articulosPedidos);
     }
 
     /**
-     * Set estado
-     *
-     * @param \Backend\AdminBundle\Entity\Estado $estado
-     * @return Articulo
-     */
-    public function setEstado(\Backend\AdminBundle\Entity\Estado $estado = null)
-    {
-        $this->estado = $estado;
-    
-        return $this;
-    }
-
-    /**
-     * Get estado
-     *
-     * @return \Backend\AdminBundle\Entity\Estado 
-     */
-    public function getEstado()
-    {
-        return $this->estado;
-    }
-
-   
-
-    /**
-     * Add movimientos
-     *
-     * @param \Backend\AdminBundle\Entity\Movimiento $movimientos
-     * @return Articulo
-     */
-    public function addMovimiento(\Backend\AdminBundle\Entity\Movimiento $movimientos)
-    {
-        $this->movimientos[] = $movimientos;
-    
-        return $this;
-    }
-
-    /**
-     * Remove movimientos
-     *
-     * @param \Backend\AdminBundle\Entity\Movimiento $movimientos
-     */
-    public function removeMovimiento(\Backend\AdminBundle\Entity\Movimiento $movimientos)
-    {
-        $this->movimientos->removeElement($movimientos);
-    }
-
-    /**
-     * Get movimientos
+     * Get articulosPedidos
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getMovimientos()
+    public function getArticulosPedidos()
     {
-        return $this->movimientos;
+        return $this->articulosPedidos;
     }
 
     /**
-     * Set orden
+     * Set stock
      *
-     * @param \Backend\AdminBundle\Entity\OrdenIngreso $orden
+     * @param integer $stock
      * @return Articulo
      */
-    public function setOrden(\Backend\AdminBundle\Entity\OrdenIngreso $orden = null)
+    public function setStock($stock)
     {
-        $this->orden = $orden;
+        $this->stock = $stock;
     
         return $this;
     }
 
     /**
-     * Get orden
+     * Get stock
      *
-     * @return \Backend\AdminBundle\Entity\OrdenIngreso 
+     * @return integer 
      */
-    public function getOrden()
+    public function getStock()
     {
-        return $this->orden;
+        return $this->stock;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return Articulo
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     * @return Articulo
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float 
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set nameManufacture
+     *
+     * @param string $nameManufacture
+     * @return Articulo
+     */
+    public function setNameManufacture($nameManufacture)
+    {
+        $this->nameManufacture = $nameManufacture;
+    
+        return $this;
+    }
+
+    /**
+     * Get nameManufacture
+     *
+     * @return string 
+     */
+    public function getNameManufacture()
+    {
+        return $this->nameManufacture;
+    }
+
+    /**
+     * Set imagen
+     *
+     * @param string $imagen
+     * @return Articulo
+     */
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    
+        return $this;
+    }
+
+    /**
+     * Get imagen
+     *
+     * @return string 
+     */
+    public function getImagen()
+    {
+        return $this->imagen;
     }
 }

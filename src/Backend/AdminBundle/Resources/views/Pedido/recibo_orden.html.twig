@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  </head>
+  <body>
+	  <div><h2>Movimiento de Equipos</h2></div>
+	  <div><b>Nro Orden: {{ entity.id }}</b></div>
+	  <div>Fecha de creación: {{ entity.createdAt |date('d-m-Y ') }}</div>
+	  <div>Documento: {{ entity.getDocumento }}</div>
+      <div>Deposito Origen: {{ entity.depositoOrigen.getNombre }}</div>      
+      <div>Destino: {{ entity.depositoDestino.getNombre }}</div>
+      <div>
+		   Estado: {{ entity.estado.getName }}
+		  
+		   {% if entity.estado.getId == 2 or  entity.estado.getId == 3 %}
+		  
+		   Fecha aceptada/rechazada: {{ entity.createdAt |date('d-m-Y ') }}	
+		  
+		   {% endif %}		  
+	  </div>
+      <div>
+	  <label>Articulos</label>
+	  <br/>
+		{% for i in entity.getArticulos %}
+			{{ i.getImei }} {{ i.getMarca.getName }} {{ i.getModelo.getName }} {{ i.getModelo.getNameManufacture }}
+		<br/> 
+		{% endfor %}
+	</div>
+  </body>
+</html>
+  
