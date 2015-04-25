@@ -38,5 +38,9 @@ backend_articulo:
     resource: "@BackendAdminBundle/Resources/config/routing/articulo.yml"
     prefix:   /articulo
     
+backend_compra:
+    resource: "@BackendAdminBundle/Resources/config/routing/compra.yml"
+    prefix:   /compra
+    
     
   

@@ -24,7 +24,7 @@
     </div>
     
      <div class="span2">
-          {% if is_granted("ROLE_VIEWARTICULO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('pedido_exportar') }}" >Exportar </button> {% endif %}
+          {% if is_granted("ROLE_VIEWPEDIDO") %} <button class="btn btn-primary" type="button" id="exportar_button" data-url="{{ path('pedido_exportar') }}" >Exportar </button> {% endif %}
     </div>
     
  </div>
@@ -33,12 +33,18 @@
     
     
     <div class="well">
-    <table class="table" id="table_articulos">
+    <table class="table" id="table_pedidos">
     <thead>
     <tr>
     <th> <input type="checkbox" name="todos" id="todos" value="1"></th>
-    <th>N° de Pedido</th>
     <th {% if pagination.isSorted('u.createdAt') %} class="sorted"{% endif %}>{{ knp_pagination_sortable(pagination, 'Fecha', 'u.createdAt') }}</th>
+    <th>N° de Pedido</th>
+    <th>Tipo de Pedido</th>
+    <th>Circuito</th>
+    <th>Locacion</th>
+    <th>Fecha de confirmacion</th>
+    <th>Partes Pedidas</th>
+    <th>Items Pedidos</th>
     <th>Cliente</th>
     <th>Estado</th>
     <th style="width: 86px;">Acciones</th>
@@ -49,8 +55,34 @@
     
      <tr>
                 <td><input type="checkbox" name="pedido[]" value="{{ pedido.id }}" ></td>
-                <td>{{ pedido.id }}</td>
                 <td>{{ pedido.createdAt |date('d-m-Y ') }}</td>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.tipoPedido }}</td>
+                <td>{{ pedido.circuito }}</td>
+                {% if (pedido.locacion == null) %}
+                <td> N/A </td>
+                {% else %}
+                <td>{{ pedido.locacion }}</td>
+                {% endif %}
+                <td>{{ pedido.confirmedAt |date('d-m-Y ') }}</td>
+                <td>
+                {% set partes = 0 %}    
+				{% set loopOutput %} 
+					{% for item in pedido.getArticulosPedidos %}
+						{% set partes = partes + 1 %}
+					{% endfor %}
+                {% endset %}
+                {{ partes }}
+                </td>
+                <td>
+                {% set sum = 0 %}    
+				{% set loopOutput %} 
+					{% for item in pedido.getArticulosPedidos %}
+						{% set sum = sum + item.cantidad  %}
+					{% endfor %}
+                {% endset %}
+                {{ sum }}
+                </td>               
                 <td>{{ pedido.getCliente.getName }}</td>
                 <td>{% if pedido.estado.getId == 1 %}                
 						<span class="label label-warning">{{ pedido.getEstado.getName }}</span>
@@ -60,19 +92,39 @@
 					{% endif %}
                 </td>
                 <td>
-                {% if is_granted("ROLE_MODARTICULO") %}
+                {% if is_granted("ROLE_MODPEDIDO") %}
 					<a href="{{ path('pedido_edit', { 'id': pedido.id }) }}"><i class="icon-pencil"></i></a>
                 {% endif %}
-                {% if is_granted("ROLE_MODARTICULO") %}
-					<a href="{{ path('pedido_detail', { 'id': pedido.id }) }}"><i class="icon-eye-open"></i></a>
+                {% if is_granted("ROLE_VIEWPEDIDO") %}
+					<a href="#" data-url="{{ path('pedido_todetail')}}" data-id="{{ pedido.id }}" role="button" class="detail"><i class="icon-eye-open"></i></a>
                 {% endif %}
-                {% if is_granted("ROLE_MODARTICULO") %}
+                {% if is_granted("ROLE_VIEWPEDIDO") %}
 					<a href="{{ path('pedido_print', { 'id': pedido.id }) }}"><i class="icon-print"></i></a>
                 {% endif %}
                 {% if is_granted("ROLE_DELARTICULO") %}                
 					<a href="#myModal" role="button" class="confirm-delete" data-toggle="modal" data-id={{ pedido.id }} ><i class="icon-remove"></i></a>
                 {% endif %}
                 </td>
+    </tr>
+    <tr>
+		<div id="pedido_detalle" style="display:none">
+		<div id="error"></div>
+		<table class="table" id="table_pedido_detalle" style="display:none">
+		<thead>
+		<tr>
+		<th>Codigo de Fabricante</th>
+		<th>Descripcion del Fabricante</th>
+		<th>Descripcion Interna</th>
+		<th>Cantidad Pedida</th>
+		<th>Estado</th>
+		</tr>
+		</thead>
+		<tbody>
+
+		</tbody>
+		</table>
+		</div>
+		
     </tr>
     
     {% endfor %}
@@ -118,7 +170,7 @@
 {% javascripts '@BackendAdminBundle/Resources/public/js/exportar_entidad.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
-{% javascripts '@BackendAdminBundle/Resources/public/js/articulo.js' %}
+{% javascripts '@BackendAdminBundle/Resources/public/js/pedido.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}      
   

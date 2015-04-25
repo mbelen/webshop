@@ -1,0 +1,38 @@
+articulo_new:
+    pattern:  /new
+    defaults: { _controller: "BackendAdminBundle:Articulo:new" }
+
+articulo_add:
+    pattern:  /addImei
+    defaults: { _controller: "BackendAdminBundle:Articulo:addArticuloImei" }
+
+articulo_changeEstado:
+    pattern:  /changeEstado
+    defaults: { _controller: "BackendAdminBundle:Articulo:changeEstado" }
+
+articulo_exportar:
+    pattern:  /exportar
+    defaults: { _controller: "BackendAdminBundle:Articulo:exportar" }
+    
+articulo_create:
+    pattern:  /create
+    defaults: { _controller: "BackendAdminBundle:Articulo:create" }
+    requirements: { _method: post }
+
+articulo_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "BackendAdminBundle:Articulo:edit" }
+
+articulo_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "BackendAdminBundle:Articulo:update" }
+    requirements: { _method: post|put }
+
+articulo_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "BackendAdminBundle:Articulo:delete" }
+    requirements: { _method: post|delete }
+
+compra:
+    pattern:  /{search}/{model}
+    defaults: { _controller: "BackendAdminBundle:Compra:index" , search: '',model: ''}
